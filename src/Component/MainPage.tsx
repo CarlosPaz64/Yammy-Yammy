@@ -1,8 +1,11 @@
+import NavBar from "./navbar";
+
 //Aqui se agruparan todos los componentes de la página principal
 function MainPage(){
     return (
         <>
             {/*Navbar*/}
+            <NavBar></NavBar>
             {/*Fin del Navbar*/}
 
             {/*Carrusel de productos*/}

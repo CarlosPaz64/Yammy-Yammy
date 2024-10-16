@@ -1,6 +1,15 @@
 /*Tipo de letra para la pagina -> Manrope*/
 @import url('https://fonts.googleapis.com/css2?family=Manrope:wght@200..800&display=swap');
 
+/*Estilo para los iconos de google font*/
+.material-symbols-outlined {
+  font-variation-settings:
+  'FILL' 0,
+  'wght' 400,
+  'GRAD' 0,
+  'opsz' 24
+}
+
 /*Selector global de la página*/
 * {
     margin: 0;
@@ -14,4 +23,28 @@
 
 body{
     background-color: #F9F9F9;
+    width: 100vw;
+    height: 100vh;
 }
+
+/*Estilo del navbar*/
+nav{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #545B77;
+    border-radius: 35px;
+    margin: 0 auto;
+    padding: 20px;
+  }
+  nav ul{
+    display: flex;
+    align-items: center;
+    padding: 0;
+    margin: 0;
+    list-style: none;
+    width: 100%;
+  }
+  nav ul li {
+    color: white;
+  }
