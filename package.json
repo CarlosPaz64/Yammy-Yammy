@@ -12,11 +12,14 @@
   "dependencies": {
     "@hookform/resolvers": "^3.9.0",
     "@types/crypto-js": "^4.2.2",
+    "@types/react-modal": "^3.16.3",
     "crypto-js": "^4.2.0",
     "dotenv": "^16.4.5",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
+    "react-dropzone": "^14.2.9",
     "react-hook-form": "^7.53.0",
+    "react-modal": "^3.16.1",
     "react-router-dom": "^6.27.0",
     "zod": "^3.23.8"
   },
