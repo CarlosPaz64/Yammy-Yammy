@@ -18,7 +18,13 @@ const Login = () => {
 
   // Encriptar los datos con AES
   const encriptarDatos = (data: string): string => {
-    const encrypted = CryptoJS.AES.encrypt(data, CryptoJS.enc.Utf8.parse(SECRET_KEY), {
+    // Verifica que los datos no sean undefined o null antes de encriptar
+    if (!data) {
+      throw new Error('Datos para encriptar están vacíos');
+    }
+
+    // Encriptar usando la clave secreta directamente como cadena
+    const encrypted = CryptoJS.AES.encrypt(data, SECRET_KEY, { 
       mode: CryptoJS.mode.CBC,
       padding: CryptoJS.pad.Pkcs7,
     });
@@ -28,10 +34,16 @@ const Login = () => {
 
   const handleLogin = async (data: FormData) => {
     try {
+      console.log('SECRET_KEY:', SECRET_KEY); // Verifica que la clave esté correcta
+  
       // Encriptar los datos antes de enviarlos al backend
       const encriptedUsername = encriptarDatos(data.username);
       const encriptedPassword = encriptarDatos(data.password);
-
+  
+      // Verificar los datos encriptados antes de enviarlos
+      console.log('Username Encriptado:', encriptedUsername);
+      console.log('Password Encriptado:', encriptedPassword);
+  
       const response = await fetch(`${API_URL}/api/admin/login`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -40,22 +52,26 @@ const Login = () => {
           password: encriptedPassword,
         }),
       });
-
+  
       if (response.ok) {
         const result = await response.json();
-
-        // Almacenar el token en localStorage
-        localStorage.setItem('token', result.token);
-
-        // Redirigir a la ruta de dashboard del admin tras un login exitoso
-        navigate('/admin/dashboard');
+        console.log('Respuesta del servidor:', result); // Verifica que se reciba el token
+      
+        if (result.token) {
+          localStorage.setItem('token', result.token);  // Almacenar el token
+          navigate('/admin/dashboard');  // Redirigir a la vista del dashboard
+        } else {
+          setError('No se recibió token en la respuesta del servidor.');
+        }
       } else {
         setError('Credenciales inválidas');
-      }
-    } catch (err) {
-      setError('Error al conectar con el servidor');
+      }      
+    } catch (err: any) {
+      setError(`Error al conectar con el servidor: ${err.message}`);
+      console.error('Detalles del error:', err);
     }
   };
+  
 
   return (
     <div>

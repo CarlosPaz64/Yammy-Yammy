@@ -7,6 +7,8 @@ type PrivateRouteProps = {
 
 const PrivateRoute = ({ children }: PrivateRouteProps) => {
   const token = localStorage.getItem('token');
+  console.log('Token en localStorage:', token); // Verificar si el token está disponible
+
 
   // Si no hay token, redirige a la página de login
   if (!token) {
