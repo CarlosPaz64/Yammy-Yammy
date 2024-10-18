@@ -1,34 +1,36 @@
-import React, {ReactNode} from "react";
+import React, { ReactNode } from "react";
+import { Link } from 'react-router-dom'; // Importar Link para la navegación
 
 //Componente del navbar
-const NavBar: React.FC<{ children?: ReactNode }>= ({children}) => {
+const NavBar: React.FC<{ children?: ReactNode }> = ({ children }) => {
     return (
         <>
-            {/*Navbar*/}
+            {/* Navbar */}
             <nav>
                 <ul>
                     <li>
-                        <a href="#">
+                        <Link to="/">
                             <img src='../src/assets/Yamy-Imagotipo.png' alt="Imagotipo" width='180px' height='180px'></img>
-                        </a>
+                        </Link>
                     </li>
                     <li>
-                        <a href="#">Inicio</a>
+                        <Link to="/">Inicio</Link>
                     </li>
                     <li>
-                        <a href="#">Menú</a>
+                        <Link to="/menu">Menú</Link>
                     </li>
                     <li>
-                        <a href="#">Haz un pedido</a>
+                        <Link to="/pedido">Haz un pedido</Link>
                     </li>
                     <li>
-                        <a href="#">Conócenos</a>
+                        <Link to="/conocenos">Conócenos</Link>
                     </li>
                     <li>
-                        <a href='#' className="material-symbols-outlined">account_circle</a>
+                        {/* Redirige al usuario a la página de login */}
+                        <Link to="/login" className="material-symbols-outlined">account_circle</Link>
                     </li>
                     <li>
-                        <a href='#' className="material-symbols-outlined">shopping_bag</a>
+                        <Link to="/carrito" className="material-symbols-outlined">shopping_bag</Link>
                     </li>
                 </ul>
             </nav>
@@ -36,4 +38,5 @@ const NavBar: React.FC<{ children?: ReactNode }>= ({children}) => {
         </>
     );
 };
+
 export default NavBar;

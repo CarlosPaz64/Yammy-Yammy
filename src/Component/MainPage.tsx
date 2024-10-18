@@ -1,4 +1,4 @@
-import NavBar from "./navbar";
+import NavBar from "./NavBar";
 
 //Aqui se agruparan todos los componentes de la página principal
 function MainPage(){
