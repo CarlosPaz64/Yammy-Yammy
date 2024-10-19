@@ -1,1 +1,59 @@
- 
+
+  
+  h1 {
+    text-align: center;
+    color: #333;
+  }
+  /*estilo del formulario*/
+  form {
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    max-width: 400px;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+  
+  label {
+    margin-bottom: 8px;
+    font-weight: bold;
+    color: #555;
+  }
+  /*diseño del select*/
+  select, textarea, input {
+    width: 95%;
+    padding: 10px;
+    margin-bottom: 15px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+  }
+  
+  textarea {
+    resize: none;
+  }
+  /*diseño de los botones*/
+  button {
+    background:linear-gradient(to bottom, #96C9F4, #F9F9F9, #FFD0EC);
+    color: #000;
+    padding: 10px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+  }
+  
+  button:hover {
+    background:linear-gradient(to bottom, #96C9F4, #F9F9F9, #FFD0EC);
+
+  }
+  
+  span {
+    color: red;
+    font-size: 0.9em;
+    margin-top: -10px;
+    margin-bottom: 10px;
+    display: block;
+  }
+  

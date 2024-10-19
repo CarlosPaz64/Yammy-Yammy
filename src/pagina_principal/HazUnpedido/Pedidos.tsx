@@ -45,7 +45,7 @@ const Pedido: React.FC = () => {
         <div>
           <label htmlFor="categoria">Selecciona el postre deseado:</label>
           <select {...register('categoria')} id="categoria">
-            <option value="">-- Selecciona --</option>
+            <option value="select">-- Selecciona --</option>
             <option value="Postres">Postres</option>
             <option value="Pasteles">Pasteles</option>
             <option value="Brownies">Brownies</option>
@@ -67,7 +67,7 @@ const Pedido: React.FC = () => {
         </div>
 
         {/* Botón para enviar */}
-        <button type="submit">Enviar Pedido</button>
+        <button type="submit">Hacer Pedido</button>
       </form>
     </div>
   );
