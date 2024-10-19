@@ -2,7 +2,7 @@
   
   h1 {
     text-align: center;
-    color: #333;
+    color: #000;
   }
   /*estilo del formulario*/
   form {
@@ -49,11 +49,4 @@
 
   }
   
-  span {
-    color: red;
-    font-size: 0.9em;
-    margin-top: -10px;
-    margin-bottom: 10px;
-    display: block;
-  }
   
