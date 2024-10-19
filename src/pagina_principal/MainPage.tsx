@@ -1,4 +1,4 @@
-import NavBar from "./navbar";
+import NavBar from "./NavBar/NavBar";
 
 //Aqui se agruparan todos los componentes de la página principal
 function MainPage(){
@@ -9,10 +9,6 @@ function MainPage(){
             {/*Fin del Navbar*/}
 
             {/*Carrusel de productos*/}
-            <div>
-                Hola Mundo :3
-            </div>
-            <h2>Bienvenido a REACT</h2>
             {/*Fin del carrusel productos*/}
 
             {/*Footer*/}
