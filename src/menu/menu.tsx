@@ -1,119 +1,94 @@
-import React, { useEffect } from 'react';
-import './menu.css'; // Asegúrate de tener un archivo CSS para darle estilo a tu menú
+import React, { useEffect, useState } from 'react';
+import './menu.css';
+
+interface Producto {
+  product_id: number;
+  nombre_producto: string;
+  descripcion_producto: string;
+  precio: number | null;
+  categoria: string;
+  stock: number;
+  url_imagen: string;
+  epoca?: string;
+}
 
 const MenuPage: React.FC = () => {
+  const [productos, setProductos] = useState<Producto[]>([]);
+
   useEffect(() => {
-    const observer = new IntersectionObserver((entries) => {
-      entries.forEach((entry) => {
-        const id = entry.target.getAttribute('id');
-        if (entry.intersectionRatio > 0) {
-          document
-            .querySelector(`nav li a[href="#${id}"]`)
-            ?.parentElement?.classList.add('active');
-        } else {
-          document
-            .querySelector(`nav li a[href="#${id}"]`)
-            ?.parentElement?.classList.remove('active');
-        }
-      });
-    });
-
-    // Observa todas las secciones que tengan un atributo id
-    document.querySelectorAll('section[id]').forEach((section) => {
-      observer.observe(section);
-    });
-
-    // Cleanup: desconectar el observador cuando el componente se desmonta
-    return () => {
-      observer.disconnect();
+    // Función para obtener los productos desde la API por categoría
+    const fetchProductos = async () => {
+      try {
+        const response = await fetch('http://localhost:3000/api/productos/por-categoria');
+        const data = await response.json();
+        console.log(data); // Verifica la estructura de los productos aquí
+        setProductos(data);
+      } catch (error) {
+        console.error('Error al obtener los productos:', error);
+      }
     };
+
+    fetchProductos();
   }, []);
-  
-  // Plantilla de: https://codepen.io/bramus/pen/ExaEqMJ
+
+  // Lista de categorías en el orden que debe aparecer
+  const categorias = [
+    'Cupcake', 
+    'Cupcake personalizado', 
+    'Pastel', 
+    'Pastel personalizado', 
+    'Brownies', 
+    'Postre', 
+    'Postre personalizado', 
+    'Crepas', 
+    'Roles', 
+    'Galleta', 
+    'Galleta personalizada', 
+    'Producto de temporada'
+  ];
+
+  // Filtrar productos por categoría
+  const productosPorCategoria = (categoria: string) => {
+    return productos.filter(producto => producto.categoria === categoria);
+  };
+
   return (
     <main>
       <div>
-        <section id="cupcake">
-          <h2>Cupcakes</h2>
-          <p>…</p>
-        </section>
-        <section id="request-response">
-          <h2>Request &amp; Response</h2>
-          <p>…</p>
-        </section>
-        <section id="authentication">
-          <h2>Authentication</h2>
-          <p>…</p>
-        </section>
-        <section id="endpoints">
-          <h2>Endpoints</h2>
-          <section id="endpoints--root">
-            <h3>Root</h3>
-            <p>…</p>
+        {categorias.map((categoria) => (
+          <section id={categoria.toLowerCase().replace(/\s+/g, '-')} key={categoria}>
+            <h2>{categoria}</h2>
+            <div className="productos-container">
+              {productosPorCategoria(categoria).map((producto) => {
+                return (
+                  <div className="producto-card" key={producto.product_id}>
+                    {/* Mostrar la imagen base64 sin manipularla si ya tiene el prefijo correcto */}
+                    <img 
+                      src={producto.url_imagen}  // Asegúrate de que ya tenga el prefijo adecuado
+                      alt={producto.nombre_producto} 
+                      className="producto-imagen" 
+                    />
+                    <h3>{producto.nombre_producto}</h3>
+                    <p>{producto.descripcion_producto}</p>
+                    <p>
+                      Precio: {typeof producto.precio === 'number' ? `$${producto.precio.toFixed(2)}` : 'Precio no disponible'}
+                    </p>
+                  </div>
+                );
+              })}
+            </div>
           </section>
-          <section id="endpoints--cities-overview">
-            <h3>Cities Overview</h3>
-            <p>…</p>
-          </section>
-          <section id="endpoints--city-detail">
-            <h3>City Detail</h3>
-            <p>…</p>
-          </section>
-          <section id="endpoints--city-config">
-            <h3>City Config</h3>
-            <p>…</p>
-          </section>
-          <section id="endpoints--city-spots-overview">
-            <h3>City Spots Overview</h3>
-            <p>…</p>
-          </section>
-          <section id="endpoints--city-spot-detail">
-            <h3>City Spot Detail</h3>
-            <p>…</p>
-          </section>
-          <section id="endpoints--city-icons-overview">
-            <h3>City Icons Overview</h3>
-            <p>…</p>
-          </section>
-          <section id="endpoints--city-icon-detail">
-            <h3>City Icon Detail</h3>
-            <p>…</p>
-          </section>
-        </section>
-        <section id="links">
-          <h2>Links</h2>
-          <p>…</p>
-        </section>
-        <section id="expanders">
-          <h2>Expanders</h2>
-          <p>…</p>
-        </section>
-        <section id="filters">
-          <h2>Filters</h2>
-          <p>…</p>
-        </section>
+        ))}
       </div>
+
+      {/* Navegación de las secciones */}
       <header className="section-nav">
         <ol>
-          <li><a href="#cupcake">Cupcake</a></li>
-          <li><a href="#request-response">Request &amp; Response</a></li>
-          <li><a href="#authentication">Authentication</a></li>
-          <li>
-            <a href="#endpoints">Endpoints</a>
-            <ul>
-              <li><a href="#endpoints--root">Root</a></li>
-              <li><a href="#endpoints--cities-overview">Cities Overview</a></li>
-              <li><a href="#endpoints--city-detail">City Detail</a></li>
-              <li><a href="#endpoints--city-config">City Config</a></li>
-              <li><a href="#endpoints--city-spots-overview">City Spots Overview</a></li>
-              <li><a href="#endpoints--city-spot-detail">City Spot Detail</a></li>
-              <li><a href="#endpoints--city-icons-overview">City Icons Overview</a></li>
-              <li><a href="#endpoints--city-icon-detail">City Icon Detail</a></li>
-            </ul>
-          </li>
-          <li><a href="#links">Links</a></li>
-          <li><a href="#expanders">Expanders</a></li>
-          <li><a href="#filters">Filters</a></li>
+          {categorias.map((categoria) => (
+            <li key={categoria}>
+              <a href={`#${categoria.toLowerCase().replace(/\s+/g, '-')}`}>{categoria}</a>
+            </li>
+          ))}
         </ol>
       </header>
     </main>

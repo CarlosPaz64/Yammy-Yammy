@@ -6,6 +6,7 @@ import MenuPage from './menu/menu';
 //import PerfilPage from './pages/PerfilPage';
 //import CarritoPage from './pages/CarritoPage';
 import NavBar from './pagina_principal/NavBar/NavBar'; // Asegúrate de que NavBar esté en la ruta correcta
+import CrearProducto from './formulario de creacion/creacionProductos';
 // import './App.css';
 
 function App() {
@@ -22,6 +23,7 @@ function App() {
         {/* <Route path="/conocenos" element={<ConocenosPage />} /> */}
         {/* <Route path="/perfil" element={<PerfilPage />} /> */}
         {/* <Route path="/carrito" element={<CarritoPage />} /> */}
+        <Route path="/creacion" element={<CrearProducto />} /> 
       </Routes>
     </>
   );
