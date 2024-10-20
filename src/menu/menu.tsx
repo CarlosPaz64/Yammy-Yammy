@@ -21,7 +21,14 @@ const MenuPage: React.FC = () => {
       try {
         const response = await fetch('http://localhost:3000/api/productos/por-categoria');
         const data = await response.json();
-        console.log(data); // Verifica la estructura de los productos aquí
+        
+        // Depurar la longitud de la imagen en base64 para detectar posibles truncamientos
+        data.forEach((producto: Producto) => {
+          console.log(`Producto: ${producto.nombre_producto}`);
+          console.log(`URL Imagen: ${producto.url_imagen}`);
+          console.log(`Tamaño de la imagen en base64: ${producto.url_imagen.length} caracteres`);
+        });
+
         setProductos(data);
       } catch (error) {
         console.error('Error al obtener los productos:', error);
@@ -62,9 +69,9 @@ const MenuPage: React.FC = () => {
               {productosPorCategoria(categoria).map((producto) => {
                 return (
                   <div className="producto-card" key={producto.product_id}>
-                    {/* Mostrar la imagen base64 sin manipularla si ya tiene el prefijo correcto */}
+                    {/* Mostrar la imagen base64 */}
                     <img 
-                      src={producto.url_imagen}  // Asegúrate de que ya tenga el prefijo adecuado
+                      src={producto.url_imagen}  
                       alt={producto.nombre_producto} 
                       className="producto-imagen" 
                     />
