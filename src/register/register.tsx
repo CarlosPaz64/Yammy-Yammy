@@ -1,12 +1,13 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import CryptoJS from 'crypto-js';
+import './register.css';
 
 interface IFormInput {
   nombre_cliente: string;
   apellido_cliente: string;
   email: string;
-  password: string;
+  password_cliente: string;
   numero_telefono?: string;
   calle: string;
   numero_exterior: string;
@@ -20,9 +21,54 @@ const API_LINK = import.meta.env.VITE_API_LINK || 'http://localhost:3000';
 const SECRET_KEY = 'tu_clave_secreta';  // Usa la misma clave que en tu backend
 
 const RegisterForm: React.FC = () => {
-  const { register, handleSubmit, formState: { errors } } = useForm<IFormInput>();
+  const { register, handleSubmit, formState: { errors }, setError } = useForm<IFormInput>();
+  const [isLoading, setIsLoading] = useState(false);
+  const [colonias, setColonias] = useState<string[]>([]); // Estado para almacenar las colonias
+  const [codigoPostal, setCodigoPostal] = useState('');   // Estado para almacenar el código postal
+  const [estado, setEstado] = useState('');               // Estado para almacenar el nombre del estado
+  const [mostrarCampos, setMostrarCampos] = useState(false); // Controlar la visibilidad de Colonia y Ciudad
+
+  // Función para verificar el código postal
+  const fetchColonias = async (codigo_postal: string) => {
+    const response = await fetch(`https://api.zippopotam.us/MX/${codigo_postal}`);
+    if (!response.ok) {
+      setColonias([]); // Limpiar colonias si el código postal no es válido
+      setMostrarCampos(false); // Ocultar campos si el código postal no es válido
+      return null;
+    }
+    const data = await response.json();
+    const estado = data.places[0]['state'];
+    
+    if (estado !== 'Yucatan') {
+      setError('codigo_postal', { type: 'validate', message: 'El código postal no pertenece a Yucatán.' });
+      setColonias([]); // Limpiar colonias si no es Yucatán
+      setMostrarCampos(false); // Ocultar campos si no es Yucatán
+      return null;
+    }
+
+    // Extraer los "place name" de la respuesta
+    const nombresColonias = data.places.map((place: any) => place['place name']);
+    setColonias(nombresColonias); // Actualizar el estado con las colonias
+    setEstado(estado);            // Actualizar el estado
+    setMostrarCampos(true);       // Mostrar los campos de Ciudad y Colonia
+  };
+
+  const handlePostalCodeChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const codigo_postal = e.target.value;
+    setCodigoPostal(codigo_postal);
+
+    if (codigo_postal.length === 5) {
+      // Solo llamar a la API cuando el código postal tiene 5 caracteres
+      await fetchColonias(codigo_postal);
+    } else {
+      // Ocultar los campos si el código postal no es válido
+      setMostrarCampos(false);
+    }
+  };
 
   const onSubmit = async (data: IFormInput) => {
+    setIsLoading(true);
+
     try {
       const encryptedData = CryptoJS.AES.encrypt(JSON.stringify(data), SECRET_KEY, {
         mode: CryptoJS.mode.CBC,
@@ -49,6 +95,8 @@ const RegisterForm: React.FC = () => {
     } catch (error) {
       console.error('Error al encriptar o enviar los datos:', error);
       alert('Error en el registro de usuario');
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -76,8 +124,8 @@ const RegisterForm: React.FC = () => {
 
       <div>
         <label>Contraseña</label>
-        <input type="password" {...register('password', { required: true })} />
-        {errors.password && <span>Este campo es requerido</span>}
+        <input type="password" {...register('password_cliente', { required: true })} />
+        {errors.password_cliente && <span>Este campo es requerido</span>}
       </div>
 
       <div>
@@ -103,24 +151,49 @@ const RegisterForm: React.FC = () => {
       </div>
 
       <div>
-        <label>Colonia</label>
-        <input {...register('colonia', { required: true })} />
-        {errors.colonia && <span>Este campo es requerido</span>}
-      </div>
-
-      <div>
-        <label>Ciudad</label>
-        <input {...register('ciudad', { required: true })} />
-        {errors.ciudad && <span>Este campo es requerido</span>}
-      </div>
-
-      <div>
         <label>Código Postal</label>
-        <input {...register('codigo_postal', { required: true })} />
-        {errors.codigo_postal && <span>Este campo es requerido</span>}
+        <input
+          {...register('codigo_postal', { required: true })}
+          value={codigoPostal}
+          onChange={handlePostalCodeChange}
+        />
+        {errors.codigo_postal && <span>{errors.codigo_postal.message || 'Este campo es requerido'}</span>}
       </div>
 
-      <button type="submit">Registrar</button>
+      {/* Mostrar Colonia y Ciudad solo cuando el código postal sea válido */}
+      {mostrarCampos && (
+        <>
+          <div>
+            <label>Colonia</label>
+            {colonias.length > 0 ? (
+              <select {...register('colonia', { required: true })}>
+                {colonias.map((colonia, index) => (
+                  <option key={index} value={colonia}>
+                    {colonia}
+                  </option>
+                ))}
+              </select>
+            ) : (
+              <input {...register('colonia', { required: true })} />
+            )}
+            {errors.colonia && <span>Este campo es requerido</span>}
+          </div>
+
+          <div>
+            <label>Ciudad</label>
+            <input
+              {...register('ciudad', { required: true })}
+              value={estado}
+              readOnly
+            />
+            {errors.ciudad && <span>Este campo es requerido</span>}
+          </div>
+        </>
+      )}
+
+      <button type="submit" disabled={isLoading}>
+        {isLoading ? 'Registrando...' : 'Registrar'}
+      </button>
     </form>
   );
 };
