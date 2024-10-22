@@ -22,46 +22,61 @@ const API_LINK = import.meta.env.VITE_API_LINK || 'http://localhost:3000';
 const SECRET_KEY = 'tu_clave_secreta';  // Usa la misma clave que en tu backend
 
 const RegisterForm: React.FC = () => {
-  const { register, handleSubmit, formState: { errors }, setError } = useForm<IFormInput>();
+  const { register, handleSubmit, formState: { errors }, setError, setValue } = useForm<IFormInput>();
   const [isLoading, setIsLoading] = useState(false);
-  const [colonias, setColonias] = useState<string[]>([]); // Estado para almacenar las colonias
-  const [codigoPostal, setCodigoPostal] = useState('');   // Estado para almacenar el código postal
-  const [mostrarCampos, setMostrarCampos] = useState(false); // Controlar la visibilidad de Colonia y Ciudad
+  const [colonias, setColonias] = useState<string[]>([]);  // Estado para almacenar las colonias
+  const [codigoPostal, setCodigoPostal] = useState('');    // Estado para almacenar el código postal
+  const [ciudad, setCiudad] = useState('');                // Estado para almacenar la ciudad
+  const [mostrarCampos, setMostrarCampos] = useState(false);  // Controlar la visibilidad de Colonia y Ciudad
 
-  // Función para verificar el código postal
+  // Función para verificar el código postal en la API de Zippopotam y obtener las colonias
   const fetchColonias = async (codigo_postal: string) => {
-    const response = await fetch(`https://api.zippopotam.us/MX/${codigo_postal}`);
-    if (!response.ok) {
-      setColonias([]); // Limpiar colonias si el código postal no es válido
-      setMostrarCampos(false); // Ocultar campos si el código postal no es válido
-      return null;
+    try {
+      const response = await fetch(`https://api.zippopotam.us/MX/${codigo_postal}`);
+      if (!response.ok) {
+        setColonias([]);  // Limpiar colonias si el código postal no es válido
+        setMostrarCampos(false);  // Ocultar campos si el código postal no es válido
+        return null;
+      }
+      const data = await response.json();
+      const nombresColonias = data.places.map((place: any) => place['place name']);
+      setColonias(nombresColonias);  // Actualiza las colonias
+      setMostrarCampos(true);  // Muestra los campos de Colonia y Ciudad
+    } catch (error) {
+      console.error('Error al obtener las colonias de Zippopotam:', error);
     }
-    const data = await response.json();
-    const estado = data.places[0]['state'];
-    
-    if (estado !== 'Yucatan') {
-      setError('codigo_postal', { type: 'validate', message: 'El código postal no pertenece a Yucatán.' });
-      setColonias([]); // Limpiar colonias si no es Yucatán
-      setMostrarCampos(false); // Ocultar campos si no es Yucatán
-      return null;
-    }
-
-    // Extraer los "place name" de la respuesta
-    const nombresColonias = data.places.map((place: any) => place['place name']);
-    setColonias(nombresColonias); // Actualizar el estado con las colonias
-    setMostrarCampos(true);       // Mostrar los campos de Ciudad y Colonia
   };
 
+  // Función para verificar el código postal y obtener la ciudad desde tu API local
+  const fetchCiudad = async (codigo_postal: string) => {
+    try {
+      const response = await fetch(`${API_LINK}/api/codigo-postal/${codigo_postal}`);
+      if (!response.ok) {
+        setCiudad('');  // Limpiar la ciudad si no es válida
+        return null;
+      }
+      const data = await response.json();
+      const { ciudad } = data;
+      setCiudad(ciudad);
+      setValue('ciudad', ciudad);  // Establece la ciudad en el formulario
+    } catch (error) {
+      console.error('Error al obtener la ciudad desde tu API:', error);
+    }
+  };
+
+  // Maneja el cambio en el código postal
   const handlePostalCodeChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const codigo_postal = e.target.value;
     setCodigoPostal(codigo_postal);
 
     if (codigo_postal.length === 5) {
-      // Solo llamar a la API cuando el código postal tiene 5 caracteres
-      await fetchColonias(codigo_postal);
+      // Solo llama a las API cuando el código postal tiene 5 caracteres
+      await fetchColonias(codigo_postal);  // Llamada a Zippopotam para obtener las colonias
+      await fetchCiudad(codigo_postal);  // Llamada a tu API local para obtener la ciudad
     } else {
       // Ocultar los campos si el código postal no es válido
       setMostrarCampos(false);
+      setCiudad('');  // Resetea la ciudad
     }
   };
 
@@ -186,7 +201,9 @@ const RegisterForm: React.FC = () => {
           <div>
             <label>Ciudad</label>
             <input
-              {...register('ciudad', { required: true })} // Dejar el campo "Ciudad" como input
+              {...register('ciudad', { required: true })}
+              value={ciudad}  // Establece el valor del input desde el estado
+              disabled  // Deshabilita el campo para que no se pueda modificar
             />
             {errors.ciudad && <span>Este campo es requerido</span>}
           </div>
