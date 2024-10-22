@@ -2,8 +2,8 @@ import Carrusel1 from './Carrusel1';
 const Dashboard = () => {
   return (
     <div>
-      <h1>Bienvenido al Dashboard</h1>
-      <p>Esta es la vista del administrador</p>
+      <h1>Bienvenido a Yammy Yammy</h1>
+      <p>Esta es la vista del Usuario</p>
       
       {/* Llama al componente Carrusel1 */}
       <div>

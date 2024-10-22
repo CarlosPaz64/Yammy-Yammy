@@ -7,7 +7,7 @@ const API_URL = import.meta.env.VITE_API_LINK;
 const SECRET_KEY = 'my-secret-key'; // Clave secreta compartida entre frontend y backend
 
 type FormData = {
-  username: string;
+  email: string;
   password: string;
 };
 
@@ -37,20 +37,20 @@ const Login = () => {
       console.log('SECRET_KEY:', SECRET_KEY); // Verifica que la clave esté correcta
   
       // Encriptar los datos antes de enviarlos al backend
-      const encriptedUsername = encriptarDatos(data.username);
+      const encriptedEmail = encriptarDatos(data.email);
       const encriptedPassword = encriptarDatos(data.password);
   
       // Verificar los datos encriptados antes de enviarlos
-      console.log('Username Encriptado:', encriptedUsername);
+      console.log('Username Encriptado:', encriptedEmail);
       console.log('Password Encriptado:', encriptedPassword);
   
-      const response = await fetch(`${API_URL}/api/admin/login`, {
+      const response = await fetch(`${API_URL}/api/cliente/login`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
-          username: encriptedUsername,
+          email: encriptedEmail,
           password: encriptedPassword,
-        }),
+        }),        
       });
   
       if (response.ok) {
@@ -79,12 +79,12 @@ const Login = () => {
       {error && <p style={{ color: 'red' }}>{error}</p>}
       <form onSubmit={handleSubmit(handleLogin)}>
         <div>
-          <label>Username:</label>
+        <label>Email:</label>
           <input
             type="text"
-            {...register('username', { required: 'El username es requerido' })}
+            {...register('email', { required: 'El email es requerido' })}
           />
-          {errors.username && <p style={{ color: 'red' }}>{errors.username.message}</p>}
+          {errors.email && <p style={{ color: 'red' }}>{errors.email.message}</p>}
         </div>
         <div>
           <label>Password:</label>
