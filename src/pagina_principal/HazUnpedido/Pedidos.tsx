@@ -38,11 +38,12 @@ const Pedido: React.FC = () => {
   };
 
   return (
-    <div>
-      <h1>Haz un Pedido</h1>
+    <div className='container-pedido'>
       <form onSubmit={handleSubmit(onSubmit)}>
         {/* Select para seleccionar el postre */}
         <div>
+        <div className="container-title"><h1>Haz un Pedido</h1></div>
+
           <label htmlFor="categoria">Selecciona el postre deseado:</label>
           <select {...register('categoria')} id="categoria">
             <option value="select">-- Selecciona --</option>

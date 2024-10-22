@@ -2,7 +2,22 @@
   
   h1 {
     text-align: center;
-    color: #000;
+    color: #555;
+  }
+  .container-title{
+    text-align: center;
+    color: #555; 
+    top: 150px;
+    margin-top: 10px;
+    margin-bottom: 8px;
+    }
+  .container-pedido{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    margin-top: 25px;
+
   }
   /*estilo del formulario*/
   form {
@@ -18,6 +33,7 @@
   }
   
   label {
+    margin-top: 10px;
     margin-bottom: 8px;
     font-weight: bold;
     color: #555;
