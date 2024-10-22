@@ -15,6 +15,7 @@ interface IFormInput {
   colonia: string;
   ciudad: string;
   codigo_postal: string;
+  descripcion: string;
 }
 
 const API_LINK = import.meta.env.VITE_API_LINK || 'http://localhost:3000';
@@ -156,6 +157,11 @@ const RegisterForm: React.FC = () => {
           onChange={handlePostalCodeChange}
         />
         {errors.codigo_postal && <span>{errors.codigo_postal.message || 'Este campo es requerido'}</span>}
+      </div>
+
+      <div>
+        <label>Descripción</label>
+        <textarea {...register('descripcion')} />
       </div>
 
       {/* Mostrar Colonia y Ciudad solo cuando el código postal sea válido */}
