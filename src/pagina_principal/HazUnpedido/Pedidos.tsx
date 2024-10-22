@@ -2,6 +2,7 @@ import React from 'react';
 import { useForm } from 'react-hook-form';
 import { z, ZodError, ZodIssue } from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
+import './Pedidos.css';
 
 // Esquema de validación con Zod
 const schema = z.object({
