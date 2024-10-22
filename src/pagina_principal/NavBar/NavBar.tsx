@@ -41,6 +41,11 @@ const NavBar: React.FC<{ children?: ReactNode }> = ({ children }) => {
                             <span className="textNav">Conócenos</span>
                         </Link>
                     </li>
+                    <li>
+                        <Link to="/registro">
+                            <span className="textNav">Registro</span>
+                        </Link>
+                    </li>
                     <div className="nav-right">
                         <li>
                             <Link to="/perfil" className="material-symbols-outlined icon-nav">account_circle</Link>

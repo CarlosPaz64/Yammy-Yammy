@@ -16,22 +16,20 @@ interface IFormInput {
   codigo_postal: string;
 }
 
-const API_LINK = process.env.REACT_APP_API_LINK || 'http://localhost:3000';
+const API_LINK = import.meta.env.VITE_API_LINK || 'http://localhost:3000';
 const SECRET_KEY = 'tu_clave_secreta';  // Usa la misma clave que en tu backend
 
-export const RegisterForm: React.FC = () => {
+const RegisterForm: React.FC = () => {
   const { register, handleSubmit, formState: { errors } } = useForm<IFormInput>();
 
   const onSubmit = async (data: IFormInput) => {
     try {
-      // Encriptar los datos del formulario antes de enviarlos
       const encryptedData = CryptoJS.AES.encrypt(JSON.stringify(data), SECRET_KEY, {
         mode: CryptoJS.mode.CBC,
         padding: CryptoJS.pad.Pkcs7,
       }).toString();
 
-      // Enviar los datos encriptados al backend
-      const response = await fetch(`${API_LINK}/api/register`, {
+      const response = await fetch(`${API_LINK}/api/users/register`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -56,6 +54,8 @@ export const RegisterForm: React.FC = () => {
 
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
+      <h1>Registro de Usuario</h1>
+
       <div>
         <label>Nombre</label>
         <input {...register('nombre_cliente', { required: true })} />
@@ -124,3 +124,5 @@ export const RegisterForm: React.FC = () => {
     </form>
   );
 };
+
+export default RegisterForm;
