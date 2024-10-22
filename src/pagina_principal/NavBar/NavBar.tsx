@@ -1,5 +1,6 @@
 import React, { ReactNode, useState } from "react";
 import { Link } from "react-router-dom"; // Importar Link
+import './NavBar.css'
 
 //Componente del navbar
 const NavBar: React.FC<{ children?: ReactNode }> = ({ children }) => {
