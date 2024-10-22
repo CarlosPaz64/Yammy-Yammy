@@ -25,7 +25,6 @@ const RegisterForm: React.FC = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [colonias, setColonias] = useState<string[]>([]); // Estado para almacenar las colonias
   const [codigoPostal, setCodigoPostal] = useState('');   // Estado para almacenar el código postal
-  const [estado, setEstado] = useState('');               // Estado para almacenar el nombre del estado
   const [mostrarCampos, setMostrarCampos] = useState(false); // Controlar la visibilidad de Colonia y Ciudad
 
   // Función para verificar el código postal
@@ -49,7 +48,6 @@ const RegisterForm: React.FC = () => {
     // Extraer los "place name" de la respuesta
     const nombresColonias = data.places.map((place: any) => place['place name']);
     setColonias(nombresColonias); // Actualizar el estado con las colonias
-    setEstado(estado);            // Actualizar el estado
     setMostrarCampos(true);       // Mostrar los campos de Ciudad y Colonia
   };
 
@@ -182,9 +180,7 @@ const RegisterForm: React.FC = () => {
           <div>
             <label>Ciudad</label>
             <input
-              {...register('ciudad', { required: true })}
-              value={estado}
-              readOnly
+              {...register('ciudad', { required: true })} // Dejar el campo "Ciudad" como input
             />
             {errors.ciudad && <span>Este campo es requerido</span>}
           </div>
