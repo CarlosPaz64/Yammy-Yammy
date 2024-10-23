@@ -66,3 +66,10 @@ main {
 section {
 	padding-bottom: 20rem;
 }
+.producto-imagen {
+	max-width: 150px; /* Ancho máximo para la imagen */
+	max-height: 150px; /* Alto máximo para la imagen */
+	object-fit: cover; /* Asegura que la imagen se ajuste sin deformarse */
+	border-radius: 8px; /* Redondea los bordes de la imagen, opcional */
+  }
+  
