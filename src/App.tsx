@@ -6,7 +6,6 @@
 //import PerfilPage from './pages/PerfilPage';
 //import CarritoPage from './pages/CarritoPage';
 import NavBar from './pagina_principal/NavBar/NavBar'; // Asegúrate de que NavBar esté en la ruta correcta
-import './App.css';
 
 function App() {
   return (
