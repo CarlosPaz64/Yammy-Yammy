@@ -5,7 +5,7 @@ interface Producto {
   product_id: number;
   nombre_producto: string;
   descripcion_producto: string;
-  precio: number | null;
+  precio: string | number | null; // Puede ser una cadena o número
   categoria: string;
   stock: number;
   url_imagen: string;
@@ -16,19 +16,10 @@ const MenuPage: React.FC = () => {
   const [productos, setProductos] = useState<Producto[]>([]);
 
   useEffect(() => {
-    // Función para obtener los productos desde la API por categoría
     const fetchProductos = async () => {
       try {
         const response = await fetch('http://localhost:3000/api/productos/por-categoria');
         const data = await response.json();
-        
-        // Depurar la longitud de la imagen en base64 para detectar posibles truncamientos
-        data.forEach((producto: Producto) => {
-          console.log(`Producto: ${producto.nombre_producto}`);
-          console.log(`URL Imagen: ${producto.url_imagen}`);
-          console.log(`Tamaño de la imagen en base64: ${producto.url_imagen.length} caracteres`);
-        });
-
         setProductos(data);
       } catch (error) {
         console.error('Error al obtener los productos:', error);
@@ -38,7 +29,6 @@ const MenuPage: React.FC = () => {
     fetchProductos();
   }, []);
 
-  // Lista de categorías en el orden que debe aparecer
   const categorias = [
     'Cupcake', 
     'Cupcake personalizado', 
@@ -54,7 +44,6 @@ const MenuPage: React.FC = () => {
     'Producto de temporada'
   ];
 
-  // Filtrar productos por categoría
   const productosPorCategoria = (categoria: string) => {
     return productos.filter(producto => producto.categoria === categoria);
   };
@@ -67,19 +56,30 @@ const MenuPage: React.FC = () => {
             <h2>{categoria}</h2>
             <div className="productos-container">
               {productosPorCategoria(categoria).map((producto) => {
+                const precioNumerico = typeof producto.precio === 'string' 
+                  ? parseFloat(producto.precio) 
+                  : producto.precio;
+
+                  console.log(producto.url_imagen); // Verifica qué cadena está llegando
+
                 return (
                   <div className="producto-card" key={producto.product_id}>
-                    {/* Mostrar la imagen base64 */}
                     <img 
-                      src={producto.url_imagen}  
+                      src={producto.url_imagen.startsWith('data:') ? producto.url_imagen : `data:image/jpeg;base64,${producto.url_imagen}`}  
                       alt={producto.nombre_producto} 
                       className="producto-imagen" 
                     />
                     <h3>{producto.nombre_producto}</h3>
                     <p>{producto.descripcion_producto}</p>
                     <p>
-                      Precio: {typeof producto.precio === 'number' ? `$${producto.precio.toFixed(2)}` : 'Precio no disponible'}
+                      Precio: {Number.isFinite(precioNumerico)
+                        ? `$${precioNumerico!.toFixed(2)}`
+                        : 'Precio no disponible'}
                     </p>
+                    <p>
+                      Stock: {producto.stock > 0 ? `${producto.stock} disponibles` : 'Agotado'}
+                    </p>
+                    {producto.epoca && <p>Época: {producto.epoca}</p>}
                   </div>
                 );
               })}
@@ -88,7 +88,6 @@ const MenuPage: React.FC = () => {
         ))}
       </div>
 
-      {/* Navegación de las secciones */}
       <header className="section-nav">
         <ol>
           {categorias.map((categoria) => (
