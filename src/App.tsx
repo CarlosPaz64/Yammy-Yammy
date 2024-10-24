@@ -27,17 +27,7 @@ function App() {
         {/* <Route path="/perfil" element={<PerfilPage />} /> */}
         {/* <Route path="/carrito" element={<CarritoPage />} /> */}
         <Route path="/creacion" element={<CrearProducto />} /> 
-
-      <Routes>
-        {/* Define tus rutas aquí */}
-        {/*<Route path="/" element={<MainPage />} /> */}
-        {/* <Route path="/menu" element={<MenuPage />} /> */}
         <Route path="/pedido" element={<Pedido />} /> 
-        {/* <Route path="/conocenos" element={<ConocenosPage />} /> */}
-        {/* <Route path="/perfil" element={<PerfilPage />} /> */}
-        {/* <Route path="/carrito" element={<CarritoPage />} /> */}
-
-        {/* Mueve el bloque de Routes cerrado correctamente */}
         <Route path="/registro" element={<RegisterForm />} />
       </Routes>
     </>
