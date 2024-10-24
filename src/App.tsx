@@ -7,11 +7,11 @@ import { Routes, Route } from 'react-router-dom';
 //import CarritoPage from './pages/CarritoPage';
 import NavBar from './pagina_principal/NavBar/NavBar'; // Asegúrate de que NavBar esté en la ruta correcta
 //import './App.css';
+import RegisterForm from './register/register';
 
 function App() {
   return (
     <>
-      {/* El NavBar se muestra en todas las páginas */}
       <NavBar />
       
 
@@ -23,6 +23,9 @@ function App() {
         {/* <Route path="/conocenos" element={<ConocenosPage />} /> */}
         {/* <Route path="/perfil" element={<PerfilPage />} /> */}
         {/* <Route path="/carrito" element={<CarritoPage />} /> */}
+
+      <Routes>
+        <Route path="/registro" element={<RegisterForm />} />
       </Routes>
     </>
   );

@@ -1,5 +1,6 @@
 import React, { ReactNode, useState } from "react";
 import { Link } from "react-router-dom"; // Importar Link
+import './NavBar.css'
 
 //Componente del navbar
 const NavBar: React.FC<{ children?: ReactNode }> = ({ children }) => {
@@ -38,6 +39,11 @@ const NavBar: React.FC<{ children?: ReactNode }> = ({ children }) => {
                     <li>
                         <Link to="/conocenos">
                             <span className="textNav">Conócenos</span>
+                        </Link>
+                    </li>
+                    <li>
+                        <Link to="/registro">
+                            <span className="textNav">Registro</span>
                         </Link>
                     </li>
                     <div className="nav-right">
