@@ -8,6 +8,7 @@ import Pedido from './pagina_principal/HazUnpedido/Pedidos';
 import NavBar from './pagina_principal/NavBar/NavBar'; // Asegúrate de que NavBar esté en la ruta correcta
 //import './App.css';
 import RegisterForm from './register/register';
+import LoginForm from './pagina_principal/Login/Login';
 
 function App() {
   return (
@@ -19,6 +20,7 @@ function App() {
         {/*<Route path="/" element={<MainPage />} /> */}
         {/* <Route path="/menu" element={<MenuPage />} /> */}
         <Route path="/pedido" element={<Pedido />} /> 
+        <Route path="/login" element={<LoginForm />} />
         {/* <Route path="/conocenos" element={<ConocenosPage />} /> */}
         {/* <Route path="/perfil" element={<PerfilPage />} /> */}
         {/* <Route path="/carrito" element={<CarritoPage />} /> */}

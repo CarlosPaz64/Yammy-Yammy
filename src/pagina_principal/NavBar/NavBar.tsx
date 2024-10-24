@@ -48,8 +48,9 @@ const NavBar: React.FC<{ children?: ReactNode }> = ({ children }) => {
                     </li>
                     <div className="nav-right">
                         <li>
-                            <Link to="/perfil" className="material-symbols-outlined icon-nav">account_circle</Link>
+                            <Link to="/login" className="material-symbols-outlined icon-nav">account_circle</Link>
                         </li>
+
                         <li>
                             <Link to="/carrito" className="material-symbols-outlined icon-nav">shopping_bag</Link>
                         </li>
