@@ -36,7 +36,7 @@ const LoginForm: React.FC = () => {
         console.log('Inicio de sesión exitoso', result);
         alert('Inicio de sesión exitoso');
       } else {
-        // Mostrar error en caso de fallo
+        // Muestra los errores en caso de fallo
         console.error('Error al iniciar sesión:', result);
         alert(result.message || 'Error al iniciar sesión');
       }
