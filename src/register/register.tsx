@@ -128,8 +128,14 @@ const RegisterForm: React.FC = () => {
 
       <div>
         <label>Contraseña</label>
-        <input type="password" {...register('password_cliente', { required: true })} />
-        {errors.password_cliente && <span>Este campo es requerido</span>}
+        <input type="password" {...register('password_cliente', { 
+          required: 'La contraseña es obligatoria',
+          minLength: {
+            value: 6,
+            message: 'La contraseña debe tener al menos 6 caracteres'
+          } 
+          })} />
+        {errors.password_cliente && <span>{errors.password_cliente.message}</span>}
       </div>
 
       <div>

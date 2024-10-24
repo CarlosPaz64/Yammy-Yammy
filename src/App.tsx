@@ -12,6 +12,7 @@ import CrearProducto from './formulario de creacion/creacionProductos';
 // import './App.css';
 //import './App.css';
 import RegisterForm from './register/register';
+import LoginForm from './pagina_principal/Login/Login';
 
 function App() {
   return (
@@ -20,6 +21,10 @@ function App() {
       
       <Routes>
         {/* Define tus rutas aquí */}
+        {/*<Route path="/" element={<MainPage />} /> */}
+        {/* <Route path="/menu" element={<MenuPage />} /> */}
+        <Route path="/pedido" element={<Pedido />} /> 
+        <Route path="/login" element={<LoginForm />} />
         {/* <Route path="/" element={<MainPage />} /> */}
         <Route path="/menu" element={<MenuPage />} /> 
         {/* <Route path="/pedido" element={<PedidoPage />} /> */}
