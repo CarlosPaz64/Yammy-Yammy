@@ -2,9 +2,10 @@ import React from 'react';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
+import CryptoJS from 'crypto-js';  // Importa CryptoJS para la encriptación
 
 const API_LINK = import.meta.env.VITE_API_LINK || 'http://localhost:3000';
-
+const SECRET_KEY = 'tu_clave_secreta';  // Usa la misma clave que en tu backend
 
 // Esquema de validación usando zod
 const loginSchema = z.object({
@@ -21,19 +22,27 @@ const LoginForm: React.FC = () => {
 
   const onSubmit = async (data: LoginFormInputs) => {
     try {
+      // Encriptar los datos usando AES
+      const encryptedData = CryptoJS.AES.encrypt(JSON.stringify(data), SECRET_KEY, {
+        mode: CryptoJS.mode.CBC,
+        padding: CryptoJS.pad.Pkcs7,
+      }).toString();
+
       const response = await fetch(`${API_LINK}/api/users/login`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify(data), // Envia los datos directamente (email y contraseña)
+        body: JSON.stringify({ encryptedData }),  // Enviar los datos encriptados
       });
 
       const result = await response.json();
 
       if (response.ok) {
-        // Login exitoso
-        console.log('Inicio de sesión exitoso', result);
+        // Login exitoso, recibir token y user ID
+        const { token, userId } = result;
+        console.log('Token:', token);
+        console.log('User ID:', userId);
         alert('Inicio de sesión exitoso');
       } else {
         // Mostrar error en caso de fallo
@@ -50,7 +59,7 @@ const LoginForm: React.FC = () => {
     <div className="login-form-container">
       <form onSubmit={handleSubmit(onSubmit)}>
         <div className="form-group">
-         <h2>Iniciar Sesión</h2>
+          <h2>Iniciar Sesión</h2>
           <label htmlFor="email">Correo Electrónico</label>
           <input
             type="email"
