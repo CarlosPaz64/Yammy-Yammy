@@ -1,0 +1,73 @@
+/*Estilo del navbar*/
+nav{
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background:linear-gradient(to bottom, #96C9F4, #F9F9F9, #FFD0EC);
+  margin: 0 auto;
+  padding: 0;
+}
+nav ul{
+  display: flex;
+  align-items: center;
+  padding: 0;
+  margin: 0;
+  gap: 10px;
+  list-style: none;
+  width: 100%;
+}
+nav ul li a{
+  position: relative;/*linea agregada para la animación del subrayado, necesaria*/
+  border: 0;
+  text-transform: uppercase;
+  font-size: 1.5em;
+  font-weight: 700;
+  margin: 15px;
+  text-decoration: none;
+  color: #111D5E;
+}nav ul li a .textNav:hover{color: #F4538A;} .textNav{color: #111D5E;}
+.img-nav{
+  width: 145px;
+  height: 145px;
+  vertical-align: middle;
+}.img-nav:hover{opacity: 0.55;}
+.nav-right{
+  display: flex;
+  justify-content:right;
+  flex: 1;
+  gap: 5px;
+  margin-right: 20px;
+}
+.icon-nav{
+    font-size: 2.4em !important;
+    vertical-align: middle;
+}.icon-nav:hover{color: #F4538A;}
+  
+/*Animacion del subrayado a las opciones del menú*/
+nav ul li a .textNav::after{
+  content: "";
+  position: absolute;
+  width: 100%;
+  height: 3px;
+  background-color: #F4538A; /* Color para la línea */
+  left: 0;
+  bottom: -5px; /* Ajusta la posición de la línea */
+  transform: scaleX(0);
+  transform-origin: right;
+  transition: transform 0.3s ease-out;
+}
+nav ul li a .textNav:hover::after {
+  transform: scaleX(1);
+  transform-origin: left;
+}
+  
+/*Medidas de anchura(breakpoints)*/
+/*Media para tabletas*/
+@media only screen and (min-width: 768px) and (max-width: 1024px) {
+  
+}
+  
+/*Media para teléfonos o iphones*/
+@media only screen and (max-width: 767px) {
+    
+}
