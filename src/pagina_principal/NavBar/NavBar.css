@@ -117,7 +117,8 @@ nav ul li a .textNav::after{
     background: #f5f4f2;
     overflow:auto;
     z-index: 2;
-    transition: transform 0.3s ease; /*transición del sidebar */
+    transition: transform 0.5s ease; /*transición del sidebar */
+    transform: translateX(0); /* Se mantiene oculto fuera de la vista */
   }
   .sideBar-visible {
     transform: translateX(365px); /* Mueve el sidebar a la vista */
@@ -212,29 +213,30 @@ nav ul li a .textNav::after{
     flex: 1; /* Toma el espacio restante para centrarse */
   }
   .img-nav{
-    width: 106px;
-    height: 106px;
+    width: 101.5px;
+    height: 101.5px;
   }.img-nav:hover{opacity: 0.55;}
   .icon-nav{font-size: 1.5em !important;} .navBar-rwd .navBar-list .icon-nav:hover{color: #F4538A; cursor: pointer;} .iconNav-left{margin-left: 30px;} .iconNav-right{margin-right: 30px;}
 
   /*Estilo para el sidebar responsivo*/
   .sideBar{
     position: fixed;
-    font-size: 1em;
+    font-size: 1.2em;
     top: 0;
-    left: -365px; /* Mueve el sidebar fuera de la vista */
-    width: 260px;
+    left: -300px; /* Mueve el sidebar fuera de la vista */
+    width: 220px;
     height: 100vh;
     background: #f5f4f2;
     overflow:auto;
     z-index: 2;
-    transition: transform 0.3s ease; /*transición */
+    transition: transform 0.5s ease; /*transición */
+    transform: translateX(0); /* Se mantiene oculto fuera de la vista */
   }
   .sideBar-visible {
-    transform: translateX(365px); /* Mueve el sidebar a la vista */
+    transform: translateX(300px); /* Mueve el sidebar a la vista */
   }
   .sideBar .sideBar-panel{ /*Configura todo el panel y la posicion de las letras de forma general*/
-    margin: 25px;
+    margin: 20px;
     list-style: none;
   }
   .sideBar .sideBar-panel li a{text-decoration: none;}
@@ -246,7 +248,7 @@ nav ul li a .textNav::after{
     position: absolute;
     list-style: none;
     top: 2px;
-    left: 91%;
+    left: 88%;
   }.close-sidebar a{
     font-size: 1em;
     color: #ff1717;
@@ -259,7 +261,7 @@ nav ul li a .textNav::after{
     padding-right: 20px;
     padding-top: 6px;
     padding-bottom: 20px;
-    margin: -25px -25px 0 -25px;
+    margin: -20px -20px 0 -20px;
     text-align: center;
   }
   .icon-sid{
@@ -267,7 +269,7 @@ nav ul li a .textNav::after{
     margin-top: 22px;
     color: #111d5ee8;
   }.sidText-header{ color:#111d5ee8; margin-left: 5px;}
-  i{font-size: 19.5px !important;} .textSid-logout{color: #FF6363; font-weight: bold;} .textSid-logout:hover{color: #CD113B;}
+  i{font-size: 17px !important;} .textSid-logout{color: #FF6363; font-weight: bold;} .textSid-logout:hover{color: #CD113B;}
   .textSid-loggin{color: #36AE7C; font-weight: bold;} .textSid-loggin:hover{color: #085F63;}
 
   /*overlay para la página*/

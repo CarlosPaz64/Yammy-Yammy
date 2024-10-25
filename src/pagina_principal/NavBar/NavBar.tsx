@@ -1,6 +1,6 @@
 import React, { ReactNode, useState, useEffect } from "react";
 import { Link } from "react-router-dom"; // Importar Link
-import './NavBar.css'
+import './NavBar.css';
 
 //Componente del navbar
 const NavBar: React.FC<{ children?: ReactNode }> = ({ children }) => {
@@ -60,12 +60,18 @@ const NavBar: React.FC<{ children?: ReactNode }> = ({ children }) => {
                             </Link>
                         </li>
                         <div className="nav-right">
-                            <li>
-                                <Link to="/perfil" className="material-symbols-outlined icon-nav">account_circle</Link>
-                            </li>
-                            <li>
-                                <Link to="/carrito" className="material-symbols-outlined icon-nav">shopping_bag</Link>
-                            </li>
+                            <div className="tooltip-container">
+                                <span className="tooltip-text">Iniciar sesión</span>
+                                <li>
+                                    <Link to="/login" className="material-symbols-outlined icon-nav">account_circle</Link>
+                                </li>
+                            </div>
+                            <div className="tooltip-container">
+                                <span className="tooltip-text">Ver Carrito</span>
+                                <li>
+                                    <Link to="/carrito" className="material-symbols-outlined icon-nav">shopping_bag</Link>
+                                </li>
+                            </div>
                         </div>
                     </ul>
                 </nav>
@@ -80,9 +86,12 @@ const NavBar: React.FC<{ children?: ReactNode }> = ({ children }) => {
             <div className="secundary-nav">
                 <nav className="navBar-rwd">
                     <ul className="navBar-list">
-                        <li>
-                            <a className="material-symbols-outlined icon-nav iconNav-left" onClick={openSidebar}>menu</a>
-                        </li>
+                        <div className="tooltip-container">
+                            <span className="tooltip-text">Ver Menú</span>
+                            <li>
+                                <a className="material-symbols-outlined icon-nav iconNav-left" onClick={openSidebar}>menu</a>
+                            </li>
+                        </div>
                         <div className="nav-center">
                             <li>
                                 <Link to = "/">
@@ -90,9 +99,12 @@ const NavBar: React.FC<{ children?: ReactNode }> = ({ children }) => {
                                 </Link>
                             </li>
                         </div>
-                        <li>
-                            <Link to = "/carrito" className="material-symbols-outlined icon-nav iconNav-right">shopping_bag</Link>
-                        </li>
+                        <div className="tooltip-container">
+                                <span className="tooltip-text">Ver Carrito</span>
+                            <li>
+                                <Link to = "/carrito" className="material-symbols-outlined icon-nav iconNav-right">shopping_bag</Link>
+                            </li>
+                        </div>
                     </ul>
                 </nav>
 
