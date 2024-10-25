@@ -3,6 +3,10 @@
     position: relative;
     width: 100%; /* ocupa todo el ancho de la página */
     overflow: hidden;
+    /*Elementos para bajar el footer*/
+    display: flex;
+    min-height: 100vh; /*Asegura que el footer se pongan en la parte inferior de la página*/
+    flex-direction: column;
 }
 .carrusel-deslizante {
     position: relative;

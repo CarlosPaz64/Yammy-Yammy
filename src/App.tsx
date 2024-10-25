@@ -7,6 +7,7 @@
 //import CarritoPage from './pages/CarritoPage';
 import NavBar from './pagina_principal/NavBar/NavBar'; // Asegúrate de que NavBar esté en la ruta correcta
 import Carrusel1 from './pagina_principal/Carrusel/Carrusel1';
+import Footer from './pagina_principal/Footer/Footer';
 
 function App() {
   return (
@@ -14,6 +15,7 @@ function App() {
       {/* El NavBar se muestra en todas las páginas */}
       <NavBar />
       <Carrusel1 />
+      <Footer />
       {/* 
       <Routes>
         {/* Define tus rutas aquí */}

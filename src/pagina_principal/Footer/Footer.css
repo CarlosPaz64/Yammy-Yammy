@@ -1,0 +1,18 @@
+/*pie de página*/
+footer{
+    padding: 1em 0;
+    background-color: #DDDDDD;
+    font-size: 1rem;
+    text-align: center;
+    margin-top: auto;
+}
+  
+/*Media para tabletas*/
+@media only screen and (min-width: 768px) and (max-width: 1024px) {
+    
+}
+
+/*Media para teléfonos o iphones*/
+@media only screen and (max-width: 767px) {
+      
+}

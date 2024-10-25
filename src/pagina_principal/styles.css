@@ -23,7 +23,7 @@
 }
 
 body{
-  background:linear-gradient(to top, #FFF8E8, #F5F5F5, #fffbf0);
+  background-color:#f0ede5;
   width: 100vw;
   height: 100vh;
   overflow-x: hidden;
