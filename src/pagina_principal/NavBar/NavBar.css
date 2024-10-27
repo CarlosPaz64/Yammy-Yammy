@@ -5,6 +5,7 @@
 .secundary-nav{
   display: none; /*Se oculta el nav secundario al inicio de la página*/
 }
+/*Estilo del navbar*/
 nav{
   display: flex;
   justify-content: space-between;
@@ -40,6 +41,7 @@ nav ul li a{
 .nav-right{
   display: flex;
   justify-content: right;
+  justify-content:right;
   flex: 1;
   gap: 5px;
   margin-right: 20px;
@@ -48,7 +50,7 @@ nav ul li a{
   font-size: 2.4em !important;
   vertical-align: middle;
 }.icon-nav:hover{color: #F4538A;}
-  
+ 
 /*Animacion del subrayado a las opciones del menú*/
 nav ul li a .textNav::after{
   content: "";
