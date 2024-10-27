@@ -23,7 +23,71 @@
 }
 
 body{
-  background:linear-gradient(to top, #FFF8E8, #F5F5F5, #fffbf0);
-  width: 100vw;
-  height: 100vh;
+  position: relative;/*Se coloca para posicionar el footer en la parte inferior de la página*/
+  background:linear-gradient(to bottom right,#EEEEEE,#F9F9F9, #E7E7E7);
+  min-width: 100vw;
+  min-height: 100vh;
+  padding-bottom: 120px; /*Deja un espaciado entre el contenido de la página y el footer(pie de página)*/
+  overflow-x: hidden;
+}
+
+/*Tooltip*/
+.tooltip-container {
+  position: relative;
+  display: inline-block;
+}
+.tooltip-text {
+  visibility: hidden;
+  width: 85%;
+  background-color: rgb(60, 61, 55, 0.45);
+  color: #fff;
+  text-align: center;
+  border-radius: 6px;
+  padding: 5px;
+  position: absolute;
+  z-index: 1;
+  top: 85%; /*Este es el que posiciona el tooltip en el elemento -> en la parte inferior*/
+  left: 50%;
+  transform: translateX(-50%);
+  opacity: 0;
+  transition: opacity 0.5s;
+  user-select: none;
+}
+.tooltip-text::after {
+  content: "";
+  position: absolute;
+  bottom: 100%;
+  left: 50%;
+  margin-left: -5px;
+  border-width: 5px;
+  border-style: solid;
+  border-color: transparent transparent rgb(60, 61, 55, 0.45);
+}
+.tooltip-container:hover .tooltip-text {
+  visibility: visible;
+  opacity: 1;
+}
+
+/*Media para tabletas*/
+@media only screen and (min-width: 768px) and (max-width: 1024px) {
+  .tooltip-text {
+    font-size: 10px;
+    width: 60%;
+    top: 82%; 
+  }
+  .tooltip-text::after{
+    bottom: 100%;
+  }
+}
+
+/*Media para teléfonos o iphones*/
+@media only screen and (max-width: 767px) {
+  .tooltip-text {
+    font-size: 2%;
+    width: 45%;
+    top: 80%;
+  }
+  .tooltip-text::after{
+    bottom: 100%;
+  }
 }

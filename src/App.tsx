@@ -8,6 +8,9 @@ import Pedido from './pagina_principal/HazUnpedido/Pedidos';
 //import PerfilPage from './pages/PerfilPage';
 //import CarritoPage from './pages/CarritoPage';
 import NavBar from './pagina_principal/NavBar/NavBar'; // Asegúrate de que NavBar esté en la ruta correcta
+import Carrusel1 from './pagina_principal/Carrusel/Carrusel1';
+import Footer from './pagina_principal/Footer/Footer';
+
 import CrearProducto from './formulario de creacion/creacionProductos';
 // import './App.css';
 //import './App.css';
@@ -18,7 +21,12 @@ function App() {
   return (
     <>
       <NavBar />
-      
+
+      <Carrusel1 />
+      <Footer />
+      {/* 
+
+
       <Routes>
         {/* Define tus rutas aquí */}
         {/*<Route path="/" element={<MainPage />} /> */}
