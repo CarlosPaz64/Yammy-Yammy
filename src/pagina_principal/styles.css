@@ -23,9 +23,11 @@
 }
 
 body{
-  background-color:#f0ede5;
-  width: 100vw;
-  height: 100vh;
+  position: relative;/*Se coloca para posicionar el footer en la parte inferior de la página*/
+  background:linear-gradient(to bottom right,#EEEEEE,#F9F9F9, #E7E7E7);
+  min-width: 100vw;
+  min-height: 100vh;
+  padding-bottom: 120px; /*Deja un espaciado entre el contenido de la página y el footer(pie de página)*/
   overflow-x: hidden;
 }
 

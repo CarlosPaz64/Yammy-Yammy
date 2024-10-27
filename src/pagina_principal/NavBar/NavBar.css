@@ -39,7 +39,7 @@ nav ul li a{
 }.img-nav:hover{opacity: 0.55;}
 .nav-right{
   display: flex;
-  justify-content:right;
+  justify-content: right;
   flex: 1;
   gap: 5px;
   margin-right: 20px;
@@ -111,17 +111,18 @@ nav ul li a .textNav::after{
     position: fixed;
     font-size: 1.72em;
     top: 0;
-    left: -365px; /* Mueve el sidebar fuera de la vista */
+    left: -374px; /* Mueve el sidebar fuera de la vista */
     width: 365px;
     height: 100vh;
     background: #f5f4f2;
-    overflow:auto;
+    overflow: auto;
     z-index: 2;
+    box-shadow: 0 0 1rem #fff;
     transition: transform 0.5s ease; /*transición del sidebar */
     transform: translateX(0); /* Se mantiene oculto fuera de la vista */
   }
   .sideBar-visible {
-    transform: translateX(365px); /* Mueve el sidebar a la vista */
+    transform: translateX(374px); /* Mueve el sidebar a la vista */
   }
   .sideBar .sideBar-panel{ /*Configura todo el panel y la posicion de las letras de forma general*/
     margin: 25px;
@@ -142,10 +143,12 @@ nav ul li a .textNav::after{
     color: #ff1717;
     padding: 2px;
     border-radius: 25px;
-    background-color: #FEF9F2;
-  }.close:hover{cursor: pointer; background-color: #B8001F; color: #FEFAE0;}
+    border: .2px solid #27242462;
+    background-color: #ffffffc9;
+    user-select: none;
+  }.close:hover{cursor: pointer; background-color: #B8001F; color: #FEFAE0; border: .2px solid #B8001F;}
   .sidebar-header{
-    background: #FFE3E3;
+    background:linear-gradient(to bottom right,#b7e0f9,#ffffff, #f2cce5);
     padding-right: 40px;
     padding-top: 12px;
     padding-bottom: 25px;
@@ -223,17 +226,18 @@ nav ul li a .textNav::after{
     position: fixed;
     font-size: 1.2em;
     top: 0;
-    left: -300px; /* Mueve el sidebar fuera de la vista */
+    left: -362px; /* Mueve el sidebar fuera de la vista */
     width: 220px;
     height: 100vh;
     background: #f5f4f2;
-    overflow:auto;
+    overflow: auto;
     z-index: 2;
+    box-shadow: 0 0 30px #fff;
     transition: transform 0.5s ease; /*transición */
     transform: translateX(0); /* Se mantiene oculto fuera de la vista */
   }
   .sideBar-visible {
-    transform: translateX(300px); /* Mueve el sidebar a la vista */
+    transform: translateX(362px); /* Mueve el sidebar a la vista */
   }
   .sideBar .sideBar-panel{ /*Configura todo el panel y la posicion de las letras de forma general*/
     margin: 20px;
@@ -254,10 +258,12 @@ nav ul li a .textNav::after{
     color: #ff1717;
     padding: 2px;
     border-radius: 25px;
-    background-color: #FEF9F2;
-  }.close:hover{cursor: pointer; background-color: #B8001F; color: #FEFAE0;}
+    border: .2px solid #27242462;
+    background-color: #ffffffc9;
+    user-select: none;
+  }.close:hover{cursor: pointer; background-color: #B8001F; color: #FEFAE0; border: .2px solid #B8001F;}
   .sidebar-header{
-    background: #FFE3E3;
+    background:linear-gradient(to bottom right,#b7e0f9,#ffffff, #f2cce5);
     padding-right: 20px;
     padding-top: 6px;
     padding-bottom: 20px;
@@ -265,7 +271,7 @@ nav ul li a .textNav::after{
     text-align: center;
   }
   .icon-sid{
-    font-weight:600 !important;
+    font-weight: 600 !important;
     margin-top: 22px;
     color: #111d5ee8;
   }.sidText-header{ color:#111d5ee8; margin-left: 5px;}
