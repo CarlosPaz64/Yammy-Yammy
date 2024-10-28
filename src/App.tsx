@@ -24,7 +24,7 @@ function App() {
 
       <Carrusel1 />
       <Footer />
-      {/* 
+       
 
 
       <Routes>
