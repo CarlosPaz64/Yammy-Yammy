@@ -22,7 +22,6 @@ function App() {
       <NavBar />
       <Carrusel1 />
       <Footer />
-
       <Routes>
         {/* Define tus rutas aquí */}
         {/*<Route path="/" element={<MainPage />} /> */}
