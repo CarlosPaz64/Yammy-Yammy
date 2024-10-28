@@ -1,9 +1,3 @@
-/* 1. Enable smooth scrolling */
-html {
-	scroll-behavior: smooth;
-    overflow-x: hidden;
-}
-
 /* 2. Make nav sticky */
 main > header {
 	position: sticky;
@@ -36,40 +30,34 @@ main > header {
 	color: #666;
 }
 
-/** Poor man's reset **/
-* {
-	box-sizing: border-box;
-}
 ol {
 	list-style: none;
 	margin: 0;
 	padding: 0;
 }
+
+/* estilo para el texto del menu sticky
 li {
 	margin-left: 1rem;
 }
-
-h1 {
-	font-weight: 300;
-}
+*/
 
 /** page layout **/
 main {
 	display: grid;
+	padding: 0 0 60px 0;
 	grid-template-columns: 1fr 15em;
-	max-width: 100em;
 	width: 90%;
 	margin: 0 auto;
 }
 
 /** enlarge the sections for this demo, so that we have a long scrollable page **/
-section {
-	padding-bottom: 20rem;
+.section-menu {
+	margin-bottom: 10rem;
 }
 .producto-imagen {
 	max-width: 150px; /* Ancho máximo para la imagen */
 	max-height: 150px; /* Alto máximo para la imagen */
 	object-fit: cover; /* Asegura que la imagen se ajuste sin deformarse */
 	border-radius: 8px; /* Redondea los bordes de la imagen, opcional */
-  }
-  
+}

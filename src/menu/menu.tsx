@@ -50,9 +50,9 @@ const MenuPage: React.FC = () => {
 
   return (
     <main>
-      <div>
+      <div className='product-page'>
         {categorias.map((categoria) => (
-          <section id={categoria.toLowerCase().replace(/\s+/g, '-')} key={categoria}>
+          <section className='section-menu' id={categoria.toLowerCase().replace(/\s+/g, '-')} key={categoria}>
             <h2>{categoria}</h2>
             <div className="productos-container">
               {productosPorCategoria(categoria).map((producto) => {

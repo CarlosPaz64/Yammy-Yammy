@@ -22,6 +22,11 @@
   font-style: normal;
 }
 
+/*Habilita el scroll smooth para la vista suave de los enlaces del menú*/
+html {
+	scroll-behavior: smooth;
+}
+
 body{
   position: relative;/*Se coloca para posicionar el footer en la parte inferior de la página*/
   background:linear-gradient(to bottom right,#EEEEEE,#F9F9F9, #E7E7E7);
@@ -29,6 +34,12 @@ body{
   min-height: 100vh;
   padding-bottom: 120px; /*Deja un espaciado entre el contenido de la página y el footer(pie de página)*/
   overflow-x: hidden;
+}
+
+h1 {
+  text-align: center;
+  color: #393E46;
+  margin-bottom: 20px;
 }
 
 /*Tooltip*/

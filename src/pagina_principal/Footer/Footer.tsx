@@ -11,7 +11,6 @@ const Footer: React.FC<{ children?: ReactNode }> = ({ children }) => {
                     <div className="spillo-chocolate1"></div>
                     <div className="spillo-chocolate2"></div>
                     <div className="spillo-chocolate3"></div>
-
                 </div>
                 <h1>YAMY YAMY</h1>
                 <div className="part-pink"></div>
