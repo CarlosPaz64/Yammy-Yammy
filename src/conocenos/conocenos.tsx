@@ -1,12 +1,12 @@
 import React from 'react';
-import styles from './Conocenos.module.css';
+import  './concenos.css';
 
 const Conocenos: React.FC = () => {
   return (
-    <div className={styles.conocenosContainer}>
+    <div className= "conocenosContainer">
       <h2>Conócenos</h2>
 
-      <section className={styles.section}>
+      <section className="section">
         <h3>Descripción de la Empresa</h3>
         <p>
           Nuestra pastelería online está aquí para satisfacer todos tus antojos. Desde Mérida, Yucatán, traemos 
@@ -16,7 +16,7 @@ const Conocenos: React.FC = () => {
         </p>
       </section>
 
-      <section className={styles.section}>
+      <section className="section">
         <h3>Misión</h3>
         <p>
           Somos una empresa que quiere endulzar los momentos especiales de nuestros clientes, ofreciendo postres 
@@ -27,7 +27,7 @@ const Conocenos: React.FC = () => {
         </p>
       </section>
 
-      <section className={styles.section}>
+      <section className="styles">
         <h3>Visión</h3>
         <p>
           Buscamos convertirnos en la pastelería más reconocida y querida de Mérida, Yucatán, y más allá. Aspiramos 

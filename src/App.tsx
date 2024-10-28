@@ -16,6 +16,8 @@ import CrearProducto from './formulario de creacion/creacionProductos';
 //import './App.css';
 import RegisterForm from './register/register';
 import LoginForm from './pagina_principal/Login/Login';
+import Conocenos from './conocenos/conocenos';
+
 
 function App() {
   return (
@@ -42,6 +44,7 @@ function App() {
         <Route path="/creacion" element={<CrearProducto />} /> 
         <Route path="/pedido" element={<Pedido />} /> 
         <Route path="/registro" element={<RegisterForm />} />
+        <Route path="/conocenos" element={<Conocenos />}/>
       </Routes>
     </>
   );

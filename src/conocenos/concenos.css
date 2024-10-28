@@ -1,0 +1,33 @@
+/* concenos.css */
+
+.conocenosContainer {
+  max-width: 800px; /* Limita el ancho máximo del contenedor */
+  margin: 20px auto; /* Centra el contenedor horizontalmente y le da un margen superior e inferior */
+  padding: 20px; /* Espaciado interno del contenedor */
+  background-color: #f9f9f9; /* Color de fondo claro */
+  border-radius: 8px; /* Bordes redondeados */
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1); /* Sombra sutil */
+}
+
+h2 {
+  text-align: center; /* Centra el título */
+  color: #333; /* Color del texto */
+  margin-bottom: 20px; /* Margen inferior del título */
+}
+
+.section {
+  margin-bottom: 20px; /* Margen inferior de cada sección */
+}
+
+h3 {
+  color: #007BFF; /* Color azul para los subtítulos */
+  margin-bottom: 10px; /* Margen inferior del subtítulo */
+}
+
+p {
+  color: #555; /* Color gris para el texto */
+  line-height: 1.6; /* Espaciado entre líneas */
+  text-align: justify; /* Justifica el texto */
+}
+
+  
