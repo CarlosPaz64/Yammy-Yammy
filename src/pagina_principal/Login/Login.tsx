@@ -1,13 +1,13 @@
 import React from 'react';
 import { useForm } from 'react-hook-form';
+import { useNavigate } from 'react-router-dom';
 import { z } from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
-import CryptoJS from 'crypto-js';  // Importa CryptoJS para la encriptación
+import CryptoJS from 'crypto-js';
 
 const API_LINK = import.meta.env.VITE_API_LINK || 'http://localhost:3000';
-const SECRET_KEY = 'tu_clave_secreta';  // Usa la misma clave que en tu backend
+const SECRET_KEY = 'tu_clave_secreta';
 
-// Esquema de validación usando zod
 const loginSchema = z.object({
   email: z.string().min(1, 'El correo es obligatorio').email('Formato de correo no válido'),
   password: z.string().min(6, 'La contraseña debe tener al menos 6 caracteres'),
@@ -19,10 +19,10 @@ const LoginForm: React.FC = () => {
   const { register, handleSubmit, formState: { errors } } = useForm<LoginFormInputs>({
     resolver: zodResolver(loginSchema),
   });
+  const navigate = useNavigate();
 
   const onSubmit = async (data: LoginFormInputs) => {
     try {
-      // Encriptar los datos usando AES
       const encryptedData = CryptoJS.AES.encrypt(JSON.stringify(data), SECRET_KEY, {
         mode: CryptoJS.mode.CBC,
         padding: CryptoJS.pad.Pkcs7,
@@ -33,19 +33,19 @@ const LoginForm: React.FC = () => {
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ encryptedData }),  // Enviar los datos encriptados
+        body: JSON.stringify({ encryptedData }),
       });
 
       const result = await response.json();
 
       if (response.ok) {
-        // Login exitoso, recibir token y user ID
         const { token, userId } = result;
-        console.log('Token:', token);
-        console.log('User ID:', userId);
-        alert('Inicio de sesión exitoso');
+        localStorage.setItem('authToken', token);
+        localStorage.setItem('userId', userId);
+
+        navigate('/'); // Redirige a la página principal
+        window.location.reload(); // Recarga la página para actualizar el estado de la sesión
       } else {
-        // Muestra los errores en caso de fallo
         console.error('Error al iniciar sesión:', result);
         alert(result.message || 'Error al iniciar sesión');
       }

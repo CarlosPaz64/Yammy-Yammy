@@ -1,36 +1,48 @@
 import React, { ReactNode, useState, useEffect } from "react";
-import { Link } from "react-router-dom"; // Importar Link
+import { Link, useNavigate } from "react-router-dom"; // Importar Link y useNavigate
 import './NavBar.css';
 
-//Componente del navbar
 const NavBar: React.FC<{ children?: ReactNode }> = ({ children }) => {
     const [sidebarOpen, setSidebarOpen] = useState(false);
+    const [isAuthenticated, setIsAuthenticated] = useState(false);
+    const navigate = useNavigate();
 
-    //Función que abrira el sidebar
+    // Función para abrir/cerrar el sidebar
     const openSidebar = () => {
         setSidebarOpen(!sidebarOpen);
     };
 
-    //Función para manejar el cambio de tamaño de la página, entre pantalla grandes y pantallas chicas
-    const handleResize = ()=> {
-        //Valida si el tamaño de la pantalla supera los 1024px de ancho
-        if(window.innerWidth > 1024) {
-            setSidebarOpen(false); //cierra el Sidebar
-        }
-    }
-
+    // Verificar si el usuario está autenticado al cargar el componente
     useEffect(() => {
-        //Llama al listener para el evento del handleResize
+        const token = localStorage.getItem('authToken');
+        setIsAuthenticated(!!token); // Establecer autenticado si hay un token
+    }, []);
+
+    // Función para manejar el cambio de tamaño de la página
+    const handleResize = () => {
+        if (window.innerWidth > 1024) {
+            setSidebarOpen(false); // Cierra el Sidebar si es pantalla grande
+        }
+    };
+
+    // Listener para cambio de tamaño de pantalla
+    useEffect(() => {
         window.addEventListener('resize', handleResize);
-        //Limpia el listener al desmontar el componente
         return () => {
             window.removeEventListener('resize', handleResize);
         };
-    },[]);
+    }, []);
+
+    // Función de logout
+    const handleLogout = () => {
+        localStorage.removeItem('authToken');
+        localStorage.removeItem('userId');
+        setIsAuthenticated(false);
+        navigate('/'); // Navegar al inicio tras cerrar sesión
+    };
 
     return (
         <>
-            {/*Navbar o Sidebar, según sea el tamaño de la pantalla, Este es el nav principal visible para pantallas grandes*/}
             <div className="main-nav">
                 <nav>
                     <ul>
@@ -61,10 +73,25 @@ const NavBar: React.FC<{ children?: ReactNode }> = ({ children }) => {
                         </li>
                         <div className="nav-right">
                             <div className="tooltip-container">
-                                <span className="tooltip-text">Iniciar sesión</span>
-                                <li>
-                                    <Link to="/login" className="material-symbols-outlined icon-nav">account_circle</Link>
-                                </li>
+                                {isAuthenticated ? (
+                                    <>
+                                        <span className="tooltip-text">Cerrar sesión</span>
+                                        <li>
+                                            <button onClick={handleLogout} className="material-symbols-outlined icon-nav">
+                                                logout
+                                            </button>
+                                        </li>
+                                    </>
+                                ) : (
+                                    <>
+                                        <span className="tooltip-text">Iniciar sesión</span>
+                                        <li>
+                                            <Link to="/login" className="material-symbols-outlined icon-nav">
+                                                account_circle
+                                            </Link>
+                                        </li>
+                                    </>
+                                )}
                             </div>
                             <div className="tooltip-container">
                                 <span className="tooltip-text">Ver Carrito</span>
@@ -77,11 +104,6 @@ const NavBar: React.FC<{ children?: ReactNode }> = ({ children }) => {
                 </nav>
             </div>
 
-            {/*
-            Navbar secundario para pantallas pequeñas, tabletas y móviles
-            Adaptamos el diseño del navbar para pantallas de tabletas y celulares
-            Estilo para NavBar -> responsivo a partir de 1024px X 962px
-            */}
             <div className={`overlay ${sidebarOpen ? 'overlay-visible' : ''}`} onClick={openSidebar}></div>
             <div className="secundary-nav">
                 <nav className="navBar-rwd">
@@ -94,21 +116,20 @@ const NavBar: React.FC<{ children?: ReactNode }> = ({ children }) => {
                         </div>
                         <div className="nav-center">
                             <li>
-                                <Link to = "/">
+                                <Link to="/">
                                     <img src='../src/assets/Yamy-Imagotipo.png' alt="Imagotipo" className="img-nav" />
                                 </Link>
                             </li>
                         </div>
                         <div className="tooltip-container">
-                                <span className="tooltip-text">Ver Carrito</span>
+                            <span className="tooltip-text">Ver Carrito</span>
                             <li>
-                                <Link to = "/carrito" className="material-symbols-outlined icon-nav iconNav-right">shopping_bag</Link>
+                                <Link to="/carrito" className="material-symbols-outlined icon-nav iconNav-right">shopping_bag</Link>
                             </li>
                         </div>
                     </ul>
                 </nav>
 
-                {/* Estilo para SideBar -> responsivo a partir de 1024px X 962px */}
                 <div className={`sideBar ${sidebarOpen ? 'sideBar-visible' : ''}`}>
                     <div className="close-sidebar" onClick={openSidebar}>
                         <li>
@@ -120,41 +141,42 @@ const NavBar: React.FC<{ children?: ReactNode }> = ({ children }) => {
                             <div className="sidebar-header">
                                 <a>
                                     <i className="material-symbols-outlined icon-sid">account_circle
-                                        <span className="sidText-header">¡Hola, Identificate!</span>
+                                        <span className="sidText-header">¡Hola, Identifícate!</span>
                                     </i>
                                 </a>
                             </div>
                         </li>
                         <li>
-                            <Link to = "/" >
+                            <Link to="/">
                                 <span className="textNav">Inicio</span>
                             </Link>
                         </li>
                         <li>
-                            <Link to = "/menu">
+                            <Link to="/menu">
                                 <span className="textNav">Menú</span>
                             </Link>
                         </li>
                         <li>
-                            <Link to = "/pedidos">
+                            <Link to="/pedidos">
                                 <span className="textNav">Haz un pedido</span>
                             </Link>
                         </li>
                         <li>
-                            <Link to = "/conocenos">
+                            <Link to="/conocenos">
                                 <span className="textNav">Conócenos</span>
                             </Link>
                         </li>
-                        <li>
-                            <Link to = "/login" >
-                                <span className="textNav textSid-loggin">Iniciar sesión</span>
-                            </Link>
-                        </li>
-                        <li>
-                            <Link to ="/logout">
-                                <span className="textNav textSid-logout">Cerrar sesión</span>
-                            </Link>
-                        </li>
+                        {isAuthenticated ? (
+                            <li>
+                                <button onClick={handleLogout} className="textNav textSid-logout">Cerrar sesión</button>
+                            </li>
+                        ) : (
+                            <li>
+                                <Link to="/login" >
+                                    <span className="textNav textSid-loggin">Iniciar sesión</span>
+                                </Link>
+                            </li>
+                        )}
                     </ul>
                 </div>
             </div>

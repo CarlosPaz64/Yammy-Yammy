@@ -1,11 +1,14 @@
+// src/components/MenuPage.tsx
 import React, { useEffect, useState } from 'react';
+import { useDispatch } from 'react-redux';
+import { addToCart } from './cartSlice'; // Importa la acción addToCart
 import './menu.css';
 
-interface Producto {
+export interface Producto {
   product_id: number;
   nombre_producto: string;
   descripcion_producto: string;
-  precio: string | number | null; // Puede ser una cadena o número
+  precio: string | number | null;
   categoria: string;
   stock: number;
   url_imagen: string;
@@ -14,6 +17,7 @@ interface Producto {
 
 const MenuPage: React.FC = () => {
   const [productos, setProductos] = useState<Producto[]>([]);
+  const dispatch = useDispatch();
 
   useEffect(() => {
     const fetchProductos = async () => {
@@ -48,6 +52,10 @@ const MenuPage: React.FC = () => {
     return productos.filter(producto => producto.categoria === categoria);
   };
 
+  const handleAddToCart = (producto: Producto) => {
+    dispatch(addToCart(producto)); // Despacha la acción para añadir el producto al carrito
+  };
+
   return (
     <main>
       <div>
@@ -59,8 +67,6 @@ const MenuPage: React.FC = () => {
                 const precioNumerico = typeof producto.precio === 'string' 
                   ? parseFloat(producto.precio) 
                   : producto.precio;
-
-                  console.log(producto.url_imagen); // Verifica qué cadena está llegando
 
                 return (
                   <div className="producto-card" key={producto.product_id}>
@@ -80,6 +86,13 @@ const MenuPage: React.FC = () => {
                       Stock: {producto.stock > 0 ? `${producto.stock} disponibles` : 'Agotado'}
                     </p>
                     {producto.epoca && <p>Época: {producto.epoca}</p>}
+                    <button 
+                      onClick={() => handleAddToCart(producto)}
+                      disabled={producto.stock === 0}
+                      className="btn-add-cart"
+                    >
+                      Añadir al carrito
+                    </button>
                   </div>
                 );
               })}
