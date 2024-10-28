@@ -32,7 +32,7 @@ body{
   background:linear-gradient(to bottom right,#EEEEEE,#F9F9F9, #E7E7E7);
   min-width: 100vw;
   min-height: 100vh;
-  padding-bottom: 120px; /*Deja un espaciado entre el contenido de la página y el footer(pie de página)*/
+  padding-bottom: 350px; /*Deja un espaciado entre el contenido de la página y el footer(pie de página)*/
   overflow-x: hidden;
 }
 

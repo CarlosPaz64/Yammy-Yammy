@@ -136,7 +136,7 @@ const NavBar: React.FC<{ children?: ReactNode }> = ({ children }) => {
                             </Link>
                         </li>
                         <li>
-                            <Link to = "/pedidos">
+                            <Link to = "/pedido">
                                 <span className="textNav">Haz un pedido</span>
                             </Link>
                         </li>

@@ -6,46 +6,102 @@ footer{
     padding: 1em 0;
     width: 100%;
     font-size: 1rem;
-    height: 120px;
+    /*height: 120px;*/
     background-color: #FDFDFD;
     text-align: center;
 }
+/* ---------------
+    .container-carrusel {
+    position: relative;
+    width: 100%; /* ocupa todo el ancho de la página 
+    overflow: hidden;
+}
+.carrusel-deslizante {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+}
+/*Estilo para las diapositivas
+.carrusel-interno {
+    display: flex;
+    height: 22vw; /* Asegurar que el contenedor ocupe todo el espacio en horizontal 
+    transition: transform 1s ease-in-out; /* Suave animación al cambiar las imágenes 
+    user-select: none;
+}
+*/
+
 /*Parte del chocolate derretido*/
 .part-coffie{
     position: relative;
     margin-top: -1rem;
     height: 20px;
+    width: 100%;
 }
 .spillo-chocolate1{
     position: absolute;
     top: 0;
-    height: 60px;
-    width: 150px;
-    padding: 10px;
-    border-bottom-left-radius: 80px;
-    border-bottom-right-radius: 95px;
-    transform: skewX(5deg);
+    height: 100px;
+    width: 250px;
+    padding: 20px;
+    border-bottom-left-radius: 190px;
+    border-bottom-right-radius: 190px;
+    /* transform: skewX(5deg); */
     background-color: #5a2601;
 }
 .spillo-chocolate2{
     position: absolute;
     top: 0;
-    left: 165px;
-    height: 60px;
-    width: 150px;
-    padding: 10px;
+    left: 289px;
+    height: 100px;
+    width: 250px;
+    padding: 20px;
     border-bottom-left-radius: 180px;
     border-bottom-right-radius: 195px;
-    transform: skewy(0deg);
     background-color: #5a2601;
 }
 .spillo-chocolate3{
     position: absolute;
     top: 0;
-    left: 330px;
-    height: 60px;
-    width: 150px;
-    padding: 10px;
+    left: 577px;
+    height: 100px;
+    width: 250px;
+    padding: 20px;
+    border-bottom-left-radius: 180px;
+    border-bottom-right-radius: 195px;
+    transform: skewy(0deg);
+    background-color: #5a2601;
+}
+.spillo-chocolate4{
+    position: absolute;
+    top: 0;
+    left: 865px;
+    height: 100px;
+    width: 250px;
+    padding: 20px;
+    border-bottom-left-radius: 180px;
+    border-bottom-right-radius: 195px;
+    transform: skewy(0deg);
+    background-color: #5a2601;
+}
+.spillo-chocolate5{
+    position: absolute;
+    top: 0;
+    left: 1150px;
+    height: 100px;
+    width: 250px;
+    padding: 20px;
+    border-bottom-left-radius: 180px;
+    border-bottom-right-radius: 195px;
+    transform: skewy(0deg);
+    background-color: #5a2601;
+}
+.spillo-chocolate6{
+    position: absolute;
+    top: 0;
+    left: 1436px;
+    height: 100px;
+    width: 250px;
+    padding: 20px;
     border-bottom-left-radius: 180px;
     border-bottom-right-radius: 195px;
     transform: skewy(0deg);

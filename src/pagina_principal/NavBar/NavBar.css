@@ -230,7 +230,7 @@ nav ul li a .textNav::after{
     top: 0;
     left: -362px; /* Mueve el sidebar fuera de la vista */
     width: 220px;
-    height: 100vh;
+    height: 100%;
     background: #f5f4f2;
     overflow: auto;
     z-index: 2;
