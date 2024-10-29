@@ -106,7 +106,7 @@ nav ul li a .textNav::after{
     width: 127px;
     height: 127px;
   }.img-nav:hover{opacity: 0.55;}
-  .icon-nav{font-size: 2.5em !important;} .navBar-rwd .navBar-list .icon-nav:hover{color: #F4538A; cursor: pointer;} .iconNav-left{margin-left: 30px;} .iconNav-right{margin-right: 30px;}
+  .icon-nav{font-size: 2.5em !important;} .navBar-rwd .navBar-list .icon-nav:hover{color: #F4538A; /*cursor: pointer;*/} .iconNav-left{margin-left: 30px;} .iconNav-right{margin-right: 30px;}
 
   /*Estilo para el sidebar responsivo*/
   .sideBar{
@@ -148,7 +148,7 @@ nav ul li a .textNav::after{
     border: .2px solid #27242462;
     background-color: #ffffffc9;
     user-select: none;
-  }.close:hover{cursor: pointer; background-color: #B8001F; color: #FEFAE0; border: .2px solid #B8001F;}
+  }.close:hover{/*cursor: pointer;*/ background-color: #B8001F; color: #FEFAE0; border: .2px solid #B8001F;}
   .sidebar-header{
     background:linear-gradient(to bottom right,#b7e0f9,#ffffff, #f2cce5);
     padding-right: 40px;
@@ -221,7 +221,7 @@ nav ul li a .textNav::after{
     width: 101.5px;
     height: 101.5px;
   }.img-nav:hover{opacity: 0.55;}
-  .icon-nav{font-size: 1.5em !important;} .navBar-rwd .navBar-list .icon-nav:hover{color: #F4538A; cursor: pointer;} .iconNav-left{margin-left: 30px;} .iconNav-right{margin-right: 30px;}
+  .icon-nav{font-size: 1.5em !important;} .navBar-rwd .navBar-list .icon-nav:hover{color: #F4538A; /*cursor: pointer;*/} .iconNav-left{margin-left: 30px;} .iconNav-right{margin-right: 30px;}
 
   /*Estilo para el sidebar responsivo*/
   .sideBar{
@@ -263,7 +263,7 @@ nav ul li a .textNav::after{
     border: .2px solid #27242462;
     background-color: #ffffffc9;
     user-select: none;
-  }.close:hover{cursor: pointer; background-color: #B8001F; color: #FEFAE0; border: .2px solid #B8001F;}
+  }.close:hover{/*cursor: pointer;*/ background-color: #B8001F; color: #FEFAE0; border: .2px solid #B8001F;}
   .sidebar-header{
     background:linear-gradient(to bottom right,#b7e0f9,#ffffff, #f2cce5);
     padding-right: 20px;

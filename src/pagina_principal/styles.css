@@ -20,17 +20,17 @@
   font-family: "Manrope", sans-serif;
   font-optical-sizing: auto;
   font-style: normal;
+  cursor: url('../assets/Cursor.png'), auto !important;
 }
 
 /*Habilita el scroll smooth para la vista suave de los enlaces del menú*/
-html {
+html{
 	scroll-behavior: smooth;
 }
 
 body{
   position: relative;/*Se coloca para posicionar el footer en la parte inferior de la página*/
   background:linear-gradient(to bottom right,#EEEEEE,#F9F9F9, #E7E7E7);
-  min-width: 100vw;
   min-height: 100vh;
   padding-bottom: 350px; /*Deja un espaciado entre el contenido de la página y el footer(pie de página)*/
   overflow-x: hidden;
