@@ -9,23 +9,13 @@
   flex-direction: column;
 }
 
-
-.panel {
-  background-color: #ffffff;
-  padding: 20px;
-  border-radius: 8px;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-}
-
 h2 {
   text-align: center;
   color: #333;
-  margin-bottom: 0px;
 }
 
 h3 {
   color: #007BFF;
-  margin-bottom: 10px;
 }
 
 p {
