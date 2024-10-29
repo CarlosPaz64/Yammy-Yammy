@@ -1,7 +1,8 @@
 // src/components/MenuPage.tsx
 import React, { useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
-import { addToCart } from './cartSlice'; // Importa la acción addToCart
+import { AppDispatch } from './store'; // Importa AppDispatch
+import { addToCartAsync } from './cartSlice';
 import './menu.css';
 
 export interface Producto {
@@ -17,7 +18,7 @@ export interface Producto {
 
 const MenuPage: React.FC = () => {
   const [productos, setProductos] = useState<Producto[]>([]);
-  const dispatch = useDispatch();
+  const dispatch = useDispatch<AppDispatch>(); // Usa AppDispatch para tipar el dispatch
 
   useEffect(() => {
     const fetchProductos = async () => {
@@ -49,11 +50,11 @@ const MenuPage: React.FC = () => {
   ];
 
   const productosPorCategoria = (categoria: string) => {
-    return productos.filter(producto => producto.categoria === categoria);
+    return productos.filter((producto) => producto.categoria === categoria);
   };
 
   const handleAddToCart = (producto: Producto) => {
-    dispatch(addToCart(producto)); // Despacha la acción para añadir el producto al carrito
+    dispatch(addToCartAsync(producto)); // Llama al thunk para añadir el producto al carrito
   };
 
   return (
@@ -64,16 +65,16 @@ const MenuPage: React.FC = () => {
             <h2>{categoria}</h2>
             <div className="productos-container">
               {productosPorCategoria(categoria).map((producto) => {
-                const precioNumerico = typeof producto.precio === 'string' 
-                  ? parseFloat(producto.precio) 
+                const precioNumerico = typeof producto.precio === 'string'
+                  ? parseFloat(producto.precio)
                   : producto.precio;
 
                 return (
                   <div className="producto-card" key={producto.product_id}>
-                    <img 
-                      src={producto.url_imagen.startsWith('data:') ? producto.url_imagen : `data:image/jpeg;base64,${producto.url_imagen}`}  
-                      alt={producto.nombre_producto} 
-                      className="producto-imagen" 
+                    <img
+                      src={producto.url_imagen.startsWith('data:') ? producto.url_imagen : `data:image/jpeg;base64,${producto.url_imagen}`}
+                      alt={producto.nombre_producto}
+                      className="producto-imagen"
                     />
                     <h3>{producto.nombre_producto}</h3>
                     <p>{producto.descripcion_producto}</p>
@@ -86,7 +87,7 @@ const MenuPage: React.FC = () => {
                       Stock: {producto.stock > 0 ? `${producto.stock} disponibles` : 'Agotado'}
                     </p>
                     {producto.epoca && <p>Época: {producto.epoca}</p>}
-                    <button 
+                    <button
                       onClick={() => handleAddToCart(producto)}
                       disabled={producto.stock === 0}
                       className="btn-add-cart"
