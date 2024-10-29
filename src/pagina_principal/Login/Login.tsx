@@ -81,6 +81,13 @@ const LoginForm: React.FC = () => {
 
         <button type="submit">Iniciar Sesión</button>
       </form>
+
+      <p className="register-link">
+        ¿No estás registrado?{' '}
+        <span onClick={() => navigate('/registro')} style={{ color: 'blue', cursor: 'pointer' }}>
+          Dale click aquí
+        </span>
+      </p>
     </div>
   );
 };
