@@ -1,16 +1,13 @@
 .conocenosContainer {
-  max-width: 600px; 
-  max-height: 600px; 
-  margin: 20px 0 20px 20px; /* El margen izquierdo asegura que se alinee a la izquierda */
-  padding: 15px;
+  max-width: 1000px; /* Aumenta el ancho máximo del contenedor */
+  margin: 30px auto; /* Ajusta el margen superior e inferior */
+  padding: 30px; /* Aumenta el padding interno */
   background: linear-gradient(to bottom, #FFD0EC, #F9F9F9, #96C9F4);
   border-radius: 8px;
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
   display: flex;
   flex-direction: column;
-  overflow-y: auto; 
 }
-
 
 
 .panel {

@@ -1,11 +1,11 @@
 import React from 'react';
-import  './concenos.css';
+import './concenos.css';
 
 const Conocenos: React.FC = () => {
   return (
-    <div className= "conocenosContainer">
+    <div className="conocenosContainer">
       <h2>CÓNOCENOS</h2>
-    
+
       <section className="section">
         <h3>Descripción de la Empresa</h3>
         <p>
@@ -27,7 +27,7 @@ const Conocenos: React.FC = () => {
         </p>
       </section>
 
-      <section className="styles">
+      <section className="section">
         <h3>Visión</h3>
         <p>
           Buscamos convertirnos en la pastelería más reconocida y querida de Mérida, Yucatán, y más allá. Aspiramos 
@@ -37,8 +37,26 @@ const Conocenos: React.FC = () => {
           buscamos llegar a más personas y hacer que disfrutar de algo dulce sea fácil y satisfactorio.
         </p>
       </section>
+
+      {/* Sección de ubicación */}
+      <section className="section">
+        <h3>Ubicación</h3>
+        <p>Mérida, Yucatán, México</p>
+        <div className="mapContainer">
+          <iframe
+            title="Ubicación de Yamy-Yamy"
+            src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3724.0000000000000000!2d-89.6000000000000!3d20.970000000000000!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0000000000000000!2sYamy-Yamy!5e0!3m2!1ses-419!2smx!4v1615971234567"
+            width="100%"
+            height="300"
+            style={{ border: "0" }}
+            allowFullScreen
+            loading="lazy"
+          ></iframe>
+        </div>
+      </section>
     </div>
   );
 };
 
 export default Conocenos;
+
