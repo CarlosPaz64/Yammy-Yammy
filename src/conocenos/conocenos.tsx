@@ -4,8 +4,8 @@ import  './concenos.css';
 const Conocenos: React.FC = () => {
   return (
     <div className= "conocenosContainer">
-      <h2>Conócenos</h2>
-
+      <h2>CÓNOCENOS</h2>
+    
       <section className="section">
         <h3>Descripción de la Empresa</h3>
         <p>

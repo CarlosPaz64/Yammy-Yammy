@@ -1,33 +1,35 @@
-/* concenos.css */
-
 .conocenosContainer {
-  max-width: 800px; /* Limita el ancho máximo del contenedor */
-  margin: 20px auto; /* Centra el contenedor horizontalmente y le da un margen superior e inferior */
-  padding: 20px; /* Espaciado interno del contenedor */
-  background-color: #f9f9f9; /* Color de fondo claro */
-  border-radius: 8px; /* Bordes redondeados */
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1); /* Sombra sutil */
+  max-width: 800px;
+  margin: 20px auto;
+  padding: 20px;
+  background:linear-gradient(to bottom, #FFD0EC, #F9F9F9,  #96C9F4);
+  border-radius: 8px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  display: flex;
+  flex-direction: column;
+  gap: 0px;
+}
+
+.panel {
+  background-color: #ffffff;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
 }
 
 h2 {
-  text-align: center; /* Centra el título */
-  color: #333; /* Color del texto */
-  margin-bottom: 20px; /* Margen inferior del título */
-}
-
-.section {
-  margin-bottom: 20px; /* Margen inferior de cada sección */
+  text-align: center;
+  color: #333;
+  margin-bottom: 20px;
 }
 
 h3 {
-  color: #007BFF; /* Color azul para los subtítulos */
-  margin-bottom: 10px; /* Margen inferior del subtítulo */
+  color: #007BFF;
+  margin-bottom: 10px;
 }
 
 p {
-  color: #555; /* Color gris para el texto */
-  line-height: 1.6; /* Espaciado entre líneas */
-  text-align: justify; /* Justifica el texto */
+  color: #555;
+  line-height: 1.6;
+  text-align: justify;
 }
-
-  
