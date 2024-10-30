@@ -5,6 +5,18 @@
 .secundary-nav{
   display: none; /*Se oculta el nav secundario al inicio de la página*/
 }
+/* styles.css */
+.cart-count {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  background-color: red;
+  color: white;
+  padding: 0 5px;
+  border-radius: 50%;
+  font-size: 0.8em;
+}
+
 /*Estilo del navbar*/
 nav{
   display: flex;

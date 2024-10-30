@@ -1,8 +1,11 @@
 import React, { ReactNode, useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom"; // Importar Link y useNavigate
+import { selectTotalItems } from '../../menu/cartSlice';
+import { useSelector } from 'react-redux';
 import './NavBar.css';
 
 const NavBar: React.FC<{ children?: ReactNode }> = ({ children }) => {
+    const totalItems = useSelector(selectTotalItems);
     const [sidebarOpen, setSidebarOpen] = useState(false);
     const [isAuthenticated, setIsAuthenticated] = useState(false);
     const navigate = useNavigate();
@@ -97,6 +100,7 @@ const NavBar: React.FC<{ children?: ReactNode }> = ({ children }) => {
                                 <span className="tooltip-text">Ver Carrito</span>
                                 <li>
                                     <Link to="/carrito" className="material-symbols-outlined icon-nav">shopping_bag</Link>
+                                    {totalItems > 0 && <span className="cart-count">{totalItems}</span>}
                                 </li>
                             </div>
                         </div>

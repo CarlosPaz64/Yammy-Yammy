@@ -10,7 +10,7 @@ import Pedido from './pagina_principal/HazUnpedido/Pedidos';
 import NavBar from './pagina_principal/NavBar/NavBar'; // Asegúrate de que NavBar esté en la ruta correcta
 import Carrusel1 from './pagina_principal/Carrusel/Carrusel1';
 import Footer from './pagina_principal/Footer/Footer';
-
+import CartPage from './menu/carrito';
 import CrearProducto from './formulario de creacion/creacionProductos';
 // import './App.css';
 //import './App.css';
@@ -45,6 +45,7 @@ function App() {
         <Route path="/pedido" element={<Pedido />} /> 
         <Route path="/registro" element={<RegisterForm />} />
         <Route path="/conocenos" element={<Conocenos />}/>
+        <Route path="/carrito" element={<CartPage />} /> 
       </Routes>
     </>
   );
