@@ -1,14 +1,15 @@
 // src/store/store.ts
 import { configureStore } from '@reduxjs/toolkit';
-import cartReducer from './cartSlice';
+import cartReducer, { syncCartToLocalStorage } from './cartSlice';
 
 const store = configureStore({
   reducer: {
     cart: cartReducer,
   },
+  middleware: (getDefaultMiddleware) =>
+    getDefaultMiddleware().concat(syncCartToLocalStorage),
 });
 
-// Define RootState como el tipo de la estructura del estado de Redux
 export type RootState = ReturnType<typeof store.getState>;
 export type AppDispatch = typeof store.dispatch;
 

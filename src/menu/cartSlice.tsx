@@ -11,22 +11,33 @@ interface CartItem extends Producto {
 interface CartState {
   items: CartItem[];
   status: 'idle' | 'loading' | 'succeeded' | 'failed';
-  totalItems: number; // Nuevo contador de productos totales en el carrito
+  totalItems: number;
 }
 
+// Función para cargar el carrito desde localStorage
+const loadCartFromLocalStorage = (): CartItem[] => {
+  try {
+    const serializedCart = localStorage.getItem('cart');
+    return serializedCart ? JSON.parse(serializedCart) : [];
+  } catch (error) {
+    console.error("Error loading cart from localStorage", error);
+    return [];
+  }
+};
+
 const initialState: CartState = {
-  items: [],
+  items: loadCartFromLocalStorage(),
   status: 'idle',
-  totalItems: 0,
+  totalItems: loadCartFromLocalStorage().reduce((sum, item) => sum + item.quantity, 0),
 };
 
 // Thunk para agregar un producto al carrito en el backend
 export const addToCartAsync = createAsyncThunk(
   'cart/addToCartAsync',
   async (product: Producto) => {
-    const token = localStorage.getItem('authToken'); // Obtener el token desde localStorage
+    const token = localStorage.getItem('authToken');
     const response = await axiosInstance.post('/carrito/add-product', {
-      carrito_id: 1, // Usa el carrito_id del usuario
+      carrito_id: 1,
       product_id: product.product_id,
       cantidad: 1,
       token
@@ -47,9 +58,10 @@ const cartSlice = createSlice({
   reducers: {
     clearCart: (state) => {
       state.items = [];
-      state.totalItems = 0; // Reiniciar el contador
+      state.totalItems = 0;
+      localStorage.removeItem('cart'); // Eliminar carrito de localStorage
     },
-    removeFromCart: (state, action: PayloadAction<number>) => { // Nueva acción `removeFromCart`
+    removeFromCart: (state, action: PayloadAction<number>) => {
       const itemIndex = state.items.findIndex((item) => item.product_id === action.payload);
       if (itemIndex >= 0) {
         state.totalItems -= state.items[itemIndex].quantity;
@@ -67,18 +79,24 @@ const cartSlice = createSlice({
         } else {
           state.items.push({ ...product, quantity: 1 });
         }
-        state.totalItems += 1; // Incrementar el contador total de productos
+        state.totalItems += 1;
       })
       .addCase(fetchCartItems.fulfilled, (state, action) => {
         state.items = action.payload;
-        state.totalItems = action.payload.reduce((sum: number, item: CartItem) => sum + item.quantity, 0); // Calcular el total de productos
+        state.totalItems = action.payload.reduce((sum: number, item: CartItem) => sum + item.quantity, 0);
       });
   },
 });
 
-export const { clearCart, removeFromCart } = cartSlice.actions;
+// Middleware para sincronizar el carrito con localStorage
+export const syncCartToLocalStorage = (store: any) => (next: any) => (action: any) => {
+  const result = next(action);
+  const state = store.getState();
+  localStorage.setItem('cart', JSON.stringify(state.cart.items));
+  return result;
+};
 
-// Selector para obtener el total de productos en el carrito
+export const { clearCart, removeFromCart } = cartSlice.actions;
 export const selectTotalItems = (state: RootState) => state.cart.totalItems;
 
 export default cartSlice.reducer;
