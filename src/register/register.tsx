@@ -139,7 +139,7 @@ const RegisterForm: React.FC = () => {
       </div>
 
       <div>
-        <label>Número de Teléfono (Opcional)</label>
+        <label>Número de Teléfono</label>
         <input {...register('numero_telefono')} />
       </div>
 

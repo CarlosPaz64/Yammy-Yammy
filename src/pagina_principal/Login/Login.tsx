@@ -41,6 +41,11 @@ const LoginForm: React.FC = () => {
       if (response.ok) {
         // Login exitoso, recibir token y user ID
         const { token, userId } = result;
+
+        // Guardar el token y userId en localStorage
+        localStorage.setItem('token', token);
+        localStorage.setItem('userId', userId);
+        
         console.log('Token:', token);
         console.log('User ID:', userId);
         alert('Inicio de sesión exitoso');
