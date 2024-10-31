@@ -1,14 +1,14 @@
 import React from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { RootState, AppDispatch } from './store'; // Ajusta la ruta según sea necesario
-import { removeFromCart } from './cartSlice';
+import { RootState, AppDispatch } from './store';
+import { removeFromCartAsync } from './cartSlice'; // Asegúrate de importar removeFromCartAsync
 
 const CartPage: React.FC = () => {
   const cartItems = useSelector((state: RootState) => state.cart.items);
   const dispatch = useDispatch<AppDispatch>();
 
   const handleRemoveItem = (productId: number) => {
-    dispatch(removeFromCart(productId));
+    dispatch(removeFromCartAsync(productId)); 
   };
 
   return (
@@ -25,7 +25,7 @@ const CartPage: React.FC = () => {
           </tr>
         </thead>
         <tbody>
-          {cartItems.map(item => (
+          {cartItems.map((item) => (
             <tr key={item.product_id}>
               <td>{item.nombre_producto}</td>
               <td>{item.quantity}</td>

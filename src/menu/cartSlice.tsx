@@ -1,5 +1,4 @@
-// src/store/slices/cartSlice.ts
-import { createSlice, createAsyncThunk, PayloadAction } from '@reduxjs/toolkit';
+import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import axiosInstance from '../api/axiosInstance';
 import { Producto } from './menu';
 import { RootState } from './store';
@@ -25,6 +24,7 @@ const loadCartFromLocalStorage = (): CartItem[] => {
   }
 };
 
+// Estado inicial del carrito cargado desde localStorage
 const initialState: CartState = {
   items: loadCartFromLocalStorage(),
   status: 'idle',
@@ -36,22 +36,39 @@ export const addToCartAsync = createAsyncThunk(
   'cart/addToCartAsync',
   async (product: Producto) => {
     const token = localStorage.getItem('authToken');
+    
+    // Enviar solicitud para agregar el producto al carrito
     const response = await axiosInstance.post('/carrito/add-product', {
       carrito_id: 1,
       product_id: product.product_id,
       cantidad: 1,
       token
     });
-    return response.data;
+
+    return response.data; // Asumimos que esto devuelve el producto con cantidad actualizada en el carrito
   }
 );
 
-// Thunk para obtener los productos del carrito
-export const fetchCartItems = createAsyncThunk('cart/fetchCartItems', async (carrito_id: number) => {
-  const response = await axiosInstance.get(`/carrito/${carrito_id}/products`);
-  return response.data;
-});
+// Thunk para eliminar el producto del carrito sin afectar el stock
 
+export const removeFromCartAsync = createAsyncThunk(
+  'cart/removeFromCartAsync',
+  async (carritoProductoId: number) => {
+    const token = localStorage.getItem('authToken');
+
+    // Realiza la solicitud DELETE a la ruta correcta en el backend
+    await axiosInstance.delete(`/carrito/remove-product/${carritoProductoId}`, {
+      headers: {
+        Authorization: `Bearer ${token}`
+      }
+    });
+
+    return carritoProductoId;
+  }
+);
+
+
+// Slice del carrito
 const cartSlice = createSlice({
   name: 'cart',
   initialState,
@@ -60,13 +77,6 @@ const cartSlice = createSlice({
       state.items = [];
       state.totalItems = 0;
       localStorage.removeItem('cart'); // Eliminar carrito de localStorage
-    },
-    removeFromCart: (state, action: PayloadAction<number>) => {
-      const itemIndex = state.items.findIndex((item) => item.product_id === action.payload);
-      if (itemIndex >= 0) {
-        state.totalItems -= state.items[itemIndex].quantity;
-        state.items.splice(itemIndex, 1);
-      }
     },
   },
   extraReducers: (builder) => {
@@ -81,9 +91,14 @@ const cartSlice = createSlice({
         }
         state.totalItems += 1;
       })
-      .addCase(fetchCartItems.fulfilled, (state, action) => {
-        state.items = action.payload;
-        state.totalItems = action.payload.reduce((sum: number, item: CartItem) => sum + item.quantity, 0);
+      .addCase(removeFromCartAsync.fulfilled, (state, action) => {
+        const productId = action.payload;
+        const itemIndex = state.items.findIndex((item) => item.product_id === productId);
+        if (itemIndex >= 0) {
+          // Eliminar el producto del carrito sin afectar el stock
+          state.totalItems -= state.items[itemIndex].quantity;
+          state.items.splice(itemIndex, 1);
+        }
       });
   },
 });
@@ -96,7 +111,7 @@ export const syncCartToLocalStorage = (store: any) => (next: any) => (action: an
   return result;
 };
 
-export const { clearCart, removeFromCart } = cartSlice.actions;
+export const { clearCart } = cartSlice.actions;
 export const selectTotalItems = (state: RootState) => state.cart.totalItems;
 
 export default cartSlice.reducer;
