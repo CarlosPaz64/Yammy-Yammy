@@ -42,8 +42,8 @@ footer{
     border-bottom-right-radius: 80%;
     background-color: #5a2601;
 }
-/*vela de palabras*/
-.container-stick {
+/*vela en forma de palabras*/
+.container-candle {
     position: relative;
     width: 100%;
     display: flex;
@@ -67,133 +67,62 @@ footer{
     display: inline-flex;
     align-items: center;
 }
-.stick1-candle{
+.container-stick{
     position: absolute;
     top: 6px;
-    left: 10px;
     height: 15px;
     width: 5px;
     background-color: #68576fc9;
 }
-.stick2-candle{
-    position: absolute;
-    top: 6px;
-    left: 39px;
-    height: 15px;
-    width: 5px;
-    background-color: #68576fc9;
-}
-.stick3-candle{
-    position: absolute;
-    top: 6px;
-    left: 84px;
-    height: 15px;
-    width: 5px;
-    background-color: #68576fc9;
-}
-.stick4-candle{
-    position: absolute;
-    top: 6px;
-    left: 150px;
-    height: 15px;
-    width: 5px;
-    background-color: #68576fc9;
-}
-.stick5-candle{
-    position: absolute;
-    top: 6px;
-    left: 190px;
-    height: 15px;
-    width: 5px;
-    background-color: #68576fc9;
-}
-.stick6-candle{
-    position: absolute;
-    top: 6px;
-    left: 238px;
-    height: 15px;
-    width: 5px;
-    background-color: #68576fc9;
-}
-.stick7-candle{
-    position: absolute;
-    top: 6px;
-    left: 266px;
-    height: 15px;
-    width: 5px;
-    background-color: #68576fc9;
-}
-.stick8-candle{
-    position: absolute;
-    top: 6px;
-    left: 357px;
-    height: 15px;
-    width: 5px;
-    background-color: #68576fc9;
-}
-.stick9-candle{
-    position: absolute;
-    top: 6px;
-    left: 386px;
-    height: 15px;
-    width: 5px;
-    background-color: #68576fc9;
-}
-.stick10-candle{
-    position: absolute;
-    top: 6px;
-    left: 433px;
-    height: 15px;
-    width: 5px;
-    background-color: #68576fc9;
-}
-.stick11-candle{
-    position: absolute;
-    top: 6px;
-    left: 498px;
-    height: 15px;
-    width: 5px;
-    background-color: #68576fc9;
-}
-.stick12-candle{
-    position: absolute;
-    top: 6px;
-    left: 538px;
-    height: 15px;
-    width: 5px;
-    background-color: #68576fc9;
-}
-.stick13-candle{
-    position: absolute;
-    top: 6px;
-    left: 586px;
-    height: 15px;
-    width: 5px;
-    background-color: #68576fc9;
-}
-.stick14-candle{
-    position: absolute;
-    top: 6px;
-    left: 614px;
-    height: 15px;
-    width: 5px;
-    background-color: #68576fc9;
-}
+.container-stick.stick1{left: 10px;} .stick2{left: 39px;} .stick3{left: 84px;} .stick4{left: 150px;} .stick5{left: 190px;} .stick6{left: 238px;} .stick7{left: 266px;}
+.stick8{left: 357px;} .stick9{left: 386px;} .stick10{left: 433px;} .stick11{left: 498px;} .stick12{left: 538px;} .stick13{left: 586px;} .stick14{left: 615px;}
 /*Flama de la vela*/
 .candle-flame {
     position: absolute;
     top: -28px;
     font-size: 30px;
     color: #FFAF00;
+    animation: flame 0.65s infinite;
     filter: drop-shadow(0px 0px 19.5px #EB5B00);
 }
-.flame1{left: -3px;} .flame2{left: -650px;} .flame3{left: -636px;} .flame4{left: -600px;} .flame5{left: -590px;} .flame6{left: -571.5px;} .flame7{left: -572px;}
-.flame8{left: -512.5px;} .flame9{left: -453px;} .flame10{left: -46px;} .flame11{left: -46px;} .flame12{left: -46px;} .flame13{left: -46px;} .flame14{left: -46px;}
+.flame1{left: -3px;} .flame2{left: 26px;} .flame3{left: 71px;} .flame4{left: 137px;} .flame5{left: 177px;} .flame6{left: 225px;} .flame7{left: 253px;}
+.flame8{left: 344px;} .flame9{left: 373px;} .flame10{left: 420px;} .flame11{left: 485px;} .flame12{left: 525px;} .flame13{left: 573px;} .flame14{left: 602px;}
 /*Parte rosada del footer*/
 .part-pink{
-    border-radius: 5%;
+    border-radius: 6%;
     background-color: #FFCCEA;
-    height: 36px;
+    height: 50px;
+}
+@keyframes flame {
+    0% {
+        transform: scale(1);
+    }
+    33% {
+        transform: scale(1.1);
+        color: #FFAF00;
+        filter: drop-shadow(0px 0px 25px #F09319);
+    }
+    100% {
+        transform: scale(1);
+        color: #F09319;
+        filter: drop-shadow(0px 0px 15px #FFD700);
+    }
+}
+/*Compartibilidad con navegadores y dispositivos más antiguos*/
+@-webkit-keyframes flame {
+    0% {
+        transform: scale(1);
+    }
+    33% {
+        transform: scale(1.1);
+        color: #FFAF00;
+        filter: drop-shadow(0px 0px 25px #F09319);
+    }
+    100% {
+        transform: scale(1);
+        color: #F09319;
+        filter: drop-shadow(0px 0px 15px #FFD700);
+    }
 }
 
 /*Media para tabletas*/
