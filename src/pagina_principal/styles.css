@@ -1,6 +1,12 @@
 /*Tipo de letra para la pagina -> Manrope*/
 @import url('https://fonts.googleapis.com/css2?family=Manrope:wght@200..800&display=swap');
 
+/*Tipo de letra para las velas del pastel (Footer)*/
+@import url('https://fonts.googleapis.com/css2?family=Alfa+Slab+One&family=Noto+Sans:ital,wght@0,100..900;1,100..900&display=swap');
+
+/*Biblioteca para Iconos de Flaticon*/
+@import url('https://cdn-uicons.flaticon.com/2.6.0/uicons-solid-straight/css/uicons-solid-straight.css');
+
 /*Estilo para los iconos de google font*/
 .material-symbols-outlined {
   font-variation-settings:
@@ -32,7 +38,7 @@ body{
   position: relative;/*Se coloca para posicionar el footer en la parte inferior de la página*/
   background:linear-gradient(to bottom right,#EEEEEE,#F9F9F9, #E7E7E7);
   min-height: 100vh;
-  padding-bottom: 350px; /*Deja un espaciado entre el contenido de la página y el footer(pie de página)*/
+  padding-bottom: 500px; /*Deja un espaciado entre el contenido de la página y el footer(pie de página)*/
   overflow-x: hidden;
 }
 

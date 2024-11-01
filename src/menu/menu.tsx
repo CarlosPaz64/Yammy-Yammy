@@ -18,7 +18,7 @@ const MenuPage: React.FC = () => {
   useEffect(() => {
     const fetchProductos = async () => {
       try {
-        const response = await fetch('http://localhost:3000/api/productos/por-categoria');
+        const response = await fetch('http://localhost:3000/api/productos/por-categoria'); {/* Ruta de la API*/}
         const data = await response.json();
         setProductos(data);
       } catch (error) {
@@ -44,6 +44,7 @@ const MenuPage: React.FC = () => {
     'Producto de temporada'
   ];
 
+  {/* Filtro por categoria de los productos */}
   const productosPorCategoria = (categoria: string) => {
     return productos.filter(producto => producto.categoria === categoria);
   };

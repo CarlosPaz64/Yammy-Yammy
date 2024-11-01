@@ -35,13 +35,8 @@ const NavBar: React.FC<{ children?: ReactNode }> = ({ children }) => {
                 <nav>
                     <ul>
                         <li>
-                            <Link to="/">
+                            <Link to="/index">
                                 <img src='../src/assets/Yamy-Imagotipo.png' alt="Imagotipo" className="img-nav" />
-                            </Link>
-                        </li>
-                        <li>
-                            <Link to="/">
-                                <span className="textNav">Inicio</span>
                             </Link>
                         </li>
                         <li>
@@ -94,7 +89,7 @@ const NavBar: React.FC<{ children?: ReactNode }> = ({ children }) => {
                         </div>
                         <div className="nav-center">
                             <li>
-                                <Link to = "/">
+                                <Link to = "/index">
                                     <img src='../src/assets/Yamy-Imagotipo.png' alt="Imagotipo" className="img-nav" />
                                 </Link>
                             </li>
@@ -124,11 +119,6 @@ const NavBar: React.FC<{ children?: ReactNode }> = ({ children }) => {
                                     </i>
                                 </a>
                             </div>
-                        </li>
-                        <li>
-                            <Link to = "/" >
-                                <span className="textNav">Inicio</span>
-                            </Link>
                         </li>
                         <li>
                             <Link to = "/menu">

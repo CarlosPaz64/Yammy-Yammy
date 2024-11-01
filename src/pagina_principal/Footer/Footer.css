@@ -1,36 +1,194 @@
 /*pie de página*/
 footer{
-    border: 2px #5a2601 solid;
     position: absolute;
     bottom: 0;
-    padding: 1em 0;
+    /*padding: 1em 0;*/
     width: 100%;
     font-size: 1rem;
     /*height: 120px;*/
     background-color: #FDFDFD;
     text-align: center;
 }
+
+/*Parte del area del pan*/
+.bread-zone{
+    position: relative;
+    width: 100%;
+    padding-top: 120px;
+    background-color: #5a2601;
+    border-top-left-radius: 32px;
+    border-top-right-radius: 32px;
+}
 /*Parte del chocolate derretido*/
-.part-coffie {
+.container-chocolate {
     position: relative;
     margin-top: -1rem;
-    height: 80px; /* Ajusta según la altura deseada */
+    height: 82px;
     width: 100%;
+    margin-bottom: -65px;
     display: flex;
     justify-content: space-between;
     align-items: flex-end;
     overflow: hidden;
 }
-
-.spillo-chocolate1, .spillo-chocolate2, .spillo-chocolate3{
+.melted-chocolate1, .melted-chocolate2, .melted-chocolate3,
+.melted-chocolate4, .melted-chocolate5, .melted-chocolate6,
+.melted-chocolate7, .melted-chocolate8, .melted-chocolate9 {
     position: relative;
     top: 0;
-    height: 100px; /* altura del efecto de chocolate */
-    width: 40%; /* Ancho en porcentaje para que se ajuste */
+    height: 150px; /* altura del efecto de chocolate */
+    width: 12%; /* Ancho en porcentaje para que se ajuste */
     border-bottom-left-radius: 80%;
     border-bottom-right-radius: 80%;
     background-color: #5a2601;
 }
+/*vela de palabras*/
+.container-stick {
+    position: relative;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    margin-top: -30px; /* Ajuste de margen si es necesario */
+    top: -192px;
+}
+.word-candle {
+    /*Fuentes para las velas*/
+    font-family: "Alfa Slab One", serif;
+    font-weight: 400;
+    font-style: normal;
+    /*Estilos adicionales para las letras en forma de vela*/
+    font-size: 65px;
+    word-spacing: 10px;
+    letter-spacing: 20px;
+    color: #AD49E1;
+    text-transform: uppercase;
+    text-shadow: 2px 0px 3px rgba(0,0,0,0.5);
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+}
+.stick1-candle{
+    position: absolute;
+    top: 6px;
+    left: 10px;
+    height: 15px;
+    width: 5px;
+    background-color: #68576fc9;
+}
+.stick2-candle{
+    position: absolute;
+    top: 6px;
+    left: 39px;
+    height: 15px;
+    width: 5px;
+    background-color: #68576fc9;
+}
+.stick3-candle{
+    position: absolute;
+    top: 6px;
+    left: 84px;
+    height: 15px;
+    width: 5px;
+    background-color: #68576fc9;
+}
+.stick4-candle{
+    position: absolute;
+    top: 6px;
+    left: 150px;
+    height: 15px;
+    width: 5px;
+    background-color: #68576fc9;
+}
+.stick5-candle{
+    position: absolute;
+    top: 6px;
+    left: 190px;
+    height: 15px;
+    width: 5px;
+    background-color: #68576fc9;
+}
+.stick6-candle{
+    position: absolute;
+    top: 6px;
+    left: 238px;
+    height: 15px;
+    width: 5px;
+    background-color: #68576fc9;
+}
+.stick7-candle{
+    position: absolute;
+    top: 6px;
+    left: 266px;
+    height: 15px;
+    width: 5px;
+    background-color: #68576fc9;
+}
+.stick8-candle{
+    position: absolute;
+    top: 6px;
+    left: 357px;
+    height: 15px;
+    width: 5px;
+    background-color: #68576fc9;
+}
+.stick9-candle{
+    position: absolute;
+    top: 6px;
+    left: 386px;
+    height: 15px;
+    width: 5px;
+    background-color: #68576fc9;
+}
+.stick10-candle{
+    position: absolute;
+    top: 6px;
+    left: 433px;
+    height: 15px;
+    width: 5px;
+    background-color: #68576fc9;
+}
+.stick11-candle{
+    position: absolute;
+    top: 6px;
+    left: 498px;
+    height: 15px;
+    width: 5px;
+    background-color: #68576fc9;
+}
+.stick12-candle{
+    position: absolute;
+    top: 6px;
+    left: 538px;
+    height: 15px;
+    width: 5px;
+    background-color: #68576fc9;
+}
+.stick13-candle{
+    position: absolute;
+    top: 6px;
+    left: 586px;
+    height: 15px;
+    width: 5px;
+    background-color: #68576fc9;
+}
+.stick14-candle{
+    position: absolute;
+    top: 6px;
+    left: 614px;
+    height: 15px;
+    width: 5px;
+    background-color: #68576fc9;
+}
+/*Flama de la vela*/
+.candle-flame {
+    position: absolute;
+    top: -28px;
+    font-size: 30px;
+    color: #FFAF00;
+    filter: drop-shadow(0px 0px 19.5px #EB5B00);
+}
+.flame1{left: -3px;} .flame2{left: -650px;} .flame3{left: -636px;} .flame4{left: -600px;} .flame5{left: -590px;} .flame6{left: -571.5px;} .flame7{left: -572px;}
+.flame8{left: -512.5px;} .flame9{left: -453px;} .flame10{left: -46px;} .flame11{left: -46px;} .flame12{left: -46px;} .flame13{left: -46px;} .flame14{left: -46px;}
 /*Parte rosada del footer*/
 .part-pink{
     border-radius: 5%;

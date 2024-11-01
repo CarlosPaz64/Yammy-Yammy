@@ -1,7 +1,7 @@
 import React, { ReactNode, useEffect, useState, useRef  } from "react";
 import './Carrusel.css';
 
-//Componente del navbar
+//Componente del Carrusel 1
 const Carrusel1: React.FC<{ children?: ReactNode }> = ({ children }) => {
     const [currentIndex, setCurrentIndex] = useState(0);
     const totalSlides = 5; // Total de imágenes en el carrusel
