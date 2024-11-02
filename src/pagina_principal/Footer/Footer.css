@@ -2,15 +2,15 @@
 footer{
     position: absolute;
     bottom: 0;
-    /*padding: 1em 0;*/
+    padding: 1em 0;
     width: 100%;
     font-size: 1rem;
-    /*height: 120px;*/
+    height: 120px;
     background-color: #FDFDFD;
     text-align: center;
 }
-
-/*Parte del area del pan*/
+/*Diseño del footer en forma de pastel para la página web*/
+/*Zona del pan*/
 .bread-zone{
     position: relative;
     width: 100%;
@@ -42,7 +42,7 @@ footer{
     border-bottom-right-radius: 80%;
     background-color: #5a2601;
 }
-/*vela en forma de palabras*/
+/*Contenedor de la vela en forma de palabras*/
 .container-candle {
     position: relative;
     width: 100%;
@@ -51,6 +51,7 @@ footer{
     margin-top: -30px; /* Ajuste de margen si es necesario */
     top: -192px;
 }
+/*Vela en forma de letras */
 .word-candle {
     /*Fuentes para las velas*/
     font-family: "Alfa Slab One", serif;
@@ -63,10 +64,12 @@ footer{
     color: #AD49E1;
     text-transform: uppercase;
     text-shadow: 2px 0px 3px rgba(0,0,0,0.5);
+    user-select: none;
     position: relative;
     display: inline-flex;
     align-items: center;
 }
+/*Contenedor para la bara de la vela*/
 .container-stick{
     position: absolute;
     top: 6px;
@@ -87,12 +90,6 @@ footer{
 }
 .flame1{left: -3px;} .flame2{left: 26px;} .flame3{left: 71px;} .flame4{left: 137px;} .flame5{left: 177px;} .flame6{left: 225px;} .flame7{left: 253px;}
 .flame8{left: 344px;} .flame9{left: 373px;} .flame10{left: 420px;} .flame11{left: 485px;} .flame12{left: 525px;} .flame13{left: 573px;} .flame14{left: 602px;}
-/*Parte rosada del footer*/
-.part-pink{
-    border-radius: 6%;
-    background-color: #FFCCEA;
-    height: 50px;
-}
 @keyframes flame {
     0% {
         transform: scale(1);
@@ -108,7 +105,7 @@ footer{
         filter: drop-shadow(0px 0px 15px #FFD700);
     }
 }
-/*Compartibilidad con navegadores y dispositivos más antiguos*/
+/*Compartibilidad de animación con navegadores y dispositivos más antiguos*/
 @-webkit-keyframes flame {
     0% {
         transform: scale(1);
@@ -124,7 +121,85 @@ footer{
         filter: drop-shadow(0px 0px 15px #FFD700);
     }
 }
-
+/*Parte rosada del pastel*/
+.part-pink{
+    border-radius: 6%;
+    background-color: #FFCCEA;
+    height: 50px;
+}
+/*sección de las redes sociales*/
+.section-social{
+    display: flex;
+    margin-top: 40px;
+    margin-bottom: 5px;
+    justify-content: center;
+    align-items: center;
+} 
+.title-social{
+    position:absolute;
+    font-family: 'anton', sans-serif;
+    font-size: 2rem;
+    color: #AD49E1;
+    text-transform: uppercase;
+    background-image: linear-gradient(-250deg, #12c2e9 0%, #c471ed 50%, #f64f59 100%);
+    background-size: auto auto;
+    background-clip: border-box;
+    background-size: 200% auto;
+    -webkit-text-fill-color: transparent;
+    -webkit-background-clip: text;
+    animation: bgText 2.5s linear infinite;
+    width: 100%;
+    margin-top: -85px;
+    display: flex;
+    justify-content: center;
+}
+@keyframes bgText {
+    to{background-position: 200% center;}
+}
+@-webkit-keyframes bgText {
+    to{background-position: 200% center;}
+}
+.container-social{
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    gap: 45px;
+    margin-top: 30px;
+}
+.social-icons{
+    width: 32px;
+    height: 32px;
+    transition: margin-top 0.20s ease-out;
+}.social-icons:hover{margin-top: -30px;}
+/*Sección del slogan con Derechos reservados*/
+.section-slogan{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 25px;
+}
+.title-slogan{
+    font-family: 'anton', sans-serif;
+    font-size: 1.5rem;
+    color: #AD49E1;
+    text-transform: uppercase;
+    background-image: linear-gradient(-250deg, #12c2e9 0%, #c471ed 50%, #f64f59 100%);
+    background-size: auto auto;
+    background-clip: border-box;
+    background-size: 200% auto;
+    -webkit-text-fill-color: transparent;
+    -webkit-background-clip: text;
+    animation: bgText 2.5s linear infinite;
+    width: 100%;
+    margin-bottom: 20px;
+}
+.content-slogan{
+    font-size: 14px;
+    padding-bottom: 5px;
+    text-transform: uppercase;
+    text-align: center;
+}
+.text-slogan{color: #7f9093;}
 /*Media para tabletas*/
 @media only screen and (min-width: 768px) and (max-width: 1024px) {
     
