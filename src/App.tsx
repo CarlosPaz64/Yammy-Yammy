@@ -20,11 +20,10 @@ function App() {
   return (
     <>
       <NavBar />
-      {/*<Carrusel1 />*/}
       <Footer />
       <Routes>
         {/* Define tus rutas aquí */}
-        <Route path="/index" element={<Index />} />
+        <Route path="/" element={<Index />} />
         {/* <Route path="/menu" element={<MenuPage />} /> */}
         <Route path="/pedido" element={<Pedido />} /> 
         <Route path="/login" element={<LoginForm />} />
