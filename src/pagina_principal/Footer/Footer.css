@@ -1,13 +1,13 @@
 /*pie de página*/
 footer{
     position: absolute;
-    bottom: 0;
-    padding: 1em 0;
-    width: 100%;
-    font-size: 1rem;
-    height: 120px;
-    background-color: #FDFDFD;
     text-align: center;
+    bottom: 0;
+    width: 100%;
+    background:linear-gradient(to bottom left,#fbf6e4da, #e6ddc2, #f7eccb9d);
+    border-top-left-radius: 10%;
+    border-top-right-radius: 10%;
+    /*background-color: #FDFDFD;*/
 }
 /*Diseño del footer en forma de pastel para la página web*/
 /*Zona del pan*/
@@ -15,11 +15,12 @@ footer{
     position: relative;
     width: 100%;
     padding-top: 120px;
-    background-color: #5a2601;
+    background-color: #5E2826;
     border-top-left-radius: 32px;
     border-top-right-radius: 32px;
 }
-/*Parte del chocolate derretido*/
+/*Parte del chocolate principal derretido*/
+.main-chocolate{display: block;} .secondary-chocolate{display: none;} .tertiary-chocolate{display: none;}
 .container-chocolate {
     position: relative;
     margin-top: -1rem;
@@ -36,11 +37,11 @@ footer{
 .melted-chocolate7, .melted-chocolate8, .melted-chocolate9 {
     position: relative;
     top: 0;
-    height: 150px; /* altura del efecto de chocolate */
+    height: 170px; /* altura del efecto de chocolate */
     width: 12%; /* Ancho en porcentaje para que se ajuste */
     border-bottom-left-radius: 80%;
     border-bottom-right-radius: 80%;
-    background-color: #5a2601;
+    background-color: #5E2826;
 }
 /*Contenedor de la vela en forma de palabras*/
 .container-candle {
@@ -121,10 +122,10 @@ footer{
         filter: drop-shadow(0px 0px 15px #FFD700);
     }
 }
-/*Parte rosada del pastel*/
-.part-pink{
+/*Capa café del pastel*/
+.cake-layer{
     border-radius: 6%;
-    background-color: #FFCCEA;
+    background-color: #5E2826;
     height: 50px;
 }
 /*sección de las redes sociales*/
@@ -170,6 +171,7 @@ footer{
     width: 32px;
     height: 32px;
     transition: margin-top 0.20s ease-out;
+    user-select: none;
 }.social-icons:hover{margin-top: -30px;}
 /*Sección del slogan con Derechos reservados*/
 .section-slogan{
@@ -200,12 +202,95 @@ footer{
     text-align: center;
 }
 .text-slogan{color: #7f9093;}
+
 /*Media para tabletas*/
 @media only screen and (min-width: 768px) and (max-width: 1024px) {
-    
+    /*Parte del chocolate secundario derretido*/
+    /*Zona del pan*/
+    .bread-zone{padding-top: 80px;}
+    .main-chocolate{display: none;} .secondary-chocolate{display: block;} .tertiary-chocolate{display: none;} 
+    .container-chocolate {margin-bottom: 40px;}
+    .melted-chocolate1, .melted-chocolate2, .melted-chocolate3,
+    .melted-chocolate4, .melted-chocolate5 {
+        height: 146px; /* altura del efecto de chocolate */
+        width: 20%; /* Ancho en porcentaje para que se ajuste */
+    }
+    /*Vela en forma de letras */
+    .word-candle {font-size: 32.5px;}
+    /*Contenedor para la bara de la vela*/
+    .container-stick{
+        top: 0;
+        height: 10px;
+        width: 3px;
+    }
+    .container-stick.stick1{left:3px;} .stick2{left: 20px;} .stick3{left: 52px;} .stick4{left: 93px;} .stick5{left: 115px;} .stick6{left: 147px;} .stick7{left: 164px;}
+    .stick8{left: 232.5px;} .stick9{left: 249px;} .stick10{left: 281px;} .stick11{left: 322px;} .stick12{left: 344px;} .stick13{left: 376px;} .stick14{left: 393px;}
+    /*Flama de la vela*/
+    .candle-flame {
+        top: -20px;
+        font-size: 18px !important;
+    }
+    .flame1{left: -4px;} .flame2{left: 13px;} .flame3{left: 44.5px;} .flame4{left: 86px;} .flame5{left: 107.5px;} .flame6{left: 140px;} .flame7{left: 157px;}
+    .flame8{left: 226px;} .flame9{left: 242px;} .flame10{left: 273.5px;} .flame11{left: 315px;} .flame12{left: 337px;} .flame13{left: 369px;} .flame14{left: 386px;}
 }
 
 /*Media para teléfonos o iphones*/
 @media only screen and (max-width: 767px) {
-      
+    /*Parte del chocolate terciario derretido*/
+    /*Zona del pan*/
+    .bread-zone{padding-top: 40px;}
+    .main-chocolate{display: none;} .secondary-chocolate{display: none;} .tertiary-chocolate{display: block;}
+    .container-chocolate {margin-bottom: 40px;}
+    .melted-chocolate1, .melted-chocolate2, .melted-chocolate3 {
+        height: 106px; /* altura del efecto de chocolate */
+        width: 40%; /* Ancho en porcentaje para que se ajuste */
+    }
+    /*Contenedor de la vela en forma de palabras*/
+    .container-candle {top: -133.5px;}
+    /*Vela en forma de letras */
+    .word-candle {
+        font-size: 1rem;
+        word-spacing: 5px;
+        letter-spacing: 10px;
+    }
+    /*Contenedor para la bara de la vela*/
+    .container-stick{
+        top: 0;
+        height: 6px;
+        width: 1.5px;
+    }
+    .container-stick.stick1{left: 1px;} .stick2{left: 10px;} .stick3{left: 26px;} .stick4{left: 46px;} .stick5{left: 57px;} .stick6{left: 72px;} .stick7{left: 81px;}
+    .stick8{left: 114.2px;} .stick9{left: 123px;} .stick10{left: 139.5px;} .stick11{left: 160px;} .stick12{left: 170px;} .stick13{left: 186px;} .stick14{left: 195px;}
+    /*Flama de la vela*/
+    .candle-flame {
+        position: absolute;
+        top: -11px;
+        font-size: 10px !important;
+    }
+    .flame1{left: -3px;} .flame2{left: 6px;} .flame3{left: 22px;} .flame4{left: 42px;} .flame5{left: 53px;} .flame6{left: 68px;} .flame7{left: 77px;}
+    .flame8{left: 110px;} .flame9{left: 119px;} .flame10{left: 135.5px;} .flame11{left: 156px;} .flame12{left: 166px;} .flame13{left: 182px;} .flame14{left: 191px;}
+    /*Capa café del pastel*/
+    .cake-layer{height: 28px;}
+    /*sección de las redes sociales*/
+    .section-social{
+        margin-top: 15px;
+        margin-bottom: 0;
+    }
+    .title-social{
+        font-size: 100%;
+        margin-top: -55px;
+    }
+    .container-social{
+        gap: 35px;
+        margin-top: 30px;
+    }
+    .social-icons{
+        width: 22px;
+        height: 22px;
+    }
+    /*Sección del slogan con Derechos reservados*/
+    .section-slogan{margin-top: 25px;}
+    .title-slogan{font-size: 100%;}
+    .content-slogan{font-size: 65%;}
+    .social-icons:hover{margin-top: -10px;}
 }

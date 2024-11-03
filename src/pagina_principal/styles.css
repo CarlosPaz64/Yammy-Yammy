@@ -38,7 +38,7 @@ body{
   position: relative;/*Se coloca para posicionar el footer en la parte inferior de la página*/
   background:linear-gradient(to bottom right,#EEEEEE,#F9F9F9, #E7E7E7);
   min-height: 100vh;
-  padding-bottom: 500px; /*Deja un espaciado entre el contenido de la página y el footer(pie de página)*/
+  padding-bottom: 650px; /*Deja un espaciado entre el contenido de la página y el footer(pie de página)*/
   overflow-x: hidden;
 }
 
