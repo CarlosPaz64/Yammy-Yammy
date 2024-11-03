@@ -1,124 +1,198 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useForm } from 'react-hook-form';
-import { z, ZodError, ZodIssue } from 'zod';
+import { z } from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
+import CryptoJS from 'crypto-js';
 import './Pedidos.css';
 
 const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:3000';
+const SECRET_KEY = 'tu_clave_secreta';
 
-// Esquema de validación con Zod
 const schema = z.object({
   categoria: z.string().nonempty({ message: "Selecciona una categoría" }),
-  descripcion: z.string().min(10, { message: "La descripción debe tener al menos 10 caracteres" }),
+  descripcion_orden: z.string().min(10, { message: "La descripción debe tener al menos 10 caracteres" }),
+  opcion_entrega: z.enum(['domicilio', 'recoger']),
+  calle: z.string().optional(),
+  numero_exterior: z.string().optional(),
+  numero_interior: z.string().optional(),
+  colonia: z.string().optional(),
+  ciudad: z.string().optional(),
+  codigo_postal: z.string().optional(),
+  descripcion_ubicacion: z.string().optional(),
+  numero_telefono: z.string().optional(),
+  tipo_tarjeta: z.string(),
+  numero_tarjeta: z.string().min(16).max(16),
+  fecha_tarjeta: z.string().regex(/^(0[1-9]|1[0-2])\/[0-9]{2}$/),
+  cvv: z.string().min(3).max(3),
 });
 
 type FormData = z.infer<typeof schema>;
 
 const Pedido: React.FC = () => {
-  const { register, handleSubmit, formState: { errors }, setError } = useForm<FormData>({
+  const { register, handleSubmit, formState: { errors }, setValue, watch } = useForm<FormData>({
     resolver: zodResolver(schema),
   });
 
   const [imagenes, setImagenes] = useState<File[]>([]);
+  const [opcionEntrega, setOpcionEntrega] = useState<string>('domicilio');
+  const [isLoading, setIsLoading] = useState(true);
+  const [colonias, setColonias] = useState<string[]>([]); // Estado para almacenar las colonias
+  const codigoPostal = watch('codigo_postal'); // Observa cambios en el código postal
 
-  // Cargar imágenes
+  // Desencriptar datos
+  const desencriptarDato = (dato: string) => {
+    const bytes = CryptoJS.AES.decrypt(dato, SECRET_KEY);
+    return bytes.toString(CryptoJS.enc.Utf8);
+  };
+
+  // Obtener datos del cliente al cargar el componente
+  useEffect(() => {
+    const fetchClienteData = async () => {
+      const userId = localStorage.getItem('userId');
+      if (!userId) return;
+
+      try {
+        const response = await fetch(`${API_URL}/api/cliente/${userId}`);
+        const data = await response.json();
+
+        setValue('calle', data.calle);
+        setValue('numero_exterior', data.numero_exterior);
+        setValue('numero_interior', data.numero_interior);
+        setValue('colonia', data.colonia);
+        setValue('ciudad', data.ciudad);
+        setValue('codigo_postal', data.codigo_postal);
+        setValue('descripcion_ubicacion', data.descripcion_ubicacion);
+        setValue('numero_telefono', data.numero_telefono);
+
+        setValue('tipo_tarjeta', desencriptarDato(data.tipo_tarjeta));
+        setValue('numero_tarjeta', desencriptarDato(data.numero_tarjeta));
+        setValue('fecha_tarjeta', desencriptarDato(data.fecha_tarjeta));
+        setValue('cvv', desencriptarDato(data.cvv));
+      } catch (error) {
+        console.error('Error al obtener los datos del cliente:', error);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    fetchClienteData();
+  }, [setValue]);
+
+  // Llama a la API cuando cambia el código postal
+  useEffect(() => {
+    const fetchCityAndColonies = async () => {
+      if (codigoPostal && codigoPostal.length === 5) {
+        try {
+          const response = await fetch(`${API_URL}/api/codigo-postal/${codigoPostal}`);
+          const data = await response.json();
+
+          setValue('ciudad', data.ciudad); // Establece la ciudad como un valor fijo
+          setColonias(data.colonias); // Actualiza las opciones del select de colonias
+        } catch (error) {
+          console.error('Error al obtener ciudad y colonias:', error);
+        }
+      }
+    };
+
+    fetchCityAndColonies();
+  }, [codigoPostal, setValue]);
+
   const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files) {
-      setImagenes(Array.from(e.target.files).slice(0, 2)); // Limitar a dos imágenes
+      setImagenes(Array.from(e.target.files).slice(0, 2));
     }
   };
 
   const onSubmit = async (data: FormData) => {
     try {
-      // Obtener user_id y token del almacenamiento local
       const userId = localStorage.getItem('userId');
       const token = localStorage.getItem('token');
+      if (!userId || !token) return alert('Por favor, inicie sesión para continuar.');
 
-      if (!userId || !token) {
-        alert('Por favor, inicie sesión para continuar.');
-        return;
-      }
-
-      // Crear FormData y agregar datos
+      const pedidoData = { client_id: userId, token, ...data };
+      const encryptedData = CryptoJS.AES.encrypt(JSON.stringify(pedidoData), SECRET_KEY).toString();
       const formData = new FormData();
-      formData.append('client_id', userId);
-      formData.append('token', token);
-      formData.append('categoria', data.categoria);
-      formData.append('descripcion', data.descripcion);
-      formData.append('opcion_entrega', 'domicilio'); // Aquí puedes hacer dinámica la opción de entrega
+      formData.append('encryptedData', encryptedData);
 
-      // Agregar imágenes al FormData
-      imagenes.forEach((imagen, index) => {
-        formData.append(`imagenes`, imagen);
+      imagenes.forEach((imagen) => {
+        formData.append('imagenes', imagen);
       });
 
       const response = await fetch(`${API_URL}/api/pedido-personalizado`, {
         method: 'POST',
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
+        headers: { Authorization: `Bearer ${token}` },
         body: formData,
       });
 
-      if (!response.ok) {
-        const errorData = await response.json();
-        throw new Error(errorData.message || 'Error al enviar el pedido');
-      }
+      if (!response.ok) throw new Error((await response.json()).message);
 
       alert('Pedido realizado exitosamente');
     } catch (error: any) {
-      if (error instanceof ZodError) {
-        error.issues.forEach((issue: ZodIssue) => {
-          setError(issue.path[0] as keyof FormData, {
-            type: 'manual',
-            message: issue.message,
-          });
-        });
-      } else {
-        console.error('Error al enviar el pedido:', error);
-        alert(error.message || 'Error al enviar el pedido');
-      }
+      console.error('Error al enviar el pedido:', error);
+      alert(error.message || 'Error al enviar el pedido');
     }
   };
 
-  return (
+  return isLoading ? (
+    <p>Cargando...</p>
+  ) : (
     <div className='container-pedido'>
       <form onSubmit={handleSubmit(onSubmit)}>
         <div className="container-title"><h1>Haz un Pedido</h1></div>
 
-        <div>
-          <label htmlFor="categoria">Selecciona el postre deseado:</label>
-          <select {...register('categoria')} id="categoria">
-            <option value="">-- Selecciona --</option>
-            <option value="Postres">Postres</option>
-            <option value="Pasteles">Pasteles</option>
-            <option value="Brownies">Brownies</option>
-            <option value="Galletas">Galletas</option>
-          </select>
-          {errors.categoria && <span>{errors.categoria.message}</span>}
-        </div>
+        <label htmlFor="categoria">Selecciona el postre deseado:</label>
+        <select {...register('categoria')} id="categoria">
+          <option value="">-- Selecciona --</option>
+          <option value="Postres">Postres</option>
+          <option value="Pasteles">Pasteles</option>
+          <option value="Brownies">Brownies</option>
+          <option value="Galletas">Galletas</option>
+        </select>
+        {errors.categoria && <span>{errors.categoria.message}</span>}
 
-        <div>
-          <label htmlFor="descripcion">Descripción:</label>
-          <textarea
-            {...register('descripcion')}
-            id="descripcion"
-            rows={6}
-            placeholder="Describe tu pedido..."
-          />
-          {errors.descripcion && <span>{errors.descripcion.message}</span>}
-        </div>
+        <label htmlFor="descripcion">Descripción:</label>
+        <textarea {...register('descripcion_orden')} id="descripcion_orden" rows={6} placeholder="Describe tu pedido..." />
+        {errors.descripcion_orden && <span>{errors.descripcion_orden.message}</span>}
 
-        <div>
-          <label htmlFor="imagenes">Subir imágenes de referencia (máximo 2):</label>
-          <input
-            type="file"
-            id="imagenes"
-            multiple
-            accept="image/*"
-            onChange={handleImageChange}
-          />
-        </div>
+        <label>Opción de Entrega:</label>
+        <select {...register('opcion_entrega')} onChange={(e) => setOpcionEntrega(e.target.value)}>
+          <option value="domicilio">Domicilio</option>
+          <option value="recoger">Recoger en tienda</option>
+        </select>
+        {errors.opcion_entrega && <span>{errors.opcion_entrega.message}</span>}
+
+        {opcionEntrega === 'domicilio' && (
+          <>
+            <h3>Dirección de Entrega</h3>
+            <input {...register('calle')} placeholder="Calle" />
+            <input {...register('numero_exterior')} placeholder="Número Exterior" />
+            <input {...register('numero_interior')} placeholder="Número Interior" />
+            <select {...register('colonia')}>
+              {colonias.map((colonia, index) => (
+                <option key={index} value={colonia}>
+                  {colonia}
+                </option>
+              ))}
+            </select>
+            <input {...register('ciudad')} placeholder="Ciudad" disabled />
+            <input {...register('codigo_postal')} placeholder="Código Postal" />
+            <input {...register('descripcion_ubicacion')} placeholder="Descripción Ubicación" />
+            <input {...register('numero_telefono')} placeholder="Teléfono" />
+          </>
+        )}
+
+        <h3>Método de Pago</h3>
+        <select {...register('tipo_tarjeta')}>
+          <option value="Visa">Visa</option>
+          <option value="MasterCard">MasterCard</option>
+          <option value="American Express">American Express</option>
+        </select>
+        <input {...register('numero_tarjeta')} placeholder="Número de Tarjeta" />
+        <input {...register('fecha_tarjeta')} placeholder="Fecha (MM/YY)" />
+        <input {...register('cvv')} placeholder="CVV" />
+
+        <label htmlFor="imagenes">Subir imágenes de referencia (máximo 2):</label>
+        <input type="file" id="imagenes" multiple accept="image/*" onChange={handleImageChange} />
 
         <button type="submit">Hacer Pedido</button>
       </form>

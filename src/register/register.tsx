@@ -15,7 +15,7 @@ interface IFormInput {
   colonia: string;
   ciudad: string;
   codigo_postal: string;
-  descripcion: string;
+  descripcion_ubicacion: string;
   tipo_tarjeta: 'Visa' | 'MasterCard' | 'American Express';
   numero_tarjeta: string;
   fecha_tarjeta: string;
@@ -174,7 +174,7 @@ const RegisterForm: React.FC = () => {
 
       <div>
         <label>Descripción</label>
-        <textarea {...register('descripcion')} />
+        <textarea {...register('descripcion_ubicacion')} />
       </div>
 
       {mostrarCampos && (
