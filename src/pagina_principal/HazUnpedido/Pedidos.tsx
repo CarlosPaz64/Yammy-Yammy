@@ -12,6 +12,7 @@ const schema = z.object({
   categoria: z.string().nonempty({ message: "Selecciona una categoría" }),
   descripcion_orden: z.string().min(10, { message: "La descripción debe tener al menos 10 caracteres" }),
   opcion_entrega: z.enum(['domicilio', 'recoger']),
+  cantidad: z.number().min(1, { message: "Cantidad mínima es 1" }),
   calle: z.string().optional(),
   numero_exterior: z.string().optional(),
   numero_interior: z.string().optional(),
@@ -31,13 +32,18 @@ type FormData = z.infer<typeof schema>;
 const Pedido: React.FC = () => {
   const { register, handleSubmit, formState: { errors }, setValue, watch } = useForm<FormData>({
     resolver: zodResolver(schema),
+    defaultValues: { cantidad: 1 },
   });
 
   const [imagenes, setImagenes] = useState<File[]>([]);
   const [opcionEntrega, setOpcionEntrega] = useState<string>('domicilio');
+  const [precio, setPrecio] = useState<number>(100); // Precio inicial
   const [isLoading, setIsLoading] = useState(true);
   const [colonias, setColonias] = useState<string[]>([]); // Estado para almacenar las colonias
   const codigoPostal = watch('codigo_postal'); // Observa cambios en el código postal
+  const categoria = watch('categoria');
+  const ciudad = watch('ciudad');
+  const cantidad = watch('cantidad');
 
   // Desencriptar datos
   const desencriptarDato = (dato: string) => {
@@ -97,6 +103,14 @@ const Pedido: React.FC = () => {
     fetchCityAndColonies();
   }, [codigoPostal, setValue]);
 
+  // Calcular el precio en función de la cantidad, categoría y ciudad
+  useEffect(() => {
+    let precioBase = 100; // Precio base por categoría
+    const costoEnvio = ciudad === 'Mérida' ? 50 : ciudad === 'Progreso' ? 75 : ciudad === 'Umán' ? 80 : ciudad === 'Kanasín' ? 85 : 0;
+    const totalPrecio = (precioBase * (cantidad || 1)) + costoEnvio;
+    setPrecio(totalPrecio);
+  }, [categoria, ciudad, cantidad]);
+
   const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files) {
       setImagenes(Array.from(e.target.files).slice(0, 2));
@@ -109,7 +123,7 @@ const Pedido: React.FC = () => {
       const token = localStorage.getItem('token');
       if (!userId || !token) return alert('Por favor, inicie sesión para continuar.');
 
-      const pedidoData = { client_id: userId, token, ...data };
+      const pedidoData = { client_id: userId, token, ...data, cantidad, precio };
       const encryptedData = CryptoJS.AES.encrypt(JSON.stringify(pedidoData), SECRET_KEY).toString();
       const formData = new FormData();
       formData.append('encryptedData', encryptedData);
@@ -150,9 +164,15 @@ const Pedido: React.FC = () => {
         </select>
         {errors.categoria && <span>{errors.categoria.message}</span>}
 
-        <label htmlFor="descripcion">Descripción:</label>
+        <label htmlFor="descripcion_orden">Descripción:</label>
         <textarea {...register('descripcion_orden')} id="descripcion_orden" rows={6} placeholder="Describe tu pedido..." />
         {errors.descripcion_orden && <span>{errors.descripcion_orden.message}</span>}
+
+        <label>Cantidad:</label>
+        <input type="number" {...register('cantidad', { valueAsNumber: true })} min={1} />
+
+        <label>Precio:</label>
+        <input type="text" value={`$${precio}`} readOnly />
 
         <label>Opción de Entrega:</label>
         <select {...register('opcion_entrega')} onChange={(e) => setOpcionEntrega(e.target.value)}>
