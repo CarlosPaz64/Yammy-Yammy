@@ -1,6 +1,7 @@
 import React from 'react';
 import './concenos.css';
 import cuartoBanner from './video/pastel.png'; // Importa la imagen
+import videoYammy from './video/ssstik.io_1730578422162.mp4'; // Asegúrate de cambiar 'tu-video.mp4' al nombre de tu video
 
 const Conocenos: React.FC = () => {
   return (
@@ -15,6 +16,11 @@ const Conocenos: React.FC = () => {
           La experiencia de comprar en Yammy-Yammy es súper fácil. Con solo un clic, puedes elegir lo que quieras desde la comodidad de tu casa, y nosotros nos encargamos del resto. Queremos que disfrutes cada bocado y que cada postre te haga sonreír.
           Así que, ya sea que estés planeando una fiesta o simplemente te apetezca algo dulce, aquí en Yammy-Yammy tenemos lo que buscas. ¡Explora nuestro menú y déjanos ser parte de tus momentos más dulces!
         </p>
+        {/* Añade el video aquí */}
+        <video width="100%" controls>
+          <source src={videoYammy} type="video/mp4" />
+          Tu navegador no soporta la reproducción de video.
+        </video>
       </section>
 
       <section className="section">
@@ -62,4 +68,3 @@ const Conocenos: React.FC = () => {
 };
 
 export default Conocenos;
-

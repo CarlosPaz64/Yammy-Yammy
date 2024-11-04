@@ -25,11 +25,13 @@ p {
 }
 
 .bannerImage {
-  width: 100%; /* Ocupa el 100% del ancho del contenedor */
+  max-width: 100%; /* Asegúrate de que la imagen no se desborde */
   height: auto; /* Mantiene la proporción de la imagen */
-  max-width: 800px; /* Establece un ancho máximo para la imagen */
-  margin: 20px auto; /* Centra la imagen horizontalmente */
-  display: block; /* Asegura que la imagen se trate como un bloque para centrarla */
-  border-radius: 10px; /* Bordes redondeados para un efecto más suave */
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Añade una sombra sutil a la imagen */
+  margin: 20px 0; /* Espaciado alrededor de la imagen */
+}
+
+video {
+  max-width: 100%; /* Asegúrate de que el video no se desborde */
+  height: 500px; /* Mantiene la proporción del video */
+  margin: 20px 0; /* Espaciado alrededor del video */
 }
