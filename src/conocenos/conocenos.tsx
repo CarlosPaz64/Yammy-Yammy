@@ -1,5 +1,6 @@
 import React from 'react';
 import './concenos.css';
+import cuartoBanner from './video/CuartoBanner.png'; // Importa la imagen
 
 const Conocenos: React.FC = () => {
   return (
@@ -14,25 +15,30 @@ const Conocenos: React.FC = () => {
           La experiencia de comprar en Yammy-Yammy es súper fácil. Con solo un clic, puedes elegir lo que quieras desde la comodidad de tu casa, y nosotros nos encargamos del resto. Queremos que disfrutes cada bocado y que cada postre te haga sonreír.
           Así que, ya sea que estés planeando una fiesta o simplemente te apetezca algo dulce, aquí en Yammy-Yammy tenemos lo que buscas. ¡Explora nuestro menú y déjanos ser parte de tus momentos más dulces!
         </p>
-        <div className="videoContainer">
-          <video width="100%" controls>
-            <source src="https://drive.google.com/file/d/1dx0P-fWCpBM2HmBsQKhkSLcwnd5SKhAc/view?usp=drive_link" type="video/mp4" />
-            Tu navegador no soporta la etiqueta de video.
-          </video>
-        </div>
+        
+        {/* Añade la imagen aquí */}
+        <img src={cuartoBanner} alt="Deliciosos postres de Yammy-Yammy" className="bannerImage" />
       </section>
 
       <section className="section">
         <h3>Misión</h3>
         <p>
-          Somos una empresa que quiere endulzar los momentos especiales de nuestros clientes, ofreciendo postres de alta calidad, siempre frescos y llenos de sabor. Nosotros buscamos que cada experiencia de nuestros clientes sea única y accesible, brindando un servicio rápido y eficiente de alta calidad desde nuestra tienda online y directo a la comodidad de tu casa. Buscamos ser tu opción número uno cuando pienses en consentirte o en hacer de una celebración algo inolvidable.
+          Somos una empresa que quiere endulzar los momentos especiales de nuestros clientes, ofreciendo postres 
+          de alta calidad, siempre frescos y llenos de sabor. Buscamos que cada experiencia de nuestros 
+          clientes sea única y accesible, brindando un servicio rápido y eficiente de alta calidad desde nuestra 
+          tienda online y directo a la comodidad de tu casa. Buscamos ser tu opción número uno cuando pienses en 
+          consentirte o en hacer de una celebración algo inolvidable.
         </p>
       </section>
-
+      
       <section className="section">
         <h3>Visión</h3>
         <p>
-          Buscamos convertirnos en la pastelería más reconocida y querida de Mérida, Yucatán, y más allá. Aspiramos a ser el destino preferido para aquellos que buscan postres excepcionales, innovadores y accesibles. Queremos inspirar momentos de alegría y celebración a través de nuestros productos, siempre comprometidos con la calidad, la creatividad y un servicio al cliente excepcional. A través de nuestra tienda online buscamos llegar a más personas y hacer que disfrutar de algo dulce sea fácil y satisfactorio.
+          Buscamos convertirnos en la pastelería más reconocida y querida de Mérida, Yucatán, y más allá. Aspiramos 
+          a ser el destino preferido para aquellos que buscan postres excepcionales, innovadores y accesibles. 
+          Queremos inspirar momentos de alegría y celebración a través de nuestros productos, siempre comprometidos 
+          con la calidad, la creatividad y un servicio al cliente excepcional. A través de nuestra tienda online 
+          buscamos llegar a más personas y hacer que disfrutar de algo dulce sea fácil y satisfactorio.
         </p>
       </section>
 
@@ -57,3 +63,4 @@ const Conocenos: React.FC = () => {
 };
 
 export default Conocenos;
+

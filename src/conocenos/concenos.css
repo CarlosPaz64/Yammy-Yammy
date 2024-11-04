@@ -1,6 +1,6 @@
 .conocenosContainer {
   max-width: 1000px; /* Aumenta el ancho máximo del contenedor */
-  margin: 30px 0 30px 0; /* Elimina el centrado, usa solo margen superior e inferior */
+  margin: 30px 0; /* Elimina el centrado, usa solo margen superior e inferior */
   padding: 30px; /* Aumenta el padding interno */
   background: linear-gradient(to bottom, #FFD0EC, #F9F9F9, #96C9F4);
   border-radius: 8px;
@@ -8,7 +8,6 @@
   display: flex;
   flex-direction: column;
 }
-
 
 h2 {
   text-align: center;
@@ -24,29 +23,13 @@ p {
   line-height: 1.6;
   text-align: justify;
 }
-.conocenosContainer {
-  max-width: 1000px; /* Aumenta el ancho máximo del contenedor */
-  margin: 30px 0 30px 0; /* Elimina el centrado, usa solo margen superior e inferior */
-  padding: 30px; /* Aumenta el padding interno */
-  background: linear-gradient(to bottom, #FFD0EC, #F9F9F9, #96C9F4);
-  border-radius: 8px;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-  display: flex;
-  flex-direction: column;
-}
 
-
-h2 {
-  text-align: center;
-  color: #333;
-}
-
-h3 {
-  color: #007BFF;
-}
-
-p {
-  color: #555;
-  line-height: 1.6;
-  text-align: justify;
+.bannerImage {
+  width: 100%; /* Ocupa el 100% del ancho del contenedor */
+  height: auto; /* Mantiene la proporción de la imagen */
+  max-width: 800px; /* Establece un ancho máximo para la imagen */
+  margin: 20px auto; /* Centra la imagen horizontalmente */
+  display: block; /* Asegura que la imagen se trate como un bloque para centrarla */
+  border-radius: 10px; /* Bordes redondeados para un efecto más suave */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Añade una sombra sutil a la imagen */
 }
