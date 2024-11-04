@@ -41,7 +41,7 @@ const Conocenos: React.FC = () => {
       {/* Sección de ubicación */}
       <section className="section">
         <h3>Ubicación</h3>
-        <p>Mérida, Yucatán, México</p>
+        <p>C. 22 101B, Chuminópolis, 97158 Mérida, Yuc., México</p>
         <div className="mapContainer">
           <iframe
             title="Ubicación de Yamy-Yamy"
