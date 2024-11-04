@@ -1,4 +1,17 @@
-
+.container-clip{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
+    width: 100vw;
+    height: 100vh;
+}
+.index-clip{
+    width: 100vw;
+    height: 82vh;
+    min-width: 100vw; /* Esto asegurará que ocupe el ancho completo */
+    object-fit: cover; /* Cubre el área del contenedor y recorta los lados */
+}
 
 /*Media para tabletas/laptops*/
 @media only screen and (min-width: 768px) and (max-width: 1024px) {

@@ -10,9 +10,9 @@ const Index: React.FC<{ children?: ReactNode }> = ({ children }) => {
                 <Carrusel1></Carrusel1>
                 <h1> AQUI VA OTRO Carrusel</h1>
                 {/*Video decoración de pastel YAMY YAMY*/}
-                <center>
-                    <video src="http://localhost:3000/assets/clips/preparacion1.mp4" width="100%" height="600" autoPlay muted loop disablePictureInPicture></video>
-                </center>
+                <div className="container-clip">
+                    <video src="http://localhost:3000/assets/clips/preparacion1.mp4" className="index-clip" autoPlay muted loop disablePictureInPicture></video>
+                </div>
             {children}
         </>
     )
