@@ -81,16 +81,16 @@ const Footer: React.FC<{ children?: ReactNode }> = ({ children }) => {
                     {/*Redes sociales de la Repostería*/}
                     <h2 className="title-social">Siguenos</h2>
                     <div className="container-social">
-                        <a href="https://www.facebook.com/profile.php?id=100090051422438" target="_blank" rel="noopener" aria-label="Síguenos en Facebook">
+                        <a href="https://www.facebook.com/profile.php?id=100090051422438" target="_blank" rel="noopener noreferrer" aria-label="Síguenos en Facebook">
                             <img src="http://localhost:3000/assets/img-social/Simple_Icons/facebook.svg" alt="Facebook" className="social-icons" />
                         </a>
-                        <a href="https://www.instagram.com/yamy_postres?utm_source=ig_web_button_share_sheet&igsh=ZDNlZDc0MzIxNw==" target="_blank" rel="noopener" aria-label="Síguenos en Instagram">
+                        <a href="https://www.instagram.com/yamy_postres?utm_source=ig_web_button_share_sheet&igsh=ZDNlZDc0MzIxNw==" target="_blank" rel="noopener noreferrer" aria-label="Síguenos en Instagram">
                             <img src="http://localhost:3000/assets/img-social/Simple_Icons/instagram.svg" alt="Instagram" className="social-icons" />
                         </a>
-                        <a href="https://www.tiktok.com/@yamyyamyp?is_from_webapp=1&sender_device=pc" target="_blank" rel="noopener" aria-label="Síguenos en Tiktok">
+                        <a href="https://www.tiktok.com/@yamyyamyp?is_from_webapp=1&sender_device=pc" target="_blank" rel="noopener noreferrer" aria-label="Síguenos en Tiktok">
                             <img src="http://localhost:3000/assets/img-social/Simple_Icons/tiktok.svg" alt="Tiktok" className="social-icons" />
                         </a>
-                        <a href="mailto:yamygomez.19@gmail.comsubject=Obtener más información" target="_blank" rel="noopener" aria-label="Síguenos en Gmail">
+                        <a href="mailto:yamygomez.19@gmail.comsubject=Obtener más información" target="_blank" rel="noopener noreferrer" aria-label="Síguenos en Gmail">
                             <img src="http://localhost:3000/assets/img-social/Simple_Icons/gmail.svg" alt="Gmail" className="social-icons" />
                         </a>
                     </div>

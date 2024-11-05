@@ -1,15 +1,37 @@
+/*Estilos de la sección del index*/
+.section-index{
+    padding: 40px 0 40px 0;
+    margin: 30px 0 0 0;
+    background:linear-gradient(to top right, #cee5fa 30%, #fbdfff)
+}
+.container-btnIndex{
+    display: flex;
+    justify-content: center;
+    text-align: center;
+    align-items: center;
+}
+.btn-index{
+    text-decoration: none;
+    border-radius: 12px;
+    padding: 0 10px 0 10px;
+    font-size: 150%;
+    color: white;
+    background-color: rgb(184, 34, 7);
+}
+/*Estilo para el video en forma de banner*/
 .container-clip{
     display: flex;
     justify-content: center;
     align-items: center;
     overflow: hidden;
-    width: 100vw;
-    height: 100vh;
+    /*Vista desde el contenedor o contorno del video*/
+    width: 100%; /*Ocupa todo el ancho de la página el video*/
+    height: 55vw; /*Ocupa que tan alto quieres que se vea el cuadro del video a lo ancho de la pantalla*/
 }
 .index-clip{
-    width: 100vw;
-    height: 82vh;
-    min-width: 100vw; /* Esto asegurará que ocupe el ancho completo */
+    /*Vista desde el propio video*/
+    height:75%; /*Altura de visualización del video*/
+    min-width: 100vw; /* Esto asegurará que ocupe el ancho completo en la página junto con object-fit:cover */
     object-fit: cover; /* Cubre el área del contenedor y recorta los lados */
 }
 
