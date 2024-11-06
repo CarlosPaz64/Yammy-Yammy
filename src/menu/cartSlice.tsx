@@ -66,19 +66,30 @@ export const removeFromCartAsync = createAsyncThunk(
   }
 );
 
+// Thunk para incrementar la cantidad de un producto y actualizar en el backend
+export const incrementQuantityAsync = createAsyncThunk(
+  'cart/incrementQuantityAsync',
+  async ({ carrito_id, productId }: { carrito_id: number; productId: number }) => {
+    const token = localStorage.getItem('authToken');
+    const cantidad = 1; // Incrementar en 1
+
+    // Enviar solicitud para actualizar la cantidad en el carrito y reducir el stock en el backend
+    await axiosInstance.post('/carrito/add-product', {
+      carrito_id,
+      product_id: productId,
+      cantidad,
+      token
+    });
+
+    return { productId, cantidad };
+  }
+);
+
 // Slice del carrito
 const cartSlice = createSlice({
   name: 'cart',
   initialState,
   reducers: {
-    incrementQuantity: (state, action) => {
-      const productId = action.payload;
-      const item = state.items.find((item) => item.product_id === productId);
-      if (item) {
-        item.quantity += 1;
-        state.totalItems += 1;
-      }
-    },
     clearCart: (state) => {
       state.items = [];
       state.totalItems = 0;
@@ -104,10 +115,17 @@ const cartSlice = createSlice({
           state.totalItems -= state.items[itemIndex].quantity;
           state.items.splice(itemIndex, 1);
         }
+      })
+      .addCase(incrementQuantityAsync.fulfilled, (state, action) => {
+        const { productId, cantidad } = action.payload;
+        const item = state.items.find((item) => item.product_id === productId);
+        if (item) {
+          item.quantity += cantidad;
+          state.totalItems += cantidad;
+        }
       });
   },
 });
-
 
 // Middleware para sincronizar el carrito con localStorage
 export const syncCartToLocalStorage = (store: any) => (next: any) => (action: any) => {
@@ -118,8 +136,7 @@ export const syncCartToLocalStorage = (store: any) => (next: any) => (action: an
 };
 
 // Exportar las acciones y el middleware
-export const { clearCart, incrementQuantity } = cartSlice.actions;
+export const { clearCart } = cartSlice.actions;
 export const selectTotalItems = (state: RootState) => state.cart.totalItems;
 
 export default cartSlice.reducer;
-

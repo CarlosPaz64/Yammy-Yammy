@@ -1,7 +1,7 @@
 import React from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { RootState, AppDispatch } from './store';
-import { removeFromCartAsync, incrementQuantity } from './cartSlice';
+import { removeFromCartAsync, incrementQuantityAsync } from './cartSlice';
 
 const CartPage: React.FC = () => {
   const cartItems = useSelector((state: RootState) => state.cart.items);
@@ -12,7 +12,8 @@ const CartPage: React.FC = () => {
   };
 
   const handleIncrementQuantity = (productId: number) => {
-    dispatch(incrementQuantity(productId));
+    const carrito_id = 1; // Asegúrate de usar el carrito_id correcto
+    dispatch(incrementQuantityAsync({ carrito_id, productId }));
   };
 
   return (
