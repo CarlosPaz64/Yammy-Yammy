@@ -1,14 +1,18 @@
 import React from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { RootState, AppDispatch } from './store';
-import { removeFromCartAsync } from './cartSlice';
+import { removeFromCartAsync, incrementQuantity } from './cartSlice';
 
 const CartPage: React.FC = () => {
   const cartItems = useSelector((state: RootState) => state.cart.items);
   const dispatch = useDispatch<AppDispatch>();
 
   const handleRemoveItem = (productId: number) => {
-    dispatch(removeFromCartAsync(productId)); 
+    dispatch(removeFromCartAsync(productId));
+  };
+
+  const handleIncrementQuantity = (productId: number) => {
+    dispatch(incrementQuantity(productId));
   };
 
   return (
@@ -32,6 +36,7 @@ const CartPage: React.FC = () => {
               <td>${(Number(item.precio) || 0).toFixed(2)}</td>
               <td>${((Number(item.precio) || 0) * item.quantity).toFixed(2)}</td>
               <td>
+                <button onClick={() => handleIncrementQuantity(item.product_id)}>Agregar</button>
                 <button onClick={() => handleRemoveItem(item.product_id)}>Eliminar</button>
               </td>
             </tr>

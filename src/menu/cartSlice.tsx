@@ -71,6 +71,14 @@ const cartSlice = createSlice({
   name: 'cart',
   initialState,
   reducers: {
+    incrementQuantity: (state, action) => {
+      const productId = action.payload;
+      const item = state.items.find((item) => item.product_id === productId);
+      if (item) {
+        item.quantity += 1;
+        state.totalItems += 1;
+      }
+    },
     clearCart: (state) => {
       state.items = [];
       state.totalItems = 0;
@@ -100,6 +108,7 @@ const cartSlice = createSlice({
   },
 });
 
+
 // Middleware para sincronizar el carrito con localStorage
 export const syncCartToLocalStorage = (store: any) => (next: any) => (action: any) => {
   const result = next(action);
@@ -108,7 +117,9 @@ export const syncCartToLocalStorage = (store: any) => (next: any) => (action: an
   return result;
 };
 
-export const { clearCart } = cartSlice.actions;
+// Exportar las acciones y el middleware
+export const { clearCart, incrementQuantity } = cartSlice.actions;
 export const selectTotalItems = (state: RootState) => state.cart.totalItems;
 
 export default cartSlice.reducer;
+
