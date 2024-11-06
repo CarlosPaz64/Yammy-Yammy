@@ -36,21 +36,20 @@ export const addToCartAsync = createAsyncThunk(
   'cart/addToCartAsync',
   async (product: Producto) => {
     const token = localStorage.getItem('authToken');
-    
+
     // Enviar solicitud para agregar el producto al carrito
-    const response = await axiosInstance.post('/carrito/add-product', {
+    await axiosInstance.post('/carrito/add-product', {
       carrito_id: 1,
       product_id: product.product_id,
       cantidad: 1,
       token
     });
 
-    return response.data; // Asumimos que esto devuelve el producto con cantidad actualizada en el carrito
+    return { ...product, quantity: 1 }; // Retorna el producto con cantidad 1 para añadir al carrito
   }
 );
 
 // Thunk para eliminar el producto del carrito sin afectar el stock
-
 export const removeFromCartAsync = createAsyncThunk(
   'cart/removeFromCartAsync',
   async (carritoProductoId: number) => {
@@ -66,7 +65,6 @@ export const removeFromCartAsync = createAsyncThunk(
     return carritoProductoId;
   }
 );
-
 
 // Slice del carrito
 const cartSlice = createSlice({
@@ -95,7 +93,6 @@ const cartSlice = createSlice({
         const productId = action.payload;
         const itemIndex = state.items.findIndex((item) => item.product_id === productId);
         if (itemIndex >= 0) {
-          // Eliminar el producto del carrito sin afectar el stock
           state.totalItems -= state.items[itemIndex].quantity;
           state.items.splice(itemIndex, 1);
         }

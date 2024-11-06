@@ -1,7 +1,7 @@
 import React from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { RootState, AppDispatch } from './store';
-import { removeFromCartAsync } from './cartSlice'; // Asegúrate de importar removeFromCartAsync
+import { removeFromCartAsync } from './cartSlice';
 
 const CartPage: React.FC = () => {
   const cartItems = useSelector((state: RootState) => state.cart.items);
@@ -19,7 +19,7 @@ const CartPage: React.FC = () => {
           <tr>
             <th>Producto</th>
             <th>Cantidad</th>
-            <th>Precio</th>
+            <th>Precio Unitario</th>
             <th>Total</th>
             <th>Acciones</th>
           </tr>
@@ -29,8 +29,8 @@ const CartPage: React.FC = () => {
             <tr key={item.product_id}>
               <td>{item.nombre_producto}</td>
               <td>{item.quantity}</td>
-              <td>${item.precio}</td>
-              <td>${(item.precio as number) * item.quantity}</td>
+              <td>${(Number(item.precio) || 0).toFixed(2)}</td>
+              <td>${((Number(item.precio) || 0) * item.quantity).toFixed(2)}</td>
               <td>
                 <button onClick={() => handleRemoveItem(item.product_id)}>Eliminar</button>
               </td>
@@ -38,6 +38,13 @@ const CartPage: React.FC = () => {
           ))}
         </tbody>
       </table>
+      <h3>
+        Total de Artículos: {cartItems.reduce((total, item) => total + item.quantity, 0)}
+      </h3>
+      <h3>
+        Monto Total: $
+        {cartItems.reduce((total, item) => total + (Number(item.precio) || 0) * item.quantity, 0).toFixed(2)}
+      </h3>
     </div>
   );
 };
