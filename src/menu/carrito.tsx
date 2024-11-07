@@ -9,23 +9,47 @@ import {
 
 const CartPage: React.FC = () => {
   const cartItems = useSelector((state: RootState) => state.cart.items);
+  const totalItems = cartItems.reduce((total, item) => total + item.quantity, 0); // Calcula el total directamente
+  const totalAmount = cartItems.reduce(
+    (total, item) => total + (Number(item.precio) || 0) * item.quantity,
+    0
+  ); // Calcula el monto total
+
   const dispatch = useDispatch<AppDispatch>();
 
-  const handleRemoveItem = (carrito_producto_id: number) => {
-    dispatch(removeFromCartAsync(carrito_producto_id));
+  const handleRemoveItem = async (carrito_producto_id: number) => {
+    try {
+      await dispatch(removeFromCartAsync(carrito_producto_id)).unwrap();
+      console.log(`Producto con ID ${carrito_producto_id} eliminado del carrito.`);
+    } catch (error) {
+      console.error('Error al eliminar el producto:', error);
+    }
   };
 
-  const handleIncrementQuantity = (carrito_id: number, product_id: number) => {
-    dispatch(incrementQuantityAsync({ carrito_id, product_id }));
+  const handleIncrementQuantity = async (carrito_id: number, product_id: number) => {
+    try {
+      await dispatch(incrementQuantityAsync({ carrito_id, product_id })).unwrap();
+      console.log(`Cantidad incrementada para el producto con ID ${product_id}.`);
+    } catch (error) {
+      console.error('Error al incrementar la cantidad:', error);
+    }
   };
 
-  const handleDecrementQuantity = (carrito_producto_id: number) => {
-    dispatch(decrementQuantityAsync({ carrito_producto_id, cantidad: 1 }));
+  const handleDecrementQuantity = async (carrito_producto_id: number) => {
+    try {
+      await dispatch(decrementQuantityAsync({ carrito_producto_id, cantidad: 1 })).unwrap();
+      console.log(`Cantidad reducida para el producto con carrito_producto_id ${carrito_producto_id}.`);
+    } catch (error) {
+      console.error('Error al reducir la cantidad:', error);
+    }
   };
+
+  const cartError = useSelector((state: RootState) => state.cart.error);
 
   return (
     <div>
       <h2>Tu Carrito de Compras</h2>
+      {cartError && <p style={{ color: 'red' }}>{cartError}</p>}
       {cartItems.length === 0 ? (
         <p>No tienes productos en el carrito.</p>
       ) : (
@@ -55,7 +79,7 @@ const CartPage: React.FC = () => {
                       -
                     </button>
                     <button
-                      onClick={() => handleIncrementQuantity(1, item.product_id)} // Asume un carrito_id de ejemplo
+                      onClick={() => handleIncrementQuantity(item.carrito_id || 0, item.product_id)}
                     >
                       +
                     </button>
@@ -67,19 +91,8 @@ const CartPage: React.FC = () => {
               ))}
             </tbody>
           </table>
-          <h3>
-            Total de Artículos:{' '}
-            {cartItems.reduce((total, item) => total + item.quantity, 0)}
-          </h3>
-          <h3>
-            Monto Total: $
-            {cartItems
-              .reduce(
-                (total, item) => total + (Number(item.precio) || 0) * item.quantity,
-                0
-              )
-              .toFixed(2)}
-          </h3>
+          <h3>Total de Artículos: {totalItems}</h3>
+          <h3>Monto Total: ${totalAmount.toFixed(2)}</h3>
         </>
       )}
     </div>

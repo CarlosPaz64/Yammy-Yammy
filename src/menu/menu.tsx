@@ -54,6 +54,7 @@ const MenuPage: React.FC = () => {
   };
 
   const handleAddToCart = (producto: Producto) => {
+    console.log('Añadiendo producto al carrito:', producto);
     dispatch(addToCartAsync(producto)); // Llama al thunk para añadir el producto al carrito
   };
 
