@@ -5,6 +5,7 @@ import { RootState } from './store';
 
 interface CartItem extends Producto {
   quantity: number;
+  carrito_producto_id: number; // Identificador único para cada producto en el carrito
 }
 
 interface CartState {
@@ -38,31 +39,49 @@ export const addToCartAsync = createAsyncThunk(
     const token = localStorage.getItem('authToken');
 
     // Enviar solicitud para agregar el producto al carrito
-    await axiosInstance.post('/carrito/add-product', {
+    const response = await axiosInstance.post('/carrito/add-product', {
       carrito_id: 1,
       product_id: product.product_id,
       cantidad: 1,
       token
     });
 
-    return { ...product, quantity: 1 }; // Retorna el producto con cantidad 1 para añadir al carrito
+    // Retorna el producto con el carrito_producto_id y cantidad 1
+    return { ...product, quantity: 1, carrito_producto_id: response.data.carrito_producto_id };
   }
 );
 
-// Thunk para eliminar el producto del carrito sin afectar el stock
+// Thunk para eliminar el producto del carrito y restablecer el stock
 export const removeFromCartAsync = createAsyncThunk(
   'cart/removeFromCartAsync',
-  async (carritoProductoId: number) => {
-    const token = localStorage.getItem('authToken');
+  async (carritoProductoId: number, { rejectWithValue }) => {
+    try {
+      const token = localStorage.getItem('authToken');
+      await axiosInstance.delete(`/carrito/remove-product/${carritoProductoId}`, {
+        headers: { Authorization: `Bearer ${token}` },
+      });
+      return carritoProductoId;
+    } catch (error: any) {
+      return rejectWithValue(error.response?.data?.message || 'Error al eliminar producto del carrito');
+    }
+  }
+);
 
-    // Realiza la solicitud DELETE a la ruta correcta en el backend
-    await axiosInstance.delete(`/carrito/remove-product/${carritoProductoId}`, {
-      headers: {
-        Authorization: `Bearer ${token}`
-      }
-    });
-
-    return carritoProductoId;
+// Thunk para reducir la cantidad de un producto en el carrito
+export const decrementQuantityAsync = createAsyncThunk(
+  'cart/decrementQuantityAsync',
+  async ({ carritoProductoId, cantidad }: { carritoProductoId: number; cantidad: number }, { rejectWithValue }) => {
+    try {
+      const token = localStorage.getItem('authToken');
+      await axiosInstance.patch('/carrito/decrement-quantity', {
+        carrito_producto_id: carritoProductoId,
+        cantidad,
+        token
+      });
+      return { carritoProductoId, cantidad };
+    } catch (error: any) {
+      return rejectWithValue(error.response?.data?.message || 'Error al reducir la cantidad del producto');
+    }
   }
 );
 
@@ -73,7 +92,6 @@ export const incrementQuantityAsync = createAsyncThunk(
     const token = localStorage.getItem('authToken');
     const cantidad = 1; // Incrementar en 1
 
-    // Enviar solicitud para actualizar la cantidad en el carrito y reducir el stock en el backend
     await axiosInstance.post('/carrito/add-product', {
       carrito_id,
       product_id: productId,
@@ -93,7 +111,7 @@ const cartSlice = createSlice({
     clearCart: (state) => {
       state.items = [];
       state.totalItems = 0;
-      localStorage.removeItem('cart'); // Eliminar carrito de localStorage
+      localStorage.removeItem('cart');
     },
   },
   extraReducers: (builder) => {
@@ -104,16 +122,24 @@ const cartSlice = createSlice({
         if (itemIndex >= 0) {
           state.items[itemIndex].quantity += 1;
         } else {
-          state.items.push({ ...product, quantity: 1 });
+          state.items.push(product);
         }
         state.totalItems += 1;
       })
       .addCase(removeFromCartAsync.fulfilled, (state, action) => {
-        const productId = action.payload;
-        const itemIndex = state.items.findIndex((item) => item.product_id === productId);
-        if (itemIndex >= 0) {
-          state.totalItems -= state.items[itemIndex].quantity;
-          state.items.splice(itemIndex, 1);
+        const carritoProductoId = action.payload;
+        state.items = state.items.filter((item) => item.carrito_producto_id !== carritoProductoId);
+        state.totalItems = state.items.reduce((sum, item) => sum + item.quantity, 0);
+      })
+      .addCase(decrementQuantityAsync.fulfilled, (state, action) => {
+        const { carritoProductoId, cantidad } = action.payload;
+        const item = state.items.find((item) => item.carrito_producto_id === carritoProductoId);
+        if (item) {
+          item.quantity -= cantidad;
+          if (item.quantity <= 0) {
+            state.items = state.items.filter((i) => i.carrito_producto_id !== carritoProductoId);
+          }
+          state.totalItems = state.items.reduce((sum, item) => sum + item.quantity, 0);
         }
       })
       .addCase(incrementQuantityAsync.fulfilled, (state, action) => {

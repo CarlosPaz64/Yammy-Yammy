@@ -1,19 +1,23 @@
 import React from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { RootState, AppDispatch } from './store';
-import { removeFromCartAsync, incrementQuantityAsync } from './cartSlice';
+import { removeFromCartAsync, incrementQuantityAsync, decrementQuantityAsync } from './cartSlice';
 
 const CartPage: React.FC = () => {
   const cartItems = useSelector((state: RootState) => state.cart.items);
   const dispatch = useDispatch<AppDispatch>();
 
-  const handleRemoveItem = (productId: number) => {
-    dispatch(removeFromCartAsync(productId));
+  const handleRemoveItem = (carritoProductoId: number) => {
+    dispatch(removeFromCartAsync(carritoProductoId));
   };
 
   const handleIncrementQuantity = (productId: number) => {
     const carrito_id = 1; // Asegúrate de usar el carrito_id correcto
     dispatch(incrementQuantityAsync({ carrito_id, productId }));
+  };
+
+  const handleDecrementQuantity = (carritoProductoId: number) => {
+    dispatch(decrementQuantityAsync({ carritoProductoId, cantidad: 1 }));
   };
 
   return (
@@ -31,14 +35,15 @@ const CartPage: React.FC = () => {
         </thead>
         <tbody>
           {cartItems.map((item) => (
-            <tr key={item.product_id}>
+            <tr key={item.carrito_producto_id}>
               <td>{item.nombre_producto}</td>
               <td>{item.quantity}</td>
               <td>${(Number(item.precio) || 0).toFixed(2)}</td>
               <td>${((Number(item.precio) || 0) * item.quantity).toFixed(2)}</td>
               <td>
-                <button onClick={() => handleIncrementQuantity(item.product_id)}>Agregar</button>
-                <button onClick={() => handleRemoveItem(item.product_id)}>Eliminar</button>
+                <button onClick={() => handleDecrementQuantity(item.carrito_producto_id)}>-</button>
+                <button onClick={() => handleIncrementQuantity(item.product_id)}>+</button>
+                <button onClick={() => handleRemoveItem(item.carrito_producto_id)}>🗑️</button>
               </td>
             </tr>
           ))}
