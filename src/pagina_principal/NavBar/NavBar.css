@@ -91,7 +91,7 @@ nav ul li a .textNav::after{
     display: flex;
     justify-content: space-between;
     align-items: center;
-    background:linear-gradient(to bottom, #96C9F4, #F9F9F9, #FFD0EC);
+    
     margin: 0 auto;
     padding: 0;
   }

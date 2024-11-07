@@ -4,6 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import { z } from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
 import CryptoJS from 'crypto-js';
+import { useNavigate } from 'react-router-dom';
 
 const API_LINK = import.meta.env.VITE_API_LINK || 'http://localhost:3000';
 const SECRET_KEY = 'tu_clave_secreta';
@@ -45,6 +46,10 @@ const LoginForm: React.FC = () => {
 
         navigate('/'); // Redirige a la página principal
         window.location.reload(); // Recarga la página para actualizar el estado de la sesión
+
+        console.log('Token:', token);
+        console.log('User ID:', userId);
+
       } else {
         console.error('Error al iniciar sesión:', result);
         alert(result.message || 'Error al iniciar sesión');

@@ -11,6 +11,9 @@ const NavBar: React.FC<{ children?: ReactNode }> = ({ children }) => {
     const navigate = useNavigate();
 
     // Función para abrir/cerrar el sidebar
+    const [isLoggedIn, setIsLoggedIn] = useState(false);
+    const navigate = useNavigate();
+
     const openSidebar = () => {
         setSidebarOpen(!sidebarOpen);
     };
@@ -25,6 +28,9 @@ const NavBar: React.FC<{ children?: ReactNode }> = ({ children }) => {
     const handleResize = () => {
         if (window.innerWidth > 1024) {
             setSidebarOpen(false); // Cierra el Sidebar si es pantalla grande
+    const handleResize = () => {
+        if (window.innerWidth > 1024) {
+            setSidebarOpen(false);
         }
     };
 
@@ -42,6 +48,21 @@ const NavBar: React.FC<{ children?: ReactNode }> = ({ children }) => {
         localStorage.removeItem('userId');
         setIsAuthenticated(false);
         navigate('/'); // Navegar al inicio tras cerrar sesión
+    useEffect(() => {
+        // Verifica si el token o el ID de usuario están en localStorage
+        const token = localStorage.getItem('token');
+        const userId = localStorage.getItem('userId');
+        if (token || userId) {
+            setIsLoggedIn(true);
+        }
+    }, []);
+
+    const handleLogout = () => {
+        // Elimina el token y el userId de localStorage
+        localStorage.removeItem('token');
+        localStorage.removeItem('userId');
+        setIsLoggedIn(false);
+        navigate('/login');
     };
 
     return (
@@ -76,6 +97,7 @@ const NavBar: React.FC<{ children?: ReactNode }> = ({ children }) => {
                         </li>
                         <div className="nav-right">
                             <div className="tooltip-container">
+
                                 {isAuthenticated ? (
                                     <>
                                         <span className="tooltip-text">Cerrar sesión</span>
@@ -83,15 +105,26 @@ const NavBar: React.FC<{ children?: ReactNode }> = ({ children }) => {
                                             <button onClick={handleLogout} className="material-symbols-outlined icon-nav">
                                                 logout
                                             </button>
+
+                                {isLoggedIn ? (
+                                    <>
+                                        <span className="tooltip-text">Cerrar sesión</span>
+                                        <li onClick={handleLogout} className="material-symbols-outlined icon-nav">
+                                            <span>logout</span>
+
                                         </li>
                                     </>
                                 ) : (
                                     <>
                                         <span className="tooltip-text">Iniciar sesión</span>
                                         <li>
+
                                             <Link to="/login" className="material-symbols-outlined icon-nav">
                                                 account_circle
                                             </Link>
+
+                                            <Link to="/login" className="material-symbols-outlined icon-nav">account_circle</Link>
+
                                         </li>
                                     </>
                                 )}
@@ -162,6 +195,7 @@ const NavBar: React.FC<{ children?: ReactNode }> = ({ children }) => {
                         </li>
                         <li>
                             <Link to="/pedidos">
+                            <Link to="/pedido">
                                 <span className="textNav">Haz un pedido</span>
                             </Link>
                         </li>
@@ -181,6 +215,17 @@ const NavBar: React.FC<{ children?: ReactNode }> = ({ children }) => {
                                 </Link>
                             </li>
                         )}
+                        <li>
+                            {isLoggedIn ? (
+                                <a onClick={handleLogout} className="textNav textSid-logout">
+                                    Cerrar sesión
+                                </a>
+                            ) : (
+                                <Link to="/login" className="textNav textSid-loggin">
+                                    Iniciar sesión
+                                </Link>
+                            )}
+                        </li>
                     </ul>
                 </div>
             </div>
