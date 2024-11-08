@@ -1,53 +1,97 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { RootState, AppDispatch } from './store';
 import {
   removeFromCartAsync,
   incrementQuantityAsync,
   decrementQuantityAsync,
+  finalizeCartAsync,
+  fetchCartClientDataAsync, // Nuevo thunk para obtener los datos del cliente
 } from './cartSlice';
 
 const CartPage: React.FC = () => {
   const cartItems = useSelector((state: RootState) => state.cart.items);
-  const totalItems = cartItems.reduce((total, item) => total + item.quantity, 0); // Calcula el total directamente
+  const totalItems = cartItems.reduce((total, item) => total + item.quantity, 0);
   const totalAmount = cartItems.reduce(
     (total, item) => total + (Number(item.precio) || 0) * item.quantity,
     0
-  ); // Calcula el monto total
-
+  );
   const dispatch = useDispatch<AppDispatch>();
 
+  const [clientData, setClientData] = useState({
+    calle: '',
+    numero_exterior: '',
+    numero_interior: '',
+    colonia: '',
+    ciudad: '',
+    codigo_postal: '',
+    descripcion_ubicacion: '',
+    numero_telefono: '',
+    tipo_tarjeta: '',
+    numero_tarjeta: '',
+    fecha_tarjeta: '',
+    cvv: '',
+  });
+
+  const [isFinalizing, setIsFinalizing] = useState(false);
+
   const handleRemoveItem = async (carrito_producto_id: number) => {
-    console.log(`Intentando eliminar producto con carrito_producto_id: ${carrito_producto_id}`);
     try {
       await dispatch(removeFromCartAsync(carrito_producto_id)).unwrap();
-      console.log(`Producto con ID ${carrito_producto_id} eliminado del carrito.`);
     } catch (error) {
       console.error('Error al eliminar el producto:', error);
     }
   };
 
   const handleIncrementQuantity = async (carrito_id: number, product_id: number) => {
-    console.log(`Incrementando cantidad: carrito_id: ${carrito_id}, product_id: ${product_id}`);
     try {
       await dispatch(incrementQuantityAsync({ carrito_id, product_id })).unwrap();
-      console.log(`Cantidad incrementada para el producto con ID ${product_id}.`);
     } catch (error) {
       console.error('Error al incrementar la cantidad:', error);
     }
   };
 
   const handleDecrementQuantity = async (carrito_producto_id: number) => {
-    console.log(`Intentando reducir cantidad de carrito_producto_id: ${carrito_producto_id}`);
     try {
       await dispatch(decrementQuantityAsync({ carrito_producto_id, cantidad: 1 })).unwrap();
-      console.log(`Cantidad reducida para el producto con carrito_producto_id ${carrito_producto_id}.`);
     } catch (error) {
       console.error('Error al reducir la cantidad:', error);
     }
   };
 
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
+    const { name, value } = e.target;
+    setClientData((prevData) => ({ ...prevData, [name]: value }));
+  };
+
+  const handleFinalizePurchase = async () => {
+    try {
+      await dispatch(finalizeCartAsync(clientData)).unwrap();
+      alert('Compra finalizada con éxito.');
+    } catch (error) {
+      console.error('Error al finalizar la compra:', error);
+      alert('Error al finalizar la compra.');
+    }
+  };
+
   const cartError = useSelector((state: RootState) => state.cart.error);
+
+  useEffect(() => {
+    const userId = localStorage.getItem('userId');
+    if (isFinalizing && userId) {
+      dispatch(fetchCartClientDataAsync(Number(userId)))
+        .unwrap()
+        .then((data) => {
+          setClientData((prevData) => ({
+            ...prevData,
+            ...data,
+          }));
+        })
+        .catch((error) => {
+          console.error('Error al obtener los datos del cliente:', error);
+        });
+    }
+  }, [isFinalizing, dispatch]);
 
   return (
     <div>
@@ -68,39 +112,147 @@ const CartPage: React.FC = () => {
               </tr>
             </thead>
             <tbody>
-              {cartItems.map((item) => {
-                console.log('Renderizando producto:', item);
-                return (
-                  <tr key={item.carrito_producto_id}>
-                    <td>{item.nombre_producto}</td>
-                    <td>{item.quantity}</td>
-                    <td>${(Number(item.precio) || 0).toFixed(2)}</td>
-                    <td>${((Number(item.precio) || 0) * item.quantity).toFixed(2)}</td>
-                    <td>
-                      <button
-                        onClick={() => handleDecrementQuantity(item.carrito_producto_id)}
-                        disabled={item.quantity <= 1}
-                      >
-                        -
-                      </button>
-                      <button
-                        onClick={() =>
-                          handleIncrementQuantity(item.carrito_id || 0, item.product_id)
-                        }
-                      >
-                        +
-                      </button>
-                      <button onClick={() => handleRemoveItem(item.carrito_producto_id)}>
-                        🗑️
-                      </button>
-                    </td>
-                  </tr>
-                );
-              })}
+              {cartItems.map((item) => (
+                <tr key={item.carrito_producto_id}>
+                  <td>{item.nombre_producto}</td>
+                  <td>{item.quantity}</td>
+                  <td>${(Number(item.precio) || 0).toFixed(2)}</td>
+                  <td>${((Number(item.precio) || 0) * item.quantity).toFixed(2)}</td>
+                  <td>
+                    <button
+                      onClick={() => handleDecrementQuantity(item.carrito_producto_id)}
+                      disabled={item.quantity <= 1}
+                    >
+                      -
+                    </button>
+                    <button
+                      onClick={() =>
+                        handleIncrementQuantity(item.carrito_id || 0, item.product_id)
+                      }
+                    >
+                      +
+                    </button>
+                    <button onClick={() => handleRemoveItem(item.carrito_producto_id)}>
+                      🗑️
+                    </button>
+                  </td>
+                </tr>
+              ))}
             </tbody>
           </table>
           <h3>Total de Artículos: {totalItems}</h3>
           <h3>Monto Total: ${totalAmount.toFixed(2)}</h3>
+
+          <button onClick={() => setIsFinalizing(true)}>Finalizar Compra</button>
+
+          {isFinalizing && (
+            <form onSubmit={(e) => { e.preventDefault(); handleFinalizePurchase(); }}>
+              <h3>Datos de Envío y Pago</h3>
+
+              <input
+                type="text"
+                name="calle"
+                placeholder="Calle"
+                value={clientData.calle}
+                onChange={handleInputChange}
+                required
+              />
+              <input
+                type="text"
+                name="numero_exterior"
+                placeholder="Número Exterior"
+                value={clientData.numero_exterior}
+                onChange={handleInputChange}
+                required
+              />
+              <input
+                type="text"
+                name="numero_interior"
+                placeholder="Número Interior (Opcional)"
+                value={clientData.numero_interior}
+                onChange={handleInputChange}
+              />
+              <input
+                type="text"
+                name="colonia"
+                placeholder="Colonia"
+                value={clientData.colonia}
+                onChange={handleInputChange}
+                required
+              />
+              <input
+                type="text"
+                name="ciudad"
+                placeholder="Ciudad"
+                value={clientData.ciudad}
+                onChange={handleInputChange}
+                required
+              />
+              <input
+                type="text"
+                name="codigo_postal"
+                placeholder="Código Postal"
+                value={clientData.codigo_postal}
+                onChange={handleInputChange}
+                required
+              />
+              <input
+                type="text"
+                name="descripcion_ubicacion"
+                placeholder="Descripción de Ubicación"
+                value={clientData.descripcion_ubicacion}
+                onChange={handleInputChange}
+                required
+              />
+              <input
+                type="text"
+                name="numero_telefono"
+                placeholder="Número de Teléfono"
+                value={clientData.numero_telefono}
+                onChange={handleInputChange}
+                required
+              />
+
+              <h3>Datos de la Tarjeta</h3>
+              <select
+                name="tipo_tarjeta"
+                value={clientData.tipo_tarjeta}
+                onChange={handleInputChange}
+                required
+              >
+                <option value="">Seleccione el tipo de tarjeta</option>
+                <option value="Visa">Visa</option>
+                <option value="MasterCard">MasterCard</option>
+                <option value="American Express">American Express</option>
+              </select>
+              <input
+                type="text"
+                name="numero_tarjeta"
+                placeholder="Número de Tarjeta"
+                value={clientData.numero_tarjeta}
+                onChange={handleInputChange}
+                required
+              />
+              <input
+                type="text"
+                name="fecha_tarjeta"
+                placeholder="Fecha de Expiración (MM/AA)"
+                value={clientData.fecha_tarjeta}
+                onChange={handleInputChange}
+                required
+              />
+              <input
+                type="text"
+                name="cvv"
+                placeholder="CVV"
+                value={clientData.cvv}
+                onChange={handleInputChange}
+                required
+              />
+
+              <button type="submit">Confirmar Compra</button>
+            </form>
+          )}
         </>
       )}
     </div>
