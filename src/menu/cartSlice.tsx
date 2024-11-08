@@ -109,7 +109,7 @@ export const decrementQuantityAsync = createAsyncThunk<
       }
 
       await axiosInstance.patch(
-        '/carrito/decrement-quantity',
+        `/carrito/decrement-quantity/${carrito_producto_id}`,
         { carrito_producto_id, cantidad },
         { headers: { Authorization: `Bearer ${token}` } }
       );

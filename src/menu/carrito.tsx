@@ -18,6 +18,7 @@ const CartPage: React.FC = () => {
   const dispatch = useDispatch<AppDispatch>();
 
   const handleRemoveItem = async (carrito_producto_id: number) => {
+    console.log(`Intentando eliminar producto con carrito_producto_id: ${carrito_producto_id}`);
     try {
       await dispatch(removeFromCartAsync(carrito_producto_id)).unwrap();
       console.log(`Producto con ID ${carrito_producto_id} eliminado del carrito.`);
@@ -27,6 +28,7 @@ const CartPage: React.FC = () => {
   };
 
   const handleIncrementQuantity = async (carrito_id: number, product_id: number) => {
+    console.log(`Incrementando cantidad: carrito_id: ${carrito_id}, product_id: ${product_id}`);
     try {
       await dispatch(incrementQuantityAsync({ carrito_id, product_id })).unwrap();
       console.log(`Cantidad incrementada para el producto con ID ${product_id}.`);
@@ -36,6 +38,7 @@ const CartPage: React.FC = () => {
   };
 
   const handleDecrementQuantity = async (carrito_producto_id: number) => {
+    console.log(`Intentando reducir cantidad de carrito_producto_id: ${carrito_producto_id}`);
     try {
       await dispatch(decrementQuantityAsync({ carrito_producto_id, cantidad: 1 })).unwrap();
       console.log(`Cantidad reducida para el producto con carrito_producto_id ${carrito_producto_id}.`);
@@ -65,30 +68,35 @@ const CartPage: React.FC = () => {
               </tr>
             </thead>
             <tbody>
-              {cartItems.map((item) => (
-                <tr key={item.carrito_producto_id}>
-                  <td>{item.nombre_producto}</td>
-                  <td>{item.quantity}</td>
-                  <td>${(Number(item.precio) || 0).toFixed(2)}</td>
-                  <td>${((Number(item.precio) || 0) * item.quantity).toFixed(2)}</td>
-                  <td>
-                    <button
-                      onClick={() => handleDecrementQuantity(item.carrito_producto_id)}
-                      disabled={item.quantity <= 1}
-                    >
-                      -
-                    </button>
-                    <button
-                      onClick={() => handleIncrementQuantity(item.carrito_id || 0, item.product_id)}
-                    >
-                      +
-                    </button>
-                    <button onClick={() => handleRemoveItem(item.carrito_producto_id)}>
-                      🗑️
-                    </button>
-                  </td>
-                </tr>
-              ))}
+              {cartItems.map((item) => {
+                console.log('Renderizando producto:', item);
+                return (
+                  <tr key={item.carrito_producto_id}>
+                    <td>{item.nombre_producto}</td>
+                    <td>{item.quantity}</td>
+                    <td>${(Number(item.precio) || 0).toFixed(2)}</td>
+                    <td>${((Number(item.precio) || 0) * item.quantity).toFixed(2)}</td>
+                    <td>
+                      <button
+                        onClick={() => handleDecrementQuantity(item.carrito_producto_id)}
+                        disabled={item.quantity <= 1}
+                      >
+                        -
+                      </button>
+                      <button
+                        onClick={() =>
+                          handleIncrementQuantity(item.carrito_id || 0, item.product_id)
+                        }
+                      >
+                        +
+                      </button>
+                      <button onClick={() => handleRemoveItem(item.carrito_producto_id)}>
+                        🗑️
+                      </button>
+                    </td>
+                  </tr>
+                );
+              })}
             </tbody>
           </table>
           <h3>Total de Artículos: {totalItems}</h3>
