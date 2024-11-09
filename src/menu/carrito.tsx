@@ -6,8 +6,10 @@ import {
   incrementQuantityAsync,
   decrementQuantityAsync,
   finalizeCartAsync,
+  validateSessionAndClearCartAsync,
   fetchCartClientDataAsync,
 } from './cartSlice';
+import axios from 'axios'; // Para consumir la API de códigos postales
 
 const CartPage: React.FC = () => {
   const cartItems = useSelector((state: RootState) => state.cart.items);
@@ -19,7 +21,7 @@ const CartPage: React.FC = () => {
   const dispatch = useDispatch<AppDispatch>();
 
   const [clientData, setClientData] = useState({
-    opcion_entrega: 'domicilio', // Nuevo campo para opción de entrega
+    opcion_entrega: 'domicilio',
     calle: '',
     numero_exterior: '',
     numero_interior: '',
@@ -35,6 +37,64 @@ const CartPage: React.FC = () => {
   });
 
   const [isFinalizing, setIsFinalizing] = useState(false);
+  const [colonias, setColonias] = useState<string[]>([]); // Opciones de colonias basadas en el código postal
+
+  useEffect(() => {
+    dispatch(validateSessionAndClearCartAsync()); // Validar sesión y limpiar carrito si es necesario
+  }, [dispatch]);
+
+  const fetchZipCodeData = async (codigoPostal: string) => {
+    try {
+      const response = await axios.get(`http://localhost:3000/api/codigo-postal/${codigoPostal}`);
+      const { ciudad, colonias } = response.data;
+
+      setClientData((prevData) => ({
+        ...prevData,
+        ciudad, // La ciudad es solo lectura, se actualiza automáticamente
+        colonia: colonias[0] || '', // Por defecto, la primera colonia
+      }));
+
+      setColonias(colonias); // Actualiza el listado de colonias
+    } catch (error) {
+      console.error('Error al obtener datos del código postal:', error);
+      setColonias([]); // Vacía las colonias en caso de error
+      setClientData((prevData) => ({
+        ...prevData,
+        ciudad: '',
+        colonia: '',
+      }));
+    }
+  };
+
+  useEffect(() => {
+    if (clientData.codigo_postal.length === 5) {
+      fetchZipCodeData(clientData.codigo_postal);
+    }
+  }, [clientData.codigo_postal]);
+
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
+    const { name, value } = e.target;
+    setClientData((prevData) => ({ ...prevData, [name]: value }));
+  };
+
+  const handleFinalizePurchase = async () => {
+    try {
+      const carritoId = localStorage.getItem('carritoId');
+      if (!carritoId) {
+        alert('No hay carrito activo. Por favor, agrega productos antes de finalizar la compra.');
+        return;
+      }
+
+      console.log('Datos de cliente antes de finalizar:', clientData);
+      console.log('Carrito ID:', carritoId);
+
+      await dispatch(finalizeCartAsync(clientData)).unwrap();
+      alert('Compra finalizada con éxito.');
+    } catch (error) {
+      console.error('Error al finalizar la compra (detalles):', error);
+      alert(`Error al finalizar la compra: ${error}`);
+    }
+  };
 
   const handleRemoveItem = async (carrito_producto_id: number) => {
     try {
@@ -60,34 +120,6 @@ const CartPage: React.FC = () => {
     }
   };
 
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
-    const { name, value } = e.target;
-    setClientData((prevData) => ({ ...prevData, [name]: value }));
-  };
-
-  const handleFinalizePurchase = async () => {
-    try {
-      const carritoId = localStorage.getItem('carritoId');
-      if (!carritoId) {
-        alert('No hay carrito activo. Por favor, agrega productos antes de finalizar la compra.');
-        return;
-      }
-  
-      console.log('Datos de cliente antes de finalizar:', clientData);
-      console.log('Carrito ID:', carritoId); // Verifica el carritoId
-  
-      await dispatch(finalizeCartAsync(clientData)).unwrap();
-      alert('Compra finalizada con éxito.');
-    } catch (error) {
-      console.error('Error al finalizar la compra (detalles):', error);
-      alert(`Error al finalizar la compra: ${error}`);
-    }
-  };
-  
-  
-
-  const cartError = useSelector((state: RootState) => state.cart.error);
-
   useEffect(() => {
     const userId = localStorage.getItem('userId');
     if (isFinalizing && userId) {
@@ -102,9 +134,11 @@ const CartPage: React.FC = () => {
         .catch((error) => {
           console.error('Error al obtener los datos del cliente:', error);
         });
-        
     }
   }, [isFinalizing, dispatch]);
+
+  const cartError = useSelector((state: RootState) => state.cart.error);
+
 
   return (
     <div>
@@ -176,6 +210,33 @@ const CartPage: React.FC = () => {
                   <h3>Datos de Envío</h3>
                   <input
                     type="text"
+                    name="codigo_postal"
+                    placeholder="Código Postal"
+                    value={clientData.codigo_postal}
+                    onChange={handleInputChange}
+                    required
+                  />
+                  <input
+                    type="text"
+                    name="ciudad"
+                    placeholder="Ciudad"
+                    value={clientData.ciudad}
+                    readOnly
+                  />
+                  <select
+                    name="colonia"
+                    value={clientData.colonia}
+                    onChange={handleInputChange}
+                    required
+                  >
+                    {colonias.map((colonia, index) => (
+                      <option key={index} value={colonia}>
+                        {colonia}
+                      </option>
+                    ))}
+                  </select>
+                  <input
+                    type="text"
                     name="calle"
                     placeholder="Calle"
                     value={clientData.calle}
@@ -196,30 +257,6 @@ const CartPage: React.FC = () => {
                     placeholder="Número Interior (Opcional)"
                     value={clientData.numero_interior}
                     onChange={handleInputChange}
-                  />
-                  <input
-                    type="text"
-                    name="colonia"
-                    placeholder="Colonia"
-                    value={clientData.colonia}
-                    onChange={handleInputChange}
-                    required
-                  />
-                  <input
-                    type="text"
-                    name="ciudad"
-                    placeholder="Ciudad"
-                    value={clientData.ciudad}
-                    onChange={handleInputChange}
-                    required
-                  />
-                  <input
-                    type="text"
-                    name="codigo_postal"
-                    placeholder="Código Postal"
-                    value={clientData.codigo_postal}
-                    onChange={handleInputChange}
-                    required
                   />
                   <input
                     type="text"

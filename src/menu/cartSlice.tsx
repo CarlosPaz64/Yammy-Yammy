@@ -249,6 +249,22 @@ export const finalizeCartAsync = createAsyncThunk<
   }
 );
 
+// Thunk para validar la sesión y limpiar el carrito si no hay sesión activa
+export const validateSessionAndClearCartAsync = createAsyncThunk<void, void, { rejectValue: string }>(
+  'cart/validateSessionAndClearCartAsync',
+  async (_, { dispatch, rejectWithValue }) => {
+    try {
+      const userId = localStorage.getItem('userId');
+      if (!userId) {
+        dispatch(clearCart()); // Limpiar carrito si no hay sesión activa
+      }
+    } catch (error) {
+      return rejectWithValue('Error validando la sesión.');
+    }
+  }
+);
+
+
 
 const cartSlice = createSlice({
   name: 'cart',
