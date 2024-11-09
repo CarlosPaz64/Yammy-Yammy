@@ -6,7 +6,7 @@ import {
   incrementQuantityAsync,
   decrementQuantityAsync,
   finalizeCartAsync,
-  fetchCartClientDataAsync, // Nuevo thunk para obtener los datos del cliente
+  fetchCartClientDataAsync,
 } from './cartSlice';
 
 const CartPage: React.FC = () => {
@@ -19,6 +19,7 @@ const CartPage: React.FC = () => {
   const dispatch = useDispatch<AppDispatch>();
 
   const [clientData, setClientData] = useState({
+    opcion_entrega: 'domicilio', // Nuevo campo para opción de entrega
     calle: '',
     numero_exterior: '',
     numero_interior: '',
@@ -147,71 +148,92 @@ const CartPage: React.FC = () => {
 
           {isFinalizing && (
             <form onSubmit={(e) => { e.preventDefault(); handleFinalizePurchase(); }}>
-              <h3>Datos de Envío y Pago</h3>
+              <h3>Opción de Entrega</h3>
+              <select
+                name="opcion_entrega"
+                value={clientData.opcion_entrega}
+                onChange={handleInputChange}
+                required
+              >
+                <option value="domicilio">Domicilio</option>
+                <option value="recoger">Recoger en tienda</option>
+              </select>
 
-              <input
-                type="text"
-                name="calle"
-                placeholder="Calle"
-                value={clientData.calle}
-                onChange={handleInputChange}
-                required
-              />
-              <input
-                type="text"
-                name="numero_exterior"
-                placeholder="Número Exterior"
-                value={clientData.numero_exterior}
-                onChange={handleInputChange}
-                required
-              />
-              <input
-                type="text"
-                name="numero_interior"
-                placeholder="Número Interior (Opcional)"
-                value={clientData.numero_interior}
-                onChange={handleInputChange}
-              />
-              <input
-                type="text"
-                name="colonia"
-                placeholder="Colonia"
-                value={clientData.colonia}
-                onChange={handleInputChange}
-                required
-              />
-              <input
-                type="text"
-                name="ciudad"
-                placeholder="Ciudad"
-                value={clientData.ciudad}
-                onChange={handleInputChange}
-                required
-              />
-              <input
-                type="text"
-                name="codigo_postal"
-                placeholder="Código Postal"
-                value={clientData.codigo_postal}
-                onChange={handleInputChange}
-                required
-              />
-              <input
-                type="text"
-                name="descripcion_ubicacion"
-                placeholder="Descripción de Ubicación"
-                value={clientData.descripcion_ubicacion}
-                onChange={handleInputChange}
-                required
-              />
-              <input
-                type="text"
-                name="numero_telefono"
-                placeholder="Número de Teléfono"
-                value={clientData.numero_telefono}
-                onChange={handleInputChange}
-                required
-              />
+              {clientData.opcion_entrega === 'domicilio' ? (
+                <>
+                  <h3>Datos de Envío</h3>
+                  <input
+                    type="text"
+                    name="calle"
+                    placeholder="Calle"
+                    value={clientData.calle}
+                    onChange={handleInputChange}
+                    required
+                  />
+                  <input
+                    type="text"
+                    name="numero_exterior"
+                    placeholder="Número Exterior"
+                    value={clientData.numero_exterior}
+                    onChange={handleInputChange}
+                    required
+                  />
+                  <input
+                    type="text"
+                    name="numero_interior"
+                    placeholder="Número Interior (Opcional)"
+                    value={clientData.numero_interior}
+                    onChange={handleInputChange}
+                  />
+                  <input
+                    type="text"
+                    name="colonia"
+                    placeholder="Colonia"
+                    value={clientData.colonia}
+                    onChange={handleInputChange}
+                    required
+                  />
+                  <input
+                    type="text"
+                    name="ciudad"
+                    placeholder="Ciudad"
+                    value={clientData.ciudad}
+                    onChange={handleInputChange}
+                    required
+                  />
+                  <input
+                    type="text"
+                    name="codigo_postal"
+                    placeholder="Código Postal"
+                    value={clientData.codigo_postal}
+                    onChange={handleInputChange}
+                    required
+                  />
+                  <input
+                    type="text"
+                    name="descripcion_ubicacion"
+                    placeholder="Descripción de Ubicación"
+                    value={clientData.descripcion_ubicacion}
+                    onChange={handleInputChange}
+                    required
+                  />
+                  <input
+                    type="text"
+                    name="numero_telefono"
+                    placeholder="Número de Teléfono"
+                    value={clientData.numero_telefono}
+                    onChange={handleInputChange}
+                    required
+                  />
+                </>
+              ) : (
+                <p>
+                  Recoge tu pedido en la sucursal: <br />
+                  <strong>
+                    Calle 85 S/N x 90 y 92 Santa Cruz Palomeque, Mérida, México.
+                  </strong>
+                </p>
+              )}
 
               <h3>Datos de la Tarjeta</h3>
               <select
