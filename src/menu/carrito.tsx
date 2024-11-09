@@ -67,13 +67,24 @@ const CartPage: React.FC = () => {
 
   const handleFinalizePurchase = async () => {
     try {
+      const carritoId = localStorage.getItem('carritoId');
+      if (!carritoId) {
+        alert('No hay carrito activo. Por favor, agrega productos antes de finalizar la compra.');
+        return;
+      }
+  
+      console.log('Datos de cliente antes de finalizar:', clientData);
+      console.log('Carrito ID:', carritoId); // Verifica el carritoId
+  
       await dispatch(finalizeCartAsync(clientData)).unwrap();
       alert('Compra finalizada con éxito.');
     } catch (error) {
-      console.error('Error al finalizar la compra:', error);
-      alert('Error al finalizar la compra.');
+      console.error('Error al finalizar la compra (detalles):', error);
+      alert(`Error al finalizar la compra: ${error}`);
     }
   };
+  
+  
 
   const cartError = useSelector((state: RootState) => state.cart.error);
 
@@ -91,6 +102,7 @@ const CartPage: React.FC = () => {
         .catch((error) => {
           console.error('Error al obtener los datos del cliente:', error);
         });
+        
     }
   }, [isFinalizing, dispatch]);
 
