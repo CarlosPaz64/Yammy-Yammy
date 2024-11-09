@@ -63,19 +63,10 @@ export const addToCartAsync = createAsyncThunk<
         token,
       });
 
-      const carrito_id = response.data.carrito_id; // Verifica si carrito_id está presente
-      console.log('carrito_id devuelto por la API:', carrito_id); // <-- Debug
-
-      if (carrito_id) {
-        localStorage.setItem('carritoId', carrito_id); // Guarda en localStorage
-      } else {
-        console.error('No se recibió carrito_id en la respuesta'); // <-- Debug
-      }
-
       return {
         ...product,
         quantity: 1,
-        carrito_id,
+        carrito_id: response.data.carrito_id,
         carrito_producto_id: response.data.carrito_producto_id,
       };
     } catch (error) {
@@ -87,8 +78,6 @@ export const addToCartAsync = createAsyncThunk<
     }
   }
 );
-
-
 
 // Thunk para aumentar la cantidad de un producto
 export const incrementQuantityAsync = createAsyncThunk<
@@ -225,15 +214,10 @@ export const finalizeCartAsync = createAsyncThunk<
   async (clientData, { rejectWithValue }) => {
     try {
       const carritoId = localStorage.getItem('carritoId');
-      if (!carritoId) {
-        console.error('No hay carrito activo en localStorage.');
-        throw new Error('No hay carrito activo.');
-      }
+      if (!carritoId) throw new Error('No hay carrito activo.');
 
       const token = localStorage.getItem('authToken');
       if (!token) throw new Error('El token de autenticación es requerido.');
-
-      console.log('Finalizando carrito con ID:', carritoId); // Verifica que carritoId se loguea correctamente
 
       await axiosInstance.post(`/carrito/finalize/${carritoId}`, clientData, {
         headers: { Authorization: `Bearer ${token}` },
@@ -241,9 +225,8 @@ export const finalizeCartAsync = createAsyncThunk<
     } catch (error) {
       let errorMessage = 'Error al finalizar la compra.';
       if (axios.isAxiosError(error)) {
-        errorMessage = error.response?.data?.message || error.message || 'Error desconocido al finalizar la compra.';
+        errorMessage = error.response?.data?.message ?? 'Error desconocido al finalizar la compra.';
       }
-      console.error('Detalles del error:', error);
       return rejectWithValue(errorMessage);
     }
   }
