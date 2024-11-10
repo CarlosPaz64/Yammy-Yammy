@@ -84,18 +84,33 @@ const CartPage: React.FC = () => {
         alert('No hay carrito activo. Por favor, agrega productos antes de finalizar la compra.');
         return;
       }
-
-      console.log('Datos de cliente antes de finalizar:', clientData);
+  
+      const dataToSend = { ...clientData };
+      if (clientData.opcion_entrega === 'recoger') {
+        // Asignar valores de cadena vacía para evitar errores de tipo
+        dataToSend.calle = '';
+        dataToSend.numero_exterior = '';
+        dataToSend.numero_interior = '';
+        dataToSend.colonia = '';
+        dataToSend.ciudad = '';
+        dataToSend.codigo_postal = '';
+        dataToSend.descripcion_ubicacion = '';
+        dataToSend.numero_telefono = '';
+      }
+  
+      console.log('Datos de cliente antes de finalizar:', dataToSend); // Depuración
       console.log('Carrito ID:', carritoId);
-
-      await dispatch(finalizeCartAsync(clientData)).unwrap();
+  
+      // Llama a finalizeCartAsync con datos actualizados
+      await dispatch(finalizeCartAsync(dataToSend)).unwrap();
       alert('Compra finalizada con éxito.');
     } catch (error) {
-      console.error('Error al finalizar la compra (detalles):', error);
+      console.error('Error al finalizar la compra:', error);
       alert(`Error al finalizar la compra: ${error}`);
     }
   };
-
+  
+  
   const handleRemoveItem = async (carrito_producto_id: number) => {
     try {
       await dispatch(removeFromCartAsync(carrito_producto_id)).unwrap();

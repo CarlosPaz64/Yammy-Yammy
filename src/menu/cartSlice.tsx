@@ -225,17 +225,25 @@ export const finalizeCartAsync = createAsyncThunk<
   async (clientData, { rejectWithValue }) => {
     try {
       const carritoId = localStorage.getItem('carritoId');
+      const client_id = localStorage.getItem('userId'); // Recuperar client_id del localStorage
+
       if (!carritoId) {
         console.error('No hay carrito activo en localStorage.');
         throw new Error('No hay carrito activo.');
       }
 
+      if (!client_id) {
+        console.error('No se encontró client_id en localStorage.');
+        throw new Error('El client_id es obligatorio.');
+      }
+
       const token = localStorage.getItem('authToken');
       if (!token) throw new Error('El token de autenticación es requerido.');
 
-      console.log('Finalizando carrito con ID:', carritoId); // Verifica que carritoId se loguea correctamente
+      console.log('Finalizando carrito con ID:', carritoId);
+      console.log('Datos del cliente enviados:', { ...clientData, client_id }); // Confirmar envío de client_id
 
-      await axiosInstance.post(`/carrito/finalize/${carritoId}`, clientData, {
+      await axiosInstance.post(`/carrito/finalize/${carritoId}`, { ...clientData, client_id }, {
         headers: { Authorization: `Bearer ${token}` },
       });
     } catch (error) {
@@ -248,6 +256,8 @@ export const finalizeCartAsync = createAsyncThunk<
     }
   }
 );
+
+
 
 // Thunk para validar la sesión y limpiar el carrito si no hay sesión activa
 export const validateSessionAndClearCartAsync = createAsyncThunk<void, void, { rejectValue: string }>(
