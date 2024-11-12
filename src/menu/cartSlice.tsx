@@ -1,109 +1,281 @@
-import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
+import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
+import axios from 'axios';
 import axiosInstance from '../api/axiosInstance';
 import { Producto } from './menu';
 import { RootState } from './store';
 
 interface CartItem extends Producto {
   quantity: number;
-  carrito_producto_id: number; // Identificador único para cada producto en el carrito
+  carrito_producto_id: number;
+  carrito_id: number;
 }
 
 interface CartState {
   items: CartItem[];
   status: 'idle' | 'loading' | 'succeeded' | 'failed';
   totalItems: number;
+  error: string | null;
 }
 
-// Función para cargar el carrito desde localStorage
-const loadCartFromLocalStorage = (): CartItem[] => {
-  try {
-    const serializedCart = localStorage.getItem('cart');
-    return serializedCart ? JSON.parse(serializedCart) : [];
-  } catch (error) {
-    console.error("Error loading cart from localStorage", error);
-    return [];
-  }
-};
-
-// Estado inicial del carrito cargado desde localStorage
 const initialState: CartState = {
-  items: loadCartFromLocalStorage(),
+  items: [],
   status: 'idle',
-  totalItems: loadCartFromLocalStorage().reduce((sum, item) => sum + item.quantity, 0),
+  totalItems: 0,
+  error: null,
 };
 
-// Thunk para agregar un producto al carrito en el backend
-export const addToCartAsync = createAsyncThunk(
+interface ClientData {
+  calle: string;
+  numero_exterior: string;
+  numero_interior?: string;
+  colonia: string;
+  ciudad: string;
+  codigo_postal: string;
+  descripcion_ubicacion: string;
+  numero_telefono: string;
+  tipo_tarjeta: string;
+  numero_tarjeta: string;
+  fecha_tarjeta: string;
+  cvv: string;
+}
+
+
+// Thunk para agregar un producto al carrito
+export const addToCartAsync = createAsyncThunk<
+  CartItem,
+  Producto,
+  { rejectValue: string }
+>(
   'cart/addToCartAsync',
-  async (product: Producto) => {
-    const token = localStorage.getItem('authToken');
+  async (product: Producto, { rejectWithValue }) => {
+    try {
+      const token = localStorage.getItem('authToken');
+      const userId = localStorage.getItem('userId');
 
-    // Enviar solicitud para agregar el producto al carrito
-    const response = await axiosInstance.post('/carrito/add-product', {
-      carrito_id: 1,
-      product_id: product.product_id,
-      cantidad: 1,
-      token
-    });
+      if (!token || !userId) {
+        throw new Error('El token de autenticación y el userId son requeridos');
+      }
 
-    // Retorna el producto con el carrito_producto_id y cantidad 1
-    return { ...product, quantity: 1, carrito_producto_id: response.data.carrito_producto_id };
+      const response = await axiosInstance.post('/carrito/add-product', {
+        client_id: Number(userId),
+        product_id: product.product_id,
+        cantidad: 1,
+        token,
+      });
+
+      const carrito_id = response.data.carrito_id; // Verifica si carrito_id está presente
+      console.log('carrito_id devuelto por la API:', carrito_id); // <-- Debug
+
+      if (carrito_id) {
+        localStorage.setItem('carritoId', carrito_id); // Guarda en localStorage
+      } else {
+        console.error('No se recibió carrito_id en la respuesta'); // <-- Debug
+      }
+
+      return {
+        ...product,
+        quantity: 1,
+        carrito_id,
+        carrito_producto_id: response.data.carrito_producto_id,
+      };
+    } catch (error) {
+      let errorMessage = 'Error desconocido al agregar producto.';
+      if (axios.isAxiosError(error)) {
+        errorMessage = error.response?.data?.message ?? 'Error al agregar producto al carrito.';
+      }
+      return rejectWithValue(errorMessage);
+    }
   }
 );
 
-// Thunk para eliminar el producto del carrito y restablecer el stock
-export const removeFromCartAsync = createAsyncThunk(
-  'cart/removeFromCartAsync',
-  async (carritoProductoId: number, { rejectWithValue }) => {
+
+
+// Thunk para aumentar la cantidad de un producto
+export const incrementQuantityAsync = createAsyncThunk<
+  { product_id: number; cantidad: number },
+  { carrito_id: number; product_id: number },
+  { rejectValue: string }
+>(
+  'cart/incrementQuantityAsync',
+  async ({ carrito_id, product_id }, { rejectWithValue }) => {
     try {
       const token = localStorage.getItem('authToken');
-      await axiosInstance.delete(`/carrito/remove-product/${carritoProductoId}`, {
+      const client_id = localStorage.getItem('userId');
+
+      if (!token || !client_id) {
+        throw new Error('El token de autenticación y el client_id son requeridos.');
+      }
+
+      const cantidad = 1;
+      const response = await axiosInstance.post('/carrito/add-product', {
+        carrito_id,
+        product_id,
+        client_id: Number(client_id),
+        cantidad,
+        token,
+      });
+
+      return { product_id: response.data.product_id, cantidad };
+    } catch (error) {
+      let errorMessage = 'Error desconocido al aumentar cantidad.';
+      if (axios.isAxiosError(error)) {
+        errorMessage = error.response?.data?.message ?? 'Error al aumentar cantidad.';
+      }
+      return rejectWithValue(errorMessage);
+    }
+  }
+);
+
+// Thunk para eliminar un producto del carrito
+export const removeFromCartAsync = createAsyncThunk<
+  number,
+  number,
+  { rejectValue: string }
+>(
+  'cart/removeFromCartAsync',
+  async (carrito_producto_id, { rejectWithValue }) => {
+    try {
+      const token = localStorage.getItem('authToken');
+
+      if (!token) {
+        throw new Error('El token de autenticación es requerido.');
+      }
+
+      await axiosInstance.delete(`/carrito/remove-product/${carrito_producto_id}`, {
         headers: { Authorization: `Bearer ${token}` },
       });
-      return carritoProductoId;
-    } catch (error: any) {
-      return rejectWithValue(error.response?.data?.message || 'Error al eliminar producto del carrito');
+
+      return carrito_producto_id;
+    } catch (error) {
+      let errorMessage = 'Error desconocido al eliminar producto.';
+      if (axios.isAxiosError(error)) {
+        errorMessage = error.response?.data?.message ?? 'Error al eliminar producto del carrito.';
+      }
+      return rejectWithValue(errorMessage);
     }
   }
 );
 
-// Thunk para reducir la cantidad de un producto en el carrito
-export const decrementQuantityAsync = createAsyncThunk(
+// Thunk para reducir la cantidad de un producto
+export const decrementQuantityAsync = createAsyncThunk<
+  { carrito_producto_id: number; cantidad: number },
+  { carrito_producto_id: number; cantidad: number },
+  { rejectValue: string }
+>(
   'cart/decrementQuantityAsync',
-  async ({ carritoProductoId, cantidad }: { carritoProductoId: number; cantidad: number }, { rejectWithValue }) => {
+  async ({ carrito_producto_id, cantidad }, { rejectWithValue }) => {
     try {
       const token = localStorage.getItem('authToken');
-      await axiosInstance.patch('/carrito/decrement-quantity', {
-        carrito_producto_id: carritoProductoId,
-        cantidad,
-        token
-      });
-      return { carritoProductoId, cantidad };
-    } catch (error: any) {
-      return rejectWithValue(error.response?.data?.message || 'Error al reducir la cantidad del producto');
+
+      if (!token) {
+        throw new Error('El token de autenticación es requerido.');
+      }
+
+      await axiosInstance.patch(
+        `/carrito/decrement-quantity/${carrito_producto_id}`,
+        { carrito_producto_id, cantidad },
+        { headers: { Authorization: `Bearer ${token}` } }
+      );
+
+      return { carrito_producto_id, cantidad };
+    } catch (error) {
+      let errorMessage = 'Error desconocido al reducir cantidad.';
+      if (axios.isAxiosError(error)) {
+        errorMessage = error.response?.data?.message ?? 'Error al reducir cantidad.';
+      }
+      return rejectWithValue(errorMessage);
     }
   }
 );
 
-// Thunk para incrementar la cantidad de un producto y actualizar en el backend
-export const incrementQuantityAsync = createAsyncThunk(
-  'cart/incrementQuantityAsync',
-  async ({ carrito_id, productId }: { carrito_id: number; productId: number }) => {
-    const token = localStorage.getItem('authToken');
-    const cantidad = 1; // Incrementar en 1
+// Thunk para obtener los datos del cliente relacionados con el carrito
+export const fetchCartClientDataAsync = createAsyncThunk<
+  Partial<ClientData>,
+  number,
+  { rejectValue: string }
+>(
+  'cart/fetchCartClientDataAsync',
+  async (clientId, { rejectWithValue }) => {
+    try {
+      const token = localStorage.getItem('authToken');
+      if (!token) throw new Error('El token de autenticación es requerido.');
 
-    await axiosInstance.post('/carrito/add-product', {
-      carrito_id,
-      product_id: productId,
-      cantidad,
-      token
-    });
+      const response = await axiosInstance.get(`/carrito/client/${clientId}`, {
+        headers: { Authorization: `Bearer ${token}` },
+      });
 
-    return { productId, cantidad };
+      return response.data;
+    } catch (error) {
+      let errorMessage = 'Error al obtener los datos del cliente.';
+      if (axios.isAxiosError(error)) {
+        errorMessage = error.response?.data?.message ?? 'Error desconocido.';
+      }
+      return rejectWithValue(errorMessage);
+    }
   }
 );
 
-// Slice del carrito
+// Thunk para finalizar el carrito
+export const finalizeCartAsync = createAsyncThunk<
+  void,
+  ClientData,
+  { rejectValue: string }
+>(
+  'cart/finalizeCartAsync',
+  async (clientData, { rejectWithValue }) => {
+    try {
+      const carritoId = localStorage.getItem('carritoId');
+      const client_id = localStorage.getItem('userId'); // Recuperar client_id del localStorage
+
+      if (!carritoId) {
+        console.error('No hay carrito activo en localStorage.');
+        throw new Error('No hay carrito activo.');
+      }
+
+      if (!client_id) {
+        console.error('No se encontró client_id en localStorage.');
+        throw new Error('El client_id es obligatorio.');
+      }
+
+      const token = localStorage.getItem('authToken');
+      if (!token) throw new Error('El token de autenticación es requerido.');
+
+      console.log('Finalizando carrito con ID:', carritoId);
+      console.log('Datos del cliente enviados:', { ...clientData, client_id }); // Confirmar envío de client_id
+
+      await axiosInstance.post(`/carrito/finalize/${carritoId}`, { ...clientData, client_id }, {
+        headers: { Authorization: `Bearer ${token}` },
+      });
+    } catch (error) {
+      let errorMessage = 'Error al finalizar la compra.';
+      if (axios.isAxiosError(error)) {
+        errorMessage = error.response?.data?.message || error.message || 'Error desconocido al finalizar la compra.';
+      }
+      console.error('Detalles del error:', error);
+      return rejectWithValue(errorMessage);
+    }
+  }
+);
+
+
+
+// Thunk para validar la sesión y limpiar el carrito si no hay sesión activa
+export const validateSessionAndClearCartAsync = createAsyncThunk<void, void, { rejectValue: string }>(
+  'cart/validateSessionAndClearCartAsync',
+  async (_, { dispatch, rejectWithValue }) => {
+    try {
+      const userId = localStorage.getItem('userId');
+      if (!userId) {
+        dispatch(clearCart()); // Limpiar carrito si no hay sesión activa
+      }
+    } catch (error) {
+      return rejectWithValue('Error validando la sesión.');
+    }
+  }
+);
+
+
+
 const cartSlice = createSlice({
   name: 'cart',
   initialState,
@@ -112,57 +284,53 @@ const cartSlice = createSlice({
       state.items = [];
       state.totalItems = 0;
       localStorage.removeItem('cart');
+      localStorage.removeItem('carritoId');
     },
   },
   extraReducers: (builder) => {
     builder
       .addCase(addToCartAsync.fulfilled, (state, action) => {
         const product = action.payload;
-        const itemIndex = state.items.findIndex((item) => item.product_id === product.product_id);
-        if (itemIndex >= 0) {
-          state.items[itemIndex].quantity += 1;
+        const existingItem = state.items.find(
+          (item) => item.product_id === product.product_id
+        );
+
+        if (existingItem) {
+          existingItem.quantity += 1;
         } else {
           state.items.push(product);
         }
+
         state.totalItems += 1;
+        state.status = 'succeeded';
       })
       .addCase(removeFromCartAsync.fulfilled, (state, action) => {
-        const carritoProductoId = action.payload;
-        state.items = state.items.filter((item) => item.carrito_producto_id !== carritoProductoId);
+        state.items = state.items.filter(
+          (item) => item.carrito_producto_id !== action.payload
+        );
         state.totalItems = state.items.reduce((sum, item) => sum + item.quantity, 0);
+        state.status = 'succeeded';
       })
-      .addCase(decrementQuantityAsync.fulfilled, (state, action) => {
-        const { carritoProductoId, cantidad } = action.payload;
-        const item = state.items.find((item) => item.carrito_producto_id === carritoProductoId);
-        if (item) {
-          item.quantity -= cantidad;
-          if (item.quantity <= 0) {
-            state.items = state.items.filter((i) => i.carrito_producto_id !== carritoProductoId);
-          }
-          state.totalItems = state.items.reduce((sum, item) => sum + item.quantity, 0);
-        }
+      .addCase(finalizeCartAsync.fulfilled, (state) => {
+        state.items = [];
+        state.totalItems = 0;
+        state.status = 'succeeded';
+        localStorage.removeItem('carritoId');
       })
-      .addCase(incrementQuantityAsync.fulfilled, (state, action) => {
-        const { productId, cantidad } = action.payload;
-        const item = state.items.find((item) => item.product_id === productId);
-        if (item) {
-          item.quantity += cantidad;
-          state.totalItems += cantidad;
-        }
+      .addCase(finalizeCartAsync.rejected, (state, action) => {
+        state.status = 'failed';
+        state.error = action.payload || 'Error al finalizar la compra.';
       });
   },
 });
 
-// Middleware para sincronizar el carrito con localStorage
-export const syncCartToLocalStorage = (store: any) => (next: any) => (action: any) => {
-  const result = next(action);
-  const state = store.getState();
-  localStorage.setItem('cart', JSON.stringify(state.cart.items));
-  return result;
-};
-
-// Exportar las acciones y el middleware
 export const { clearCart } = cartSlice.actions;
-export const selectTotalItems = (state: RootState) => state.cart.totalItems;
+export const selectCartItems = (state: RootState) => state.cart.items;
+export const selectCartStatus = (state: RootState) => state.cart.status;
+export const selectCartError = (state: RootState) => state.cart.error;
+
+// Selector para obtener el total de artículos en el carrito
+export const selectTotalItems = (state: RootState) =>
+  state.cart.items.reduce((total, item) => total + item.quantity, 0);
 
 export default cartSlice.reducer;
