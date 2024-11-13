@@ -222,42 +222,38 @@ export const finalizeCartAsync = createAsyncThunk<
   { rejectValue: string }
 >(
   'cart/finalizeCartAsync',
-  async (clientData, { rejectWithValue }) => {
+  async (clientData, { rejectWithValue, getState }) => {
     try {
       const carritoId = localStorage.getItem('carritoId');
-      const client_id = localStorage.getItem('userId'); // Recuperar client_id del localStorage
-
-      if (!carritoId) {
-        console.error('No hay carrito activo en localStorage.');
-        throw new Error('No hay carrito activo.');
-      }
-
-      if (!client_id) {
-        console.error('No se encontró client_id en localStorage.');
-        throw new Error('El client_id es obligatorio.');
-      }
-
+      const client_id = localStorage.getItem('userId');
       const token = localStorage.getItem('authToken');
-      if (!token) throw new Error('El token de autenticación es requerido.');
 
-      console.log('Finalizando carrito con ID:', carritoId);
-      console.log('Datos del cliente enviados:', { ...clientData, client_id }); // Confirmar envío de client_id
+      if (!carritoId || !client_id || !token) {
+        throw new Error('Faltan datos necesarios para finalizar la compra.');
+      }
 
-      await axiosInstance.post(`/carrito/finalize/${carritoId}`, { ...clientData, client_id }, {
-        headers: { Authorization: `Bearer ${token}` },
-      });
+      const state = getState() as RootState;
+      const totalAmount = state.cart.items.reduce(
+        (total, item) => total + (item.precio || 0) * item.quantity,
+        0
+      );
+
+      await axiosInstance.post(
+        `/carrito/finalize/${carritoId}`,
+        { ...clientData, client_id, precio_total: totalAmount },
+        {
+          headers: { Authorization: `Bearer ${token}` },
+        }
+      );
     } catch (error) {
       let errorMessage = 'Error al finalizar la compra.';
       if (axios.isAxiosError(error)) {
-        errorMessage = error.response?.data?.message || error.message || 'Error desconocido al finalizar la compra.';
+        errorMessage = error.response?.data?.message || error.message || errorMessage;
       }
-      console.error('Detalles del error:', error);
       return rejectWithValue(errorMessage);
     }
   }
 );
-
-
 
 // Thunk para validar la sesión y limpiar el carrito si no hay sesión activa
 export const validateSessionAndClearCartAsync = createAsyncThunk<void, void, { rejectValue: string }>(

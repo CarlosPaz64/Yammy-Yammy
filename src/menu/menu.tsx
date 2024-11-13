@@ -9,7 +9,7 @@ export interface Producto {
   product_id: number;
   nombre_producto: string;
   descripcion_producto: string;
-  precio: string | number | null;
+  precio: number;
   categoria: string;
   stock: number;
   url_imagen: string;

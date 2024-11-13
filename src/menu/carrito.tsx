@@ -14,10 +14,12 @@ import axios from 'axios'; // Para consumir la API de códigos postales
 const CartPage: React.FC = () => {
   const cartItems = useSelector((state: RootState) => state.cart.items);
   const totalItems = cartItems.reduce((total, item) => total + item.quantity, 0);
-  const totalAmount = cartItems.reduce(
-    (total, item) => total + (Number(item.precio) || 0) * item.quantity,
-    0
-  );
+  const totalAmount = cartItems.reduce((total, item) => {
+    const precio = Number(item.precio) || 0; // Convierte precio a número o usa 0 por defecto
+    const quantity = Number(item.quantity) || 0; // Convierte quantity a número o usa 0
+    return total + precio * quantity;
+  }, 0);
+  
   const dispatch = useDispatch<AppDispatch>();
 
   const [clientData, setClientData] = useState({
