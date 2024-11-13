@@ -238,7 +238,7 @@ export const finalizeCartAsync = createAsyncThunk<
         0
       );
 
-      await axiosInstance.post(
+      await axiosInstance.put(
         `/carrito/finalize/${carritoId}`,
         { ...clientData, client_id, precio_total: totalAmount },
         {
