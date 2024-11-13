@@ -45,6 +45,7 @@ const Conocenos: React.FC = () => {
           con la calidad, la creatividad y un servicio al cliente excepcional. A través de nuestra tienda online 
           buscamos llegar a más personas y hacer que disfrutar de algo dulce sea fácil y satisfactorio.
         </p>
+        
       </section>
 
       {/* Sección de ubicación */}
