@@ -61,3 +61,11 @@ main {
 	object-fit: cover; /* Asegura que la imagen se ajuste sin deformarse */
 	border-radius: 8px; /* Redondea los bordes de la imagen, opcional */
 }
+
+tr{
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	text-align: center;
+	gap: 50px;
+}
