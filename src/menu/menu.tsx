@@ -23,7 +23,7 @@ const MenuPage: React.FC = () => {
   useEffect(() => {
     const fetchProductos = async () => {
       try {
-        const response = await fetch('http://localhost:3000/api/productos/por-categoria');
+        const response = await fetch('http://localhost:3000/api/productos/por-categoria'); {/* Ruta de la API*/}
         const data = await response.json();
         setProductos(data);
       } catch (error) {
@@ -49,6 +49,7 @@ const MenuPage: React.FC = () => {
     'Producto de temporada'
   ];
 
+  {/* Filtro por categoria de los productos */}
   const productosPorCategoria = (categoria: string) => {
     return productos.filter((producto) => producto.categoria === categoria);
   };
@@ -60,9 +61,9 @@ const MenuPage: React.FC = () => {
 
   return (
     <main>
-      <div>
+      <div className='product-page'>
         {categorias.map((categoria) => (
-          <section id={categoria.toLowerCase().replace(/\s+/g, '-')} key={categoria}>
+          <section className='section-menu' id={categoria.toLowerCase().replace(/\s+/g, '-')} key={categoria}>
             <h2>{categoria}</h2>
             <div className="productos-container">
               {productosPorCategoria(categoria).map((producto) => {

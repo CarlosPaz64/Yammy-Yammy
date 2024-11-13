@@ -51,16 +51,7 @@ const NavBar: React.FC<{ children?: ReactNode }> = ({ children }) => {
                     <ul>
                         <li>
                             <Link to="/">
-                                <img
-                                    src="../src/assets/Yamy-Imagotipo.png"
-                                    alt="Imagotipo"
-                                    className="img-nav"
-                                />
-                            </Link>
-                        </li>
-                        <li>
-                            <Link to="/">
-                                <span className="textNav">Inicio</span>
+                                <img src='http://localhost:3000/assets/Yamy-Imagotipo.png' alt="Imagotipo" className="img-nav" />
                             </Link>
                         </li>
                         <li>
@@ -145,12 +136,8 @@ const NavBar: React.FC<{ children?: ReactNode }> = ({ children }) => {
                         </div>
                         <div className="nav-center">
                             <li>
-                                <Link to="/">
-                                    <img
-                                        src="../src/assets/Yamy-Imagotipo.png"
-                                        alt="Imagotipo"
-                                        className="img-nav"
-                                    />
+                                <Link to = "/">
+                                    <img src='http://localhost:3000/assets/Yamy-Imagotipo.png' alt="Imagotipo" className="img-nav" />
                                 </Link>
                             </li>
                         </div>
@@ -186,17 +173,12 @@ const NavBar: React.FC<{ children?: ReactNode }> = ({ children }) => {
                             </div>
                         </li>
                         <li>
-                            <Link to="/">
-                                <span className="textNav">Inicio</span>
-                            </Link>
-                        </li>
-                        <li>
-                            <Link to="/menu">
+                            <Link to = "/menu">
                                 <span className="textNav">Menú</span>
                             </Link>
                         </li>
                         <li>
-                            <Link to="/pedido">
+                            <Link to = "/pedido">
                                 <span className="textNav">Haz un pedido</span>
                             </Link>
                         </li>
