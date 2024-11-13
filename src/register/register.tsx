@@ -15,7 +15,11 @@ interface IFormInput {
   colonia: string;
   ciudad: string;
   codigo_postal: string;
-  descripcion: string;
+  descripcion_ubicacion: string;
+  tipo_tarjeta: 'Visa' | 'MasterCard' | 'American Express';
+  numero_tarjeta: string;
+  fecha_tarjeta: string;
+  cvv: string;
 }
 
 const API_LINK = import.meta.env.VITE_API_LINK || 'http://localhost:3000';
@@ -24,28 +28,28 @@ const SECRET_KEY = 'tu_clave_secreta';  // Usa la misma clave que en tu backend
 const RegisterForm: React.FC = () => {
   const { register, handleSubmit, formState: { errors }, setValue } = useForm<IFormInput>();
   const [isLoading, setIsLoading] = useState(false);
-  const [colonias, setColonias] = useState<string[]>([]);  // Estado para almacenar las colonias
-  const [codigoPostal, setCodigoPostal] = useState('');    // Estado para almacenar el código postal
-  const [ciudad, setCiudad] = useState('');                // Estado para almacenar la ciudad
-  const [mostrarCampos, setMostrarCampos] = useState(false);  // Controlar la visibilidad de Colonia y Ciudad
+  const [colonias, setColonias] = useState<string[]>([]);
+  const [codigoPostal, setCodigoPostal] = useState('');
+  const [ciudad, setCiudad] = useState('');
+  const [mostrarCampos, setMostrarCampos] = useState(false);
 
   // Función para obtener la ciudad y colonias desde tu API local
   const fetchColoniasYCiudad = async (codigo_postal: string) => {
     try {
       const response = await fetch(`${API_LINK}/api/codigo-postal/${codigo_postal}`);
       if (!response.ok) {
-        setColonias([]);  // Limpiar colonias si el código postal no es válido
-        setCiudad('');    // Limpiar la ciudad si el código postal no es válido
+        setColonias([]);
+        setCiudad('');
         setMostrarCampos(false);
         return null;
       }
       const data = await response.json();
       const { ciudad, colonias } = data;
 
-      setCiudad(ciudad);  // Actualiza la ciudad
-      setColonias(colonias);  // Actualiza las colonias
-      setValue('ciudad', ciudad);  // Establece la ciudad en el formulario
-      setMostrarCampos(true);  // Muestra los campos de Colonia y Ciudad
+      setCiudad(ciudad);
+      setColonias(colonias);
+      setValue('ciudad', ciudad);
+      setMostrarCampos(true);
     } catch (error) {
       console.error('Error al obtener la ciudad y colonias desde la API:', error);
       setColonias([]);
@@ -60,13 +64,11 @@ const RegisterForm: React.FC = () => {
     setCodigoPostal(codigo_postal);
 
     if (codigo_postal.length === 5) {
-      // Solo llama a la API cuando el código postal tiene 5 caracteres
-      await fetchColoniasYCiudad(codigo_postal);  // Llamada a tu API local para obtener la ciudad y colonias
+      await fetchColoniasYCiudad(codigo_postal);
     } else {
-      // Ocultar los campos si el código postal no es válido
       setMostrarCampos(false);
-      setCiudad('');  // Resetea la ciudad
-      setColonias([]);  // Resetea las colonias
+      setCiudad('');
+      setColonias([]);
     }
   };
 
@@ -139,7 +141,7 @@ const RegisterForm: React.FC = () => {
       </div>
 
       <div>
-        <label>Número de Teléfono (Opcional)</label>
+        <label>Número de Teléfono</label>
         <input {...register('numero_telefono')} />
       </div>
 
@@ -172,10 +174,9 @@ const RegisterForm: React.FC = () => {
 
       <div>
         <label>Descripción</label>
-        <textarea {...register('descripcion')} />
+        <textarea {...register('descripcion_ubicacion')} />
       </div>
 
-      {/* Mostrar Colonia y Ciudad solo cuando el código postal sea válido */}
       {mostrarCampos && (
         <>
           <div>
@@ -198,13 +199,42 @@ const RegisterForm: React.FC = () => {
             <label>Ciudad</label>
             <input
               {...register('ciudad', { required: true })}
-              value={ciudad}  // Establece el valor del input desde el estado
-              disabled  // Deshabilita el campo para que no se pueda modificar
+              value={ciudad}
+              disabled
             />
             {errors.ciudad && <span>Este campo es requerido</span>}
           </div>
         </>
       )}
+
+      {/* Campos de la tarjeta */}
+      <div>
+        <label>Tipo de Tarjeta</label>
+        <select {...register('tipo_tarjeta', { required: true })}>
+          <option value="Visa">Visa</option>
+          <option value="MasterCard">MasterCard</option>
+          <option value="American Express">American Express</option>
+        </select>
+        {errors.tipo_tarjeta && <span>Este campo es requerido</span>}
+      </div>
+
+      <div>
+        <label>Número de Tarjeta</label>
+        <input {...register('numero_tarjeta', { required: true, minLength: 15, maxLength: 16 })} />
+        {errors.numero_tarjeta && <span>El número de tarjeta es inválido</span>}
+      </div>
+
+      <div>
+        <label>Fecha de Expiración</label>
+        <input type="text" placeholder="MM/YY" {...register('fecha_tarjeta', { required: true, pattern: /^(0[1-9]|1[0-2])\/?([0-9]{2})$/ })} />
+        {errors.fecha_tarjeta && <span>Formato inválido. Usa MM/YY</span>}
+      </div>
+
+      <div>
+        <label>CVV</label>
+        <input type="text" {...register('cvv', { required: true, minLength: 3, maxLength: 4 })} />
+        {errors.cvv && <span>El CVV es inválido</span>}
+      </div>
 
       <button type="submit" disabled={isLoading}>
         {isLoading ? 'Registrando...' : 'Registrar'}
