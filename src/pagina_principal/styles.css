@@ -1,7 +1,10 @@
 /*Biblioteca de letra personalizados para la página, tomados de Google Fonts*/
-@import url('https://fonts.googleapis.com/css2?family=Manrope:wght@200..800&display=swap'); /*Fuente Manrope*/
+@import url('https://fonts.googleapis.com/css2?family=Manrope:wght@200..800&display=swap'); /* -> Fuente Manrope*/
 /*Tipo de letra para las velas del pastel (Footer)*/
 @import url('https://fonts.googleapis.com/css2?family=Alfa+Slab+One&display=swap'); /* -> Fuente Alfa Slab One*/
+/*Tipo de letra para el index.tsx*/
+@import url('https://fonts.googleapis.com/css2?family=Alfa+Slab+One&family=Almarai:wght@300;400;700;800&family=Noto+Sans:ital,wght@0,100..900;1,100..900&display=swap'); /* -> Fuente Almarai*/
+@import url('https://fonts.googleapis.com/css2?family=Alfa+Slab+One&family=Almarai:wght@300;400;700;800&family=Dosis:wght@200..800&family=Noto+Sans:ital,wght@0,100..900;1,100..900&display=swap'); /* -> Fuente Dosis*/
 
 /*Biblioteca de Iconos tomados en Flaticon -> url del icono de la flama llamado (fi fi-ss-flame)*/
 @import url('https://cdn-uicons.flaticon.com/2.6.0/uicons-solid-straight/css/uicons-solid-straight.css');
@@ -37,9 +40,9 @@ html{
 
 body{
   position: relative;/*Se coloca para posicionar el footer en la parte inferior de la página*/
-  background:linear-gradient(to bottom right,#EEEEEE,#F9F9F9, #E7E7E7);
+  background:linear-gradient(to bottom left,#FAFEFF 0%, #ECF1F4 29%, #FCFEFD 69%, #E6EBEE 100%);  
   min-height: 100vh;
-  padding-bottom: 650px; /*Deja un espaciado entre el contenido de la página y el Footer(pie de página)*/
+  padding-bottom: 700px; /*Deja un espaciado entre el contenido de la página y el Footer(pie de página)*/
   overflow-x: hidden;
 }
 
@@ -88,6 +91,7 @@ h1 {
 
 /*Media para tabletas/laptops*/
 @media only screen and (min-width: 768px) and (max-width: 1024px) {
+  /*Tooltip - personalizado para la web*/
   .tooltip-text {
     font-size: 10px;
     width: 60%;
@@ -100,6 +104,11 @@ h1 {
 
 /*Media para teléfonos/Smartphone*/
 @media only screen and (max-width: 767px) {
+  /*Cuerpo de la página*/
+  body{
+    padding-bottom: 450px; /*Deja un espaciado entre el contenido de la página y el Footer(pie de página)*/
+  }
+  /*Tooltip - personalizado para la web*/
   .tooltip-text {
     font-size: 2%;
     width: 45%;

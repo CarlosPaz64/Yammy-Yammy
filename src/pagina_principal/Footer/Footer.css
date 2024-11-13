@@ -241,7 +241,7 @@ footer{
     .bread-zone{padding-top: 40px;}
     /*Parte del merengue terciario derretido*/
     .main-meringue{display: none;} .secondary-meringue{display: none;} .tertiary-meringue{display: block;}
-    .container-meringue {margin-bottom: 40px;}
+    .container-meringue {margin-bottom: 32px;}
     .melted-meringue1, .melted-meringue2, .melted-meringue3 {
         height: 106px; /* altura del efecto del merengue */
         width: 40%; /* Ancho en porcentaje para que se ajuste */
@@ -250,26 +250,26 @@ footer{
     .container-candle {top: -133.5px;}
     /*Vela en forma de letras */
     .word-candle {
-        font-size: 1rem;
-        word-spacing: 5px;
+        font-size: 1.5rem;
+        word-spacing: 8px;
         letter-spacing: 10px;
     }
     /*Contenedor para la mecha de la vela*/
     .container-wick{
-        top: 0;
+        top: 2px;
         height: 6px;
         width: 1.5px;
     }
-    .container-wick.wick1{left: 1px;} .wick2{left: 10px;} .wick3{left: 26px;} .wick4{left: 46px;} .wick5{left: 57px;} .wick6{left: 72px;} .wick7{left: 81px;}
-    .wick8{left: 114.2px;} .wick9{left: 123px;} .wick10{left: 139.5px;} .wick11{left: 160px;} .wick12{left: 170px;} .wick13{left: 186px;} .wick14{left: 195px;}
+    .container-wick.wick1{left: 3px;} .wick2{left: 14px;} .wick3{left: 34px;} .wick4{left: 60px;} .wick5{left: 76px;} .wick6{left: 96px;} .wick7{left: 106px;}
+    .wick8{left: 150px;} .wick9{left: 160px;} .wick10{left: 180px;} .wick11{left: 206px;} .wick12{left: 221px;} .wick13{left: 242px;} .wick14{left: 252px;}
     /*Flama de la vela*/
     .candle-flame {
         position: absolute;
-        top: -11px;
+        top: -9px;
         font-size: 10px !important;
     }
-    .flame1{left: -3px;} .flame2{left: 6px;} .flame3{left: 22px;} .flame4{left: 42px;} .flame5{left: 53px;} .flame6{left: 68px;} .flame7{left: 77px;}
-    .flame8{left: 110px;} .flame9{left: 119px;} .flame10{left: 135.5px;} .flame11{left: 156px;} .flame12{left: 166px;} .flame13{left: 182px;} .flame14{left: 191px;}
+    .flame1{left: -1px;} .flame2{left: 10px;} .flame3{left: 30px;} .flame4{left: 56px;} .flame5{left: 72px;} .flame6{left: 92px;} .flame7{left: 102px;}
+    .flame8{left: 146px;} .flame9{left: 156px;} .flame10{left: 176px;} .flame11{left: 202px;} .flame12{left: 217px;} .flame13{left: 238px;} .flame14{left: 248px;}
     /*Capa / división del pastel*/
     .cake-layer{height: 28px;}
     /*sección de las redes sociales*/
