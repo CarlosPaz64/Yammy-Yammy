@@ -1,7 +1,15 @@
-/*Tipo de letra para la pagina -> Manrope*/
-@import url('https://fonts.googleapis.com/css2?family=Manrope:wght@200..800&display=swap');
+/*Biblioteca de letra personalizados para la página, tomados de Google Fonts*/
+@import url('https://fonts.googleapis.com/css2?family=Manrope:wght@200..800&display=swap'); /* -> Fuente Manrope*/
+/*Tipo de letra para las velas del pastel (Footer)*/
+@import url('https://fonts.googleapis.com/css2?family=Alfa+Slab+One&display=swap'); /* -> Fuente Alfa Slab One*/
+/*Tipo de letra para el index.tsx*/
+@import url('https://fonts.googleapis.com/css2?family=Alfa+Slab+One&family=Almarai:wght@300;400;700;800&family=Noto+Sans:ital,wght@0,100..900;1,100..900&display=swap'); /* -> Fuente Almarai*/
+@import url('https://fonts.googleapis.com/css2?family=Alfa+Slab+One&family=Almarai:wght@300;400;700;800&family=Dosis:wght@200..800&family=Noto+Sans:ital,wght@0,100..900;1,100..900&display=swap'); /* -> Fuente Dosis*/
 
-/*Estilo para los iconos de google font*/
+/*Biblioteca de Iconos tomados en Flaticon -> url del icono de la flama llamado (fi fi-ss-flame)*/
+@import url('https://cdn-uicons.flaticon.com/2.6.0/uicons-solid-straight/css/uicons-solid-straight.css');
+
+/*Estilo para los iconos de Google Fonts*/
 .material-symbols-outlined {
   font-variation-settings:
   'FILL' 0,
@@ -10,28 +18,41 @@
   'opsz' 24
 }
 
-/*Selector global de la página*/
+/*Selector global de las páginas*/
 *{
   padding: 0;
   margin: 0;
   line-height: 1.5;
   color: #000;
-  /*Propiedades de Manrope*/
+  /* Propiedades de Manrope fuente tomada de "Google Fonts" */
   font-family: "Manrope", sans-serif;
   font-optical-sizing: auto;
   font-style: normal;
+  cursor: url('http://localhost:3000/assets/Cursor.png'), auto !important;
+}
+
+html{
+	scroll-behavior: smooth; /*Habilita el scroll smooth para la vista suave de los enlaces: "<a>" del menú*/
+  /*Estilo personalizado, para el scrollbar de la página*/
+  scrollbar-color: #31aaf6 #d9bbdde7;/*Color para la barra desplazante y el track(mango) de la barra*/
+  scrollbar-width: thin; /*Ilustra el ancho de la barra desplazante a uno más delgado*/
 }
 
 body{
   position: relative;/*Se coloca para posicionar el footer en la parte inferior de la página*/
-  background:linear-gradient(to bottom right,#EEEEEE,#F9F9F9, #E7E7E7);
-  min-width: 100vw;
+  background:linear-gradient(to bottom left,#FAFEFF 0%, #ECF1F4 29%, #FCFEFD 69%, #E6EBEE 100%);  
   min-height: 100vh;
-  padding-bottom: 120px; /*Deja un espaciado entre el contenido de la página y el footer(pie de página)*/
+  padding-bottom: 700px; /*Deja un espaciado entre el contenido de la página y el Footer(pie de página)*/
   overflow-x: hidden;
 }
 
-/*Tooltip*/
+h1 {
+  text-align: center;
+  color: #393E46;
+  margin-bottom: 20px;
+}
+
+/*Tooltip - personalizado para la web*/
 .tooltip-container {
   position: relative;
   display: inline-block;
@@ -68,8 +89,9 @@ body{
   opacity: 1;
 }
 
-/*Media para tabletas*/
+/*Media para tabletas/laptops*/
 @media only screen and (min-width: 768px) and (max-width: 1024px) {
+  /*Tooltip - personalizado para la web*/
   .tooltip-text {
     font-size: 10px;
     width: 60%;
@@ -80,8 +102,13 @@ body{
   }
 }
 
-/*Media para teléfonos o iphones*/
+/*Media para teléfonos/Smartphone*/
 @media only screen and (max-width: 767px) {
+  /*Cuerpo de la página*/
+  body{
+    padding-bottom: 450px; /*Deja un espaciado entre el contenido de la página y el Footer(pie de página)*/
+  }
+  /*Tooltip - personalizado para la web*/
   .tooltip-text {
     font-size: 2%;
     width: 45%;

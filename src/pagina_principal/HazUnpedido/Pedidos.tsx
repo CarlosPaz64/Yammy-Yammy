@@ -120,7 +120,9 @@ const Pedido: React.FC = () => {
   const onSubmit = async (data: FormData) => {
     try {
       const userId = localStorage.getItem('userId');
-      const token = localStorage.getItem('token');
+      const token = localStorage.getItem('authToken');
+      console.log('Este es el token de la sesión: ', token );
+      console.log('Este es el id del usuario: ', userId);
       if (!userId || !token) return alert('Por favor, inicie sesión para continuar.');
 
       const pedidoData = { client_id: userId, token, ...data, cantidad, precio };

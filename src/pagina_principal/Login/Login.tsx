@@ -40,17 +40,15 @@ const LoginForm: React.FC = () => {
 
       if (response.ok) {
         const { token, userId } = result;
-
-        // Guardar el token y userId en localStorage
-        localStorage.setItem('token', token);
+        localStorage.setItem('authToken', token);
         localStorage.setItem('userId', userId);
+
+        navigate('/'); // Redirige a la página principal
+        window.location.reload(); // Recarga la página para actualizar el estado de la sesión
 
         console.log('Token:', token);
         console.log('User ID:', userId);
 
-        // Redirigir al usuario a la página principal y recargar la página para actualizar NavBar
-        navigate('/');
-        window.location.reload();
       } else {
         console.error('Error al iniciar sesión:', result);
         alert(result.message || 'Error al iniciar sesión');
@@ -87,6 +85,13 @@ const LoginForm: React.FC = () => {
 
         <button type="submit">Iniciar Sesión</button>
       </form>
+
+      <p className="register-link">
+        ¿No estás registrado?{' '}
+        <span onClick={() => navigate('/registro')} style={{ color: 'blue', cursor: 'pointer' }}>
+          Dale click aquí
+        </span>
+      </p>
     </div>
   );
 };

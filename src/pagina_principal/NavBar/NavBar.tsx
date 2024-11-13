@@ -1,44 +1,47 @@
 import React, { ReactNode, useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import './NavBar.css';
+import { selectTotalItems } from "../../menu/cartSlice";
+import { useSelector } from "react-redux";
+import "./NavBar.css";
 
 const NavBar: React.FC<{ children?: ReactNode }> = ({ children }) => {
+    const totalItems = useSelector(selectTotalItems);
     const [sidebarOpen, setSidebarOpen] = useState(false);
-    const [isLoggedIn, setIsLoggedIn] = useState(false);
+    const [isAuthenticated, setIsAuthenticated] = useState(false);
     const navigate = useNavigate();
 
+    // Función para abrir/cerrar el sidebar
     const openSidebar = () => {
         setSidebarOpen(!sidebarOpen);
     };
 
+    // Verificar si el usuario está autenticado al cargar el componente
+    useEffect(() => {
+        const token = localStorage.getItem("authToken");
+        setIsAuthenticated(!!token);
+    }, []);
+
+    // Función para manejar el cambio de tamaño de la página
     const handleResize = () => {
         if (window.innerWidth > 1024) {
-            setSidebarOpen(false);
+            setSidebarOpen(false); // Cierra el sidebar si es pantalla grande
         }
     };
 
+    // Listener para cambio de tamaño de pantalla
     useEffect(() => {
-        window.addEventListener('resize', handleResize);
+        window.addEventListener("resize", handleResize);
         return () => {
-            window.removeEventListener('resize', handleResize);
+            window.removeEventListener("resize", handleResize);
         };
     }, []);
 
-    useEffect(() => {
-        // Verifica si el token o el ID de usuario están en localStorage
-        const token = localStorage.getItem('token');
-        const userId = localStorage.getItem('userId');
-        if (token || userId) {
-            setIsLoggedIn(true);
-        }
-    }, []);
-
+    // Función de logout
     const handleLogout = () => {
-        // Elimina el token y el userId de localStorage
-        localStorage.removeItem('token');
-        localStorage.removeItem('userId');
-        setIsLoggedIn(false);
-        navigate('/login');
+        localStorage.removeItem("authToken");
+        localStorage.removeItem("userId");
+        setIsAuthenticated(false);
+        navigate("/");
     };
 
     return (
@@ -48,12 +51,7 @@ const NavBar: React.FC<{ children?: ReactNode }> = ({ children }) => {
                     <ul>
                         <li>
                             <Link to="/">
-                                <img src='../src/assets/Yamy-Imagotipo.png' alt="Imagotipo" className="img-nav" />
-                            </Link>
-                        </li>
-                        <li>
-                            <Link to="/">
-                                <span className="textNav">Inicio</span>
+                                <img src='http://localhost:3000/assets/Yamy-Imagotipo.png' alt="Imagotipo" className="img-nav" />
                             </Link>
                         </li>
                         <li>
@@ -73,18 +71,28 @@ const NavBar: React.FC<{ children?: ReactNode }> = ({ children }) => {
                         </li>
                         <div className="nav-right">
                             <div className="tooltip-container">
-                                {isLoggedIn ? (
+                                {isAuthenticated ? (
                                     <>
                                         <span className="tooltip-text">Cerrar sesión</span>
-                                        <li onClick={handleLogout} className="material-symbols-outlined icon-nav">
-                                            <span>logout</span>
+                                        <li>
+                                            <button
+                                                onClick={handleLogout}
+                                                className="material-symbols-outlined icon-nav"
+                                            >
+                                                logout
+                                            </button>
                                         </li>
                                     </>
                                 ) : (
                                     <>
                                         <span className="tooltip-text">Iniciar sesión</span>
                                         <li>
-                                            <Link to="/login" className="material-symbols-outlined icon-nav">account_circle</Link>
+                                            <Link
+                                                to="/login"
+                                                className="material-symbols-outlined icon-nav"
+                                            >
+                                                account_circle
+                                            </Link>
                                         </li>
                                     </>
                                 )}
@@ -92,7 +100,15 @@ const NavBar: React.FC<{ children?: ReactNode }> = ({ children }) => {
                             <div className="tooltip-container">
                                 <span className="tooltip-text">Ver Carrito</span>
                                 <li>
-                                    <Link to="/carrito" className="material-symbols-outlined icon-nav">shopping_bag</Link>
+                                    <Link
+                                        to="/carrito"
+                                        className="material-symbols-outlined icon-nav"
+                                    >
+                                        shopping_bag
+                                    </Link>
+                                    {totalItems > 0 && (
+                                        <span className="cart-count">{totalItems}</span>
+                                    )}
                                 </li>
                             </div>
                         </div>
@@ -100,33 +116,46 @@ const NavBar: React.FC<{ children?: ReactNode }> = ({ children }) => {
                 </nav>
             </div>
 
-            <div className={`overlay ${sidebarOpen ? 'overlay-visible' : ''}`} onClick={openSidebar}></div>
+            <div
+                className={`overlay ${sidebarOpen ? "overlay-visible" : ""}`}
+                onClick={openSidebar}
+            ></div>
             <div className="secundary-nav">
                 <nav className="navBar-rwd">
                     <ul className="navBar-list">
                         <div className="tooltip-container">
                             <span className="tooltip-text">Ver Menú</span>
                             <li>
-                                <a className="material-symbols-outlined icon-nav iconNav-left" onClick={openSidebar}>menu</a>
+                                <a
+                                    className="material-symbols-outlined icon-nav iconNav-left"
+                                    onClick={openSidebar}
+                                >
+                                    menu
+                                </a>
                             </li>
                         </div>
                         <div className="nav-center">
                             <li>
-                                <Link to="/">
-                                    <img src='../src/assets/Yamy-Imagotipo.png' alt="Imagotipo" className="img-nav" />
+                                <Link to = "/">
+                                    <img src='http://localhost:3000/assets/Yamy-Imagotipo.png' alt="Imagotipo" className="img-nav" />
                                 </Link>
                             </li>
                         </div>
                         <div className="tooltip-container">
                             <span className="tooltip-text">Ver Carrito</span>
                             <li>
-                                <Link to="/carrito" className="material-symbols-outlined icon-nav iconNav-right">shopping_bag</Link>
+                                <Link
+                                    to="/carrito"
+                                    className="material-symbols-outlined icon-nav iconNav-right"
+                                >
+                                    shopping_bag
+                                </Link>
                             </li>
                         </div>
                     </ul>
                 </nav>
 
-                <div className={`sideBar ${sidebarOpen ? 'sideBar-visible' : ''}`}>
+                <div className={`sideBar ${sidebarOpen ? "sideBar-visible" : ""}`}>
                     <div className="close-sidebar" onClick={openSidebar}>
                         <li>
                             <a className="material-symbols-outlined close">close</a>
@@ -136,24 +165,20 @@ const NavBar: React.FC<{ children?: ReactNode }> = ({ children }) => {
                         <li>
                             <div className="sidebar-header">
                                 <a>
-                                    <i className="material-symbols-outlined icon-sid">account_circle
+                                    <i className="material-symbols-outlined icon-sid">
+                                        account_circle
                                         <span className="sidText-header">¡Hola, Identifícate!</span>
                                     </i>
                                 </a>
                             </div>
                         </li>
                         <li>
-                            <Link to="/">
-                                <span className="textNav">Inicio</span>
-                            </Link>
-                        </li>
-                        <li>
-                            <Link to="/menu">
+                            <Link to = "/menu">
                                 <span className="textNav">Menú</span>
                             </Link>
                         </li>
                         <li>
-                            <Link to="/pedido">
+                            <Link to = "/pedido">
                                 <span className="textNav">Haz un pedido</span>
                             </Link>
                         </li>
@@ -163,13 +188,16 @@ const NavBar: React.FC<{ children?: ReactNode }> = ({ children }) => {
                             </Link>
                         </li>
                         <li>
-                            {isLoggedIn ? (
-                                <a onClick={handleLogout} className="textNav textSid-logout">
+                            {isAuthenticated ? (
+                                <button
+                                    onClick={handleLogout}
+                                    className="textNav textSid-logout"
+                                >
                                     Cerrar sesión
-                                </a>
+                                </button>
                             ) : (
-                                <Link to="/login" className="textNav textSid-loggin">
-                                    Iniciar sesión
+                                <Link to="/login">
+                                    <span className="textNav textSid-loggin">Iniciar sesión</span>
                                 </Link>
                             )}
                         </li>

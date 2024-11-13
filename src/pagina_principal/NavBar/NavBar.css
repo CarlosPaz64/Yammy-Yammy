@@ -5,6 +5,18 @@
 .secundary-nav{
   display: none; /*Se oculta el nav secundario al inicio de la página*/
 }
+/* styles.css */
+.cart-count {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  background-color: red;
+  color: white;
+  padding: 0 5px;
+  border-radius: 50%;
+  font-size: 0.8em;
+}
+
 /*Estilo del navbar*/
 nav{
   display: flex;
@@ -13,6 +25,7 @@ nav{
   background:linear-gradient(to bottom, #96C9F4, #F9F9F9, #FFD0EC);
   margin: 0 auto;
   padding: 0;
+  user-select: none;
 }
 nav ul{
   display: flex;
@@ -27,7 +40,7 @@ nav ul li a{
   position: relative;/*linea agregada para la animación del subrayado, necesaria*/
   border: 0;
   text-transform: uppercase;
-  font-size: 1.5em;
+  font-size: 1.25em;
   font-weight: 700;
   margin: 15px;
   text-decoration: none;
@@ -106,7 +119,7 @@ nav ul li a .textNav::after{
     width: 127px;
     height: 127px;
   }.img-nav:hover{opacity: 0.55;}
-  .icon-nav{font-size: 2.5em !important;} .navBar-rwd .navBar-list .icon-nav:hover{color: #F4538A; cursor: pointer;} .iconNav-left{margin-left: 30px;} .iconNav-right{margin-right: 30px;}
+  .icon-nav{font-size: 2.5em !important;} .navBar-rwd .navBar-list .icon-nav:hover{color: #F4538A; /*cursor: pointer;*/} .iconNav-left{margin-left: 30px;} .iconNav-right{margin-right: 30px;}
 
   /*Estilo para el sidebar responsivo*/
   .sideBar{
@@ -118,10 +131,11 @@ nav ul li a .textNav::after{
     height: 100vh;
     background: #f5f4f2;
     overflow: auto;
-    z-index: 2;
-    box-shadow: 0 0 1rem #fff;
+    z-index: 999;
+    filter: drop-shadow(0 10px 10px #fff);
     transition: transform 0.5s ease; /*transición del sidebar */
     transform: translateX(0); /* Se mantiene oculto fuera de la vista */
+    user-select: none;
   }
   .sideBar-visible {
     transform: translateX(374px); /* Mueve el sidebar a la vista */
@@ -148,7 +162,7 @@ nav ul li a .textNav::after{
     border: .2px solid #27242462;
     background-color: #ffffffc9;
     user-select: none;
-  }.close:hover{cursor: pointer; background-color: #B8001F; color: #FEFAE0; border: .2px solid #B8001F;}
+  }.close:hover{/*cursor: pointer;*/ background-color: #B8001F; color: #FEFAE0; border: .2px solid #B8001F;}
   .sidebar-header{
     background:linear-gradient(to bottom right,#b7e0f9,#ffffff, #f2cce5);
     padding-right: 40px;
@@ -221,7 +235,7 @@ nav ul li a .textNav::after{
     width: 101.5px;
     height: 101.5px;
   }.img-nav:hover{opacity: 0.55;}
-  .icon-nav{font-size: 1.5em !important;} .navBar-rwd .navBar-list .icon-nav:hover{color: #F4538A; cursor: pointer;} .iconNav-left{margin-left: 30px;} .iconNav-right{margin-right: 30px;}
+  .icon-nav{font-size: 1.5em !important;} .navBar-rwd .navBar-list .icon-nav:hover{color: #F4538A; /*cursor: pointer;*/} .iconNav-left{margin-left: 30px;} .iconNav-right{margin-right: 30px;}
 
   /*Estilo para el sidebar responsivo*/
   .sideBar{
@@ -230,13 +244,14 @@ nav ul li a .textNav::after{
     top: 0;
     left: -362px; /* Mueve el sidebar fuera de la vista */
     width: 220px;
-    height: 100vh;
+    height: 100%;
     background: #f5f4f2;
     overflow: auto;
-    z-index: 2;
-    box-shadow: 0 0 30px #fff;
+    z-index: 999;
+    filter: drop-shadow(0 5px 30px #fff);
     transition: transform 0.5s ease; /*transición */
     transform: translateX(0); /* Se mantiene oculto fuera de la vista */
+    user-select: none;
   }
   .sideBar-visible {
     transform: translateX(362px); /* Mueve el sidebar a la vista */
@@ -263,7 +278,7 @@ nav ul li a .textNav::after{
     border: .2px solid #27242462;
     background-color: #ffffffc9;
     user-select: none;
-  }.close:hover{cursor: pointer; background-color: #B8001F; color: #FEFAE0; border: .2px solid #B8001F;}
+  }.close:hover{/*cursor: pointer;*/ background-color: #B8001F; color: #FEFAE0; border: .2px solid #B8001F;}
   .sidebar-header{
     background:linear-gradient(to bottom right,#b7e0f9,#ffffff, #f2cce5);
     padding-right: 20px;
