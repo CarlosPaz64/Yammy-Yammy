@@ -92,30 +92,27 @@ export const addToCartAsync = createAsyncThunk<
 
 // Thunk para aumentar la cantidad de un producto
 export const incrementQuantityAsync = createAsyncThunk<
-  { product_id: number; cantidad: number },
-  { carrito_id: number; product_id: number },
-  { rejectValue: string }
+  { carrito_producto_id: number; cantidad: number }, // Tipo de datos retornados
+  { carrito_producto_id: number; cantidad: number }, // Tipo de argumentos pasados al thunk
+  { rejectValue: string } // Tipo de valor en caso de error
 >(
   'cart/incrementQuantityAsync',
-  async ({ carrito_id, product_id }, { rejectWithValue }) => {
+  async ({ carrito_producto_id, cantidad }, { rejectWithValue }) => {
     try {
       const token = localStorage.getItem('authToken');
-      const client_id = localStorage.getItem('userId');
 
-      if (!token || !client_id) {
-        throw new Error('El token de autenticación y el client_id son requeridos.');
+      if (!token) {
+        throw new Error('El token de autenticación es requerido.');
       }
 
-      const cantidad = 1;
-      const response = await axiosInstance.post('/carrito/add-product', {
-        carrito_id,
-        product_id,
-        client_id: Number(client_id),
-        cantidad,
-        token,
-      });
+      // Realiza la petición PATCH para incrementar la cantidad
+      const response = await axiosInstance.patch(
+        `/carrito/increment-quantity/${carrito_producto_id}`,
+        { cantidad },
+        { headers: { Authorization: `Bearer ${token}` } }
+      );
 
-      return { product_id: response.data.product_id, cantidad };
+      return { carrito_producto_id: response.data.carrito_producto_id, cantidad };
     } catch (error) {
       let errorMessage = 'Error desconocido al aumentar cantidad.';
       if (axios.isAxiosError(error)) {
@@ -164,16 +161,16 @@ export const decrementQuantityAsync = createAsyncThunk<
 >(
   'cart/decrementQuantityAsync',
   async ({ carrito_producto_id, cantidad }, { rejectWithValue }) => {
+    console.log('Thunk decrementQuantityAsync disparado:', { carrito_producto_id, cantidad }); // Agregado
     try {
       const token = localStorage.getItem('authToken');
-
       if (!token) {
         throw new Error('El token de autenticación es requerido.');
       }
 
       await axiosInstance.patch(
         `/carrito/decrement-quantity/${carrito_producto_id}`,
-        { carrito_producto_id, cantidad },
+        { cantidad },
         { headers: { Authorization: `Bearer ${token}` } }
       );
 
@@ -270,6 +267,33 @@ export const validateSessionAndClearCartAsync = createAsyncThunk<void, void, { r
   }
 );
 
+// Thunk para llamar a los  prodcutos del carrito
+export const fetchCartProductsAsync = createAsyncThunk<
+  Array<CartItem & { cantidad: number }>, // Indica que `cantidad` está presente temporalmente
+  number, 
+  { rejectValue: string }
+>(
+  'cart/fetchCartProductsAsync',
+  async (carritoId, { rejectWithValue }) => {
+    try {
+      const token = localStorage.getItem('authToken');
+      if (!token) throw new Error('El token de autenticación es requerido.');
+
+      const response = await axiosInstance.get(`/carrito/${carritoId}/products`, {
+        headers: { Authorization: `Bearer ${token}` },
+      });
+
+      return response.data; // La API devuelve `cantidad`
+    } catch (error) {
+      let errorMessage = 'Error al cargar los productos del carrito.';
+      if (axios.isAxiosError(error)) {
+        errorMessage = error.response?.data?.message ?? 'Error desconocido.';
+      }
+      return rejectWithValue(errorMessage);
+    }
+  }
+);
+
 
 
 const cartSlice = createSlice({
@@ -290,13 +314,13 @@ const cartSlice = createSlice({
         const existingItem = state.items.find(
           (item) => item.product_id === product.product_id
         );
-
+  
         if (existingItem) {
           existingItem.quantity += 1;
         } else {
           state.items.push(product);
         }
-
+  
         state.totalItems += 1;
         state.status = 'succeeded';
       })
@@ -307,6 +331,23 @@ const cartSlice = createSlice({
         state.totalItems = state.items.reduce((sum, item) => sum + item.quantity, 0);
         state.status = 'succeeded';
       })
+      .addCase(incrementQuantityAsync.fulfilled, (state, action) => {
+        const { carrito_producto_id, cantidad } = action.payload;
+        const item = state.items.find((item) => item.carrito_producto_id === carrito_producto_id);
+        if (item) {
+          item.quantity += cantidad; // Actualizar la cantidad directamente en el estado
+        }
+      })       
+      .addCase(decrementQuantityAsync.fulfilled, (state, action) => {
+        console.log('decrementQuantityAsync.fulfilled ejecutado:', action.payload);
+        const { carrito_producto_id, cantidad } = action.payload;
+        const item = state.items.find((item) => item.carrito_producto_id === carrito_producto_id);
+        if (item && item.quantity > cantidad) {
+          item.quantity -= cantidad;
+        } else if (item && item.quantity === cantidad) {
+          state.items = state.items.filter((item) => item.carrito_producto_id !== carrito_producto_id);
+        }
+      })   
       .addCase(finalizeCartAsync.fulfilled, (state) => {
         state.items = [];
         state.totalItems = 0;
@@ -316,6 +357,20 @@ const cartSlice = createSlice({
       .addCase(finalizeCartAsync.rejected, (state, action) => {
         state.status = 'failed';
         state.error = action.payload || 'Error al finalizar la compra.';
+      })
+      .addCase(fetchCartProductsAsync.fulfilled, (state, action) => {
+        state.items = action.payload.map((item) => ({
+          ...item,
+          quantity: item.cantidad, // Mapear `cantidad` a `quantity`
+        }));
+        
+        state.totalItems = state.items.reduce((total, item) => total + item.quantity, 0);
+        state.status = 'succeeded';
+      })
+      
+      .addCase(fetchCartProductsAsync.rejected, (state, action) => {
+        state.status = 'failed';
+        state.error = action.payload || 'Error al cargar los productos del carrito.';
       });
   },
 });
