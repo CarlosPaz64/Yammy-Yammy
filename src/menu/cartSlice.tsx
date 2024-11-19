@@ -358,20 +358,23 @@ const cartSlice = createSlice({
         state.status = 'failed';
         state.error = action.payload || 'Error al finalizar la compra.';
       })
+      .addCase(fetchCartProductsAsync.pending, (state) => {
+        state.status = 'loading'; // Indica que la solicitud está en proceso
+        state.error = null; // Limpia cualquier error previo
+      })
       .addCase(fetchCartProductsAsync.fulfilled, (state, action) => {
         state.items = action.payload.map((item) => ({
           ...item,
           quantity: item.cantidad, // Mapear `cantidad` a `quantity`
         }));
-        
         state.totalItems = state.items.reduce((total, item) => total + item.quantity, 0);
         state.status = 'succeeded';
+        state.error = null; // Asegura que no haya errores
       })
-      
       .addCase(fetchCartProductsAsync.rejected, (state, action) => {
         state.status = 'failed';
         state.error = action.payload || 'Error al cargar los productos del carrito.';
-      });
+      });      
   },
 });
 
