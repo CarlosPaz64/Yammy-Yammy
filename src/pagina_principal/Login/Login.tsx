@@ -4,6 +4,10 @@ import { z } from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
 import CryptoJS from 'crypto-js';
 import { useNavigate } from 'react-router-dom';
+import { useDispatch } from 'react-redux';
+import { AppDispatch } from '../../redux/store';
+import { login } from '../../slices/autentiSlice';
+import { setUser } from '../../slices/userSlice';
 
 const API_LINK = import.meta.env.VITE_API_LINK || 'http://localhost:3000';
 const SECRET_KEY = 'tu_clave_secreta';
@@ -20,6 +24,12 @@ const LoginForm: React.FC = () => {
     resolver: zodResolver(loginSchema),
   });
   const navigate = useNavigate();
+  const dispatch = useDispatch<AppDispatch>();
+
+  const handleLogin = (token: string, user: { nombre_cliente: string; apellido_cliente: string; email: string }) => {
+    dispatch(login(token)); // Actualiza el estado de autenticación
+    dispatch(setUser(user)); // Guarda los datos del usuario
+  };
 
   const onSubmit = async (data: LoginFormInputs) => {
     try {
@@ -39,16 +49,14 @@ const LoginForm: React.FC = () => {
       const result = await response.json();
 
       if (response.ok) {
-        const { token, userId } = result;
+        const { token, userId, nombre, apellido, email } = result; // Ajusta según el formato de la API
         localStorage.setItem('authToken', token);
         localStorage.setItem('userId', userId);
 
+        // Usa handleLogin para actualizar Redux
+        handleLogin(token, { nombre_cliente: nombre, apellido_cliente: apellido, email });
+
         navigate('/'); // Redirige a la página principal
-        window.location.reload(); // Recarga la página para actualizar el estado de la sesión
-
-        console.log('Token:', token);
-        console.log('User ID:', userId);
-
       } else {
         console.error('Error al iniciar sesión:', result);
         alert(result.message || 'Error al iniciar sesión');

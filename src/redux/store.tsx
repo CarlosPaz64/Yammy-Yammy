@@ -1,10 +1,12 @@
 import { configureStore } from '@reduxjs/toolkit';
 import { TypedUseSelectorHook, useDispatch, useSelector } from 'react-redux';
-import userReducer from '../slices/userSlice'; // Un ejemplo de slice
+import userReducer from '../slices/userSlice'; // slice de 
+import authReducer from '../slices/autentiSlice'; // slice de autenticacion
 
 export const store = configureStore({
   reducer: {
-    user: userReducer, // Agrega más reducers según sea necesario
+    user: userReducer, // Reducer existente
+    auth: authReducer, // Reducer para autenticación
   },
 });
 

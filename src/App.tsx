@@ -1,7 +1,6 @@
 import { Routes, Route } from 'react-router-dom';
 import MenuPage from './menu/menu';
 import Pedido from './pagina_principal/HazUnpedido/Pedidos';
-//import PerfilPage from './pages/PerfilPage';
 import NavBar from './pagina_principal/NavBar/NavBar';
 import Index from './Index/Index';
 import Footer from './pagina_principal/Footer/Footer';
@@ -10,6 +9,7 @@ import CrearProducto from './formulario de creacion/creacionProductos';
 import RegisterForm from './register/register';
 import LoginForm from './pagina_principal/Login/Login';
 import Conocenos from './conocenos/conocenos';
+import ProtectedRoute from './ProtectRoute'; 
 
 function App() {
   return (
@@ -17,17 +17,19 @@ function App() {
       <NavBar />
       <Footer />
       <Routes>
-        {/*Rutas del proyecto para acceder a las vistas*/}
+        {/* Rutas públicas */}
         <Route path="/" element={<Index />} />
-        <Route path="/pedido" element={<Pedido />} /> 
         <Route path="/login" element={<LoginForm />} />
-        <Route path="/menu" element={<MenuPage />} /> 
-        {/* <Route path="/perfil" element={<PerfilPage />} /> */}
-        <Route path="/creacion" element={<CrearProducto />} /> 
-        <Route path="/pedido" element={<Pedido />} /> 
         <Route path="/registro" element={<RegisterForm />} />
-        <Route path="/conocenos" element={<Conocenos />}/>
-        <Route path="/carrito" element={<CartPage />} /> 
+        <Route path="/menu" element={<MenuPage />} />
+        <Route path="/conocenos" element={<Conocenos />} />
+
+        {/* Rutas protegidas */}
+        <Route element={<ProtectedRoute />}>
+          <Route path="/pedido" element={<Pedido />} />
+          <Route path="/carrito" element={<CartPage />} />
+          <Route path="/creacion" element={<CrearProducto />} />
+        </Route>
       </Routes>
     </>
   );
