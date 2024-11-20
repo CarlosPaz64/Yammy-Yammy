@@ -9,13 +9,21 @@
   border-radius: 8px;
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
 }
-
+.conocenosContainer h2{
+  text-align: center;
+  color: #333;
+}
+.conocenosContainer h3{color: #007BFF;}
+.conocenosContainer p{
+  color: #555;
+  line-height: 1.6;
+  text-align: justify;
+}
 .bannerImage {
   max-width: 100%; /* Asegúrate de que la imagen no se desborde */
   height: auto; /* Mantiene la proporción de la imagen */
   margin: 20px 0; /* Espaciado alrededor de la imagen */
 }
-
 .conocenos-video {
   max-width: 100%; /* Asegúrate de que el video no se desborde */
   width: 100%; /*Mantiene la anchura del video*/
