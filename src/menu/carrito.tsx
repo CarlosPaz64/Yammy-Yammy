@@ -8,6 +8,7 @@ import {
   finalizeCartAsync,
   validateSessionAndClearCartAsync,
   fetchCartClientDataAsync,
+  fetchCartProductsAsync
 } from './cartSlice';
 import axios from 'axios'; // Para consumir la API de códigos postales
 
@@ -44,6 +45,14 @@ const CartPage: React.FC = () => {
   useEffect(() => {
     dispatch(validateSessionAndClearCartAsync()); // Validar sesión y limpiar carrito si es necesario
   }, [dispatch]);
+
+  useEffect(() => {
+    const carritoId = Number(localStorage.getItem('carritoId'));
+    if (carritoId) {
+      dispatch(fetchCartProductsAsync(carritoId)); // Carga los productos del carrito desde la API
+    }
+  }, [dispatch]);
+  
 
   const fetchZipCodeData = async (codigoPostal: string) => {
     try {
@@ -121,21 +130,27 @@ const CartPage: React.FC = () => {
     }
   };
 
-  const handleIncrementQuantity = async (carrito_id: number, product_id: number) => {
+  const handleIncrementQuantity = async (carrito_producto_id: number) => {
     try {
-      await dispatch(incrementQuantityAsync({ carrito_id, product_id })).unwrap();
+      await dispatch(incrementQuantityAsync({ carrito_producto_id, cantidad: 1 })).unwrap();
+      const carritoId = Number(localStorage.getItem('carritoId'));
+      if (carritoId) {
+        await dispatch(fetchCartProductsAsync(carritoId)); // Refresca los datos del carrito
+      }
     } catch (error) {
       console.error('Error al incrementar la cantidad:', error);
     }
-  };
+  };  
 
   const handleDecrementQuantity = async (carrito_producto_id: number) => {
+    console.log('Botón de restar clicado, ID:', carrito_producto_id); // Verifica si esto aparece
     try {
       await dispatch(decrementQuantityAsync({ carrito_producto_id, cantidad: 1 })).unwrap();
     } catch (error) {
       console.error('Error al reducir la cantidad:', error);
     }
   };
+  
 
   useEffect(() => {
     const userId = localStorage.getItem('userId');
@@ -168,6 +183,7 @@ const CartPage: React.FC = () => {
           <table>
             <thead>
               <tr>
+                <th>Imagen</th> {/* Nueva columna para la imagen */}
                 <th>Producto</th>
                 <th>Cantidad</th>
                 <th>Precio Unitario</th>
@@ -178,7 +194,22 @@ const CartPage: React.FC = () => {
             <tbody>
               {cartItems.map((item) => (
                 <tr key={item.carrito_producto_id}>
-                  <td>{item.nombre_producto}</td>
+                  <td>
+                    {item.url_imagen && typeof item.url_imagen === 'string' ? (
+                      <img
+                        src={
+                          item.url_imagen.startsWith('data:')
+                            ? item.url_imagen
+                            : `data:image/jpeg;base64,${item.url_imagen}`
+                        }
+                        alt={item.nombre_producto || 'Producto'}
+                        style={{ width: '50px', height: '50px', objectFit: 'cover' }}
+                      />
+                    ) : (
+                      <span>Sin imagen</span> // Mensaje o imagen por defecto
+                    )}
+                  </td>
+                  <td>{item.nombre_producto || 'Producto desconocido'}</td>
                   <td>{item.quantity}</td>
                   <td>${(Number(item.precio) || 0).toFixed(2)}</td>
                   <td>${((Number(item.precio) || 0) * item.quantity).toFixed(2)}</td>
@@ -190,9 +221,7 @@ const CartPage: React.FC = () => {
                       -
                     </button>
                     <button
-                      onClick={() =>
-                        handleIncrementQuantity(item.carrito_id || 0, item.product_id)
-                      }
+                      onClick={() => handleIncrementQuantity(item.carrito_producto_id)}
                     >
                       +
                     </button>

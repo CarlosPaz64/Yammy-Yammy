@@ -56,20 +56,20 @@ const Pedido: React.FC = () => {
     const fetchClienteData = async () => {
       const userId = localStorage.getItem('userId');
       if (!userId) return;
-
+  
       try {
         const response = await fetch(`${API_URL}/api/cliente/${userId}`);
         const data = await response.json();
-
+  
         setValue('calle', data.calle);
         setValue('numero_exterior', data.numero_exterior);
         setValue('numero_interior', data.numero_interior);
-        setValue('colonia', data.colonia);
+        setValue('colonia', data.colonia); // Setea la colonia directamente desde los datos del cliente
         setValue('ciudad', data.ciudad);
         setValue('codigo_postal', data.codigo_postal);
         setValue('descripcion_ubicacion', data.descripcion_ubicacion);
         setValue('numero_telefono', data.numero_telefono);
-
+  
         setValue('tipo_tarjeta', desencriptarDato(data.tipo_tarjeta));
         setValue('numero_tarjeta', desencriptarDato(data.numero_tarjeta));
         setValue('fecha_tarjeta', desencriptarDato(data.fecha_tarjeta));
@@ -80,9 +80,9 @@ const Pedido: React.FC = () => {
         setIsLoading(false);
       }
     };
-
+  
     fetchClienteData();
-  }, [setValue]);
+  }, [setValue]);  
 
   // Llama a la API cuando cambia el código postal
   useEffect(() => {
@@ -91,18 +91,23 @@ const Pedido: React.FC = () => {
         try {
           const response = await fetch(`${API_URL}/api/codigo-postal/${codigoPostal}`);
           const data = await response.json();
-
-          setValue('ciudad', data.ciudad); // Establece la ciudad como un valor fijo
-          setColonias(data.colonias); // Actualiza las opciones del select de colonias
+  
+          setValue('ciudad', data.ciudad);
+          setColonias(data.colonias);
+  
+          // Si la colonia actual no está en la lista obtenida, selecciona la primera por defecto
+          if (!data.colonias.includes(watch('colonia'))) {
+            setValue('colonia', data.colonias[0] || '');
+          }
         } catch (error) {
           console.error('Error al obtener ciudad y colonias:', error);
         }
       }
     };
-
+  
     fetchCityAndColonies();
-  }, [codigoPostal, setValue]);
-
+  }, [codigoPostal, setValue, watch]);
+  
   // Calcular el precio en función de la cantidad, categoría y ciudad
   useEffect(() => {
     let precioBase = 100; // Precio base por categoría
@@ -189,7 +194,7 @@ const Pedido: React.FC = () => {
             <input {...register('calle')} placeholder="Calle" />
             <input {...register('numero_exterior')} placeholder="Número Exterior" />
             <input {...register('numero_interior')} placeholder="Número Interior" />
-            <select {...register('colonia')}>
+            <select {...register('colonia')} value={watch('colonia')}>
               {colonias.map((colonia, index) => (
                 <option key={index} value={colonia}>
                   {colonia}
