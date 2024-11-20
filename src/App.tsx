@@ -1,4 +1,7 @@
+import { useEffect } from 'react';
 import { Routes, Route } from 'react-router-dom';
+import { useDispatch } from 'react-redux';
+import { initializeAuth } from './slices/autentiSlice'; // Ajusta la ruta según tu estructura de archivos
 import MenuPage from './menu/menu';
 import Pedido from './pagina_principal/HazUnpedido/Pedidos';
 import NavBar from './pagina_principal/NavBar/NavBar';
@@ -9,9 +12,17 @@ import CrearProducto from './formulario de creacion/creacionProductos';
 import RegisterForm from './register/register';
 import LoginForm from './pagina_principal/Login/Login';
 import Conocenos from './conocenos/conocenos';
-import ProtectedRoute from './ProtectRoute'; 
+import ProtectedRoute from './ProtectRoute';
 
 function App() {
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    // Inicializa el estado de auth basado en el token almacenado
+    const token = localStorage.getItem('authToken');
+    dispatch(initializeAuth(token));
+  }, [dispatch]);
+
   return (
     <>
       <NavBar />

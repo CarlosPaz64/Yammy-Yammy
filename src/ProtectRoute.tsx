@@ -1,9 +1,11 @@
 import React from 'react';
 import { Navigate, Outlet } from 'react-router-dom';
-import { useAppSelector } from './redux/store'; // Ajusta la ruta según tu estructura de archivos
+import { useAppSelector } from './redux/store'; 
 
 const ProtectedRoute: React.FC = () => {
-  const isAuthenticated = useAppSelector((state) => state.auth.isAuthenticated);
+  const isAuthenticated = useAppSelector(
+    (state) => state.auth?.isAuthenticated ?? false
+  );
 
   return isAuthenticated ? <Outlet /> : <Navigate to="/login" />;
 };
