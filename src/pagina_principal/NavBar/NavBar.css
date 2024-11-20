@@ -148,7 +148,7 @@ nav ul li a .textNav::after{
   .textNav{
     line-height: 2;
     color: #004182;
-  }.textNav:hover{color: #F4538A; padding: 0 0 0 20px} /*Empieza de arriba-derecha-abajo-izquierda*/
+  }.textNav:hover{color: #F4538A; padding: 0 0 0 12px; transition: padding 0.3s ease;} /*Empieza de arriba-derecha-abajo-izquierda*/
   .close-sidebar{
     position: absolute;
     list-style: none;
@@ -264,7 +264,7 @@ nav ul li a .textNav::after{
   .textNav{
     line-height: 2;
     color: #004182;
-  }.textNav:hover{color: #F4538A; padding: 0 0 0 20px}/*Empieza de arriba-derecha-abajo-izquierda*/
+  }.textNav:hover{color: #F4538A; padding: 0 0 0 12px; transition: padding 0.3s ease;} /*Empieza de arriba-derecha-abajo-izquierda*/
   .close-sidebar{
     position: absolute;
     list-style: none;
