@@ -11,7 +11,7 @@ const Carrusel1: React.FC<{ children?: ReactNode }> = ({ children }) => {
     const startAutoSlide = () => {
         slideInterval.current = window.setInterval(() => {
             setCurrentIndex(prevIndex => (prevIndex + 1) % totalSlides);
-        }, 5500); // Cambia de diapositiva cada 5.5 segundos
+        }, 8000); // Cambia de diapositiva cada 8 segundos
     };
 
     // Función para detener el carrusel
@@ -51,19 +51,19 @@ const Carrusel1: React.FC<{ children?: ReactNode }> = ({ children }) => {
                     {/*Diapositivas del carrusel*/}
                     <div className="carrusel-interno" style={{ transform: `translateX(-${currentIndex * 100}%)` }}>
                         <div className={`carrusel-objeto ${currentIndex === 0 ? '' : ''}`}>
-                            <img src='http://localhost:3000/assets/img-carrusel/product_1.jpeg' alt="imagen de publicidad 1"></img>
+                            <img src='http://localhost:3000/assets/img-carrusel/PrimerBanner.png' alt="imagen de publicidad 1"></img>
                         </div>
                         <div className={`carrusel-objeto ${currentIndex === 1 ? '' : ''}`}>
-                            <img src='http://localhost:3000/assets/img-carrusel/product_2.jpeg' alt="imagen de publicidad 2"></img>
+                            <img src='http://localhost:3000/assets/img-carrusel/SegundoBanner.png' alt="imagen de publicidad 2"></img>
                         </div>
                         <div className={`carrusel-objeto ${currentIndex === 2 ? '' : ''}`}>
-                            <img src='http://localhost:3000/assets/img-carrusel/product_3.jpeg' alt="imagen de publicidad 3"></img>
+                            <img src='http://localhost:3000/assets/img-carrusel/TercerBanner.png' alt="imagen de publicidad 3"></img>
                         </div>
                         <div className={`carrusel-objeto ${currentIndex === 3 ? '' : ''}`}>
-                            <img src='http://localhost:3000/assets/img-carrusel/product_4.jpeg' alt="imagen de publicidad 4"></img>
+                            <img src='http://localhost:3000/assets/img-carrusel/CuartoBanner.png' alt="imagen de publicidad 4"></img>
                         </div>
                         <div className={`carrusel-objeto ${currentIndex === 4 ? '' : ''}`}>
-                            <img src='http://localhost:3000/assets/img-carrusel/product_5.jpeg' alt="imagen de publicidad 5"></img>
+                            <img src='http://localhost:3000/assets/img-carrusel/QuintoBanner.png' alt="imagen de publicidad 5"></img>
                         </div>
                     </div>
 

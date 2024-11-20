@@ -99,6 +99,7 @@
     font-size: 200%;
     color: white;
     background-color: rgb(184, 34, 7);
+    user-select: none;
 }.btn-index:hover{background-color: rgb(112, 19, 2)}
 /*Estilo para el video en forma de banner*/
 .container-clip{
@@ -167,13 +168,13 @@
 .circle-white::after {
     content: '';
     position: absolute;
-    width: 20px;
+    width: 16px;
     height: 20px;
     background-color: #FDFDFD;
-    transform: rotate(-55deg);
+    transform: rotate(-80deg);
     bottom: -8px;
-    left: 8%;
-    clip-path: polygon(0 0, 100% 0, 110% 90%);
+    left: 17%;
+    clip-path: polygon(0 0, 100% 0, 79% 90%);
 }
 /* Círculo verde al frente */
 .circle-green{
@@ -190,13 +191,13 @@
 .circle-green::after {
     content: '';
     position: absolute;
-    width: 18px;
+    width: 13px;
     height: 15px;
     background-color: #47C756;
-    transform: rotate(-60deg);
-    bottom: -8px;
-    left: 5%;
-    clip-path: polygon(0 0, 100% 0, 95% 90%);
+    transform: rotate(-80deg);
+    bottom: -5px;
+    left: 17%;
+    clip-path: polygon(0 0, 100% 0, 60% 90%);
 }
 /*Estilo del icono call de Google icons, icono de teléfono*/
 .whatsapp-icon{
@@ -240,8 +241,12 @@
         left: 11%;
     }
     .circle-green::after {
-        transform: rotate(-50deg);
-        clip-path: polygon(0 0, 100% 0, 110% 90%);
+        width: 10px;
+        height: 10px;
+        transform: rotate(-70deg);
+        bottom: -5.5px;
+        left: 14%;
+        clip-path: polygon(0 0, 100% 0, 100% 90%);
     }
     .whatsapp-icon{
         top: 30%;
@@ -281,8 +286,11 @@
     }
     /* Colita del círculo blanco */
     .circle-white::after {
-        bottom: -9px;
-        left: 9%;
+        width: 10px;
+        height: 14px;
+        bottom: -8px;
+        left: 22%;
+        clip-path: polygon(0 0, 100% 0, 100% 90%);
     }
     /* Círculo verde al frente */
     .circle-green{
@@ -292,8 +300,11 @@
         left: 8%;
     }
     .circle-green::after {
-        transform: rotate(-50deg);
-        clip-path: polygon(0 0, 100% 0, 110% 90%);
+        width: 8px;
+        height: 10px;
+        bottom: -6px;
+        left: 20%;
+        clip-path: polygon(0 0, 100% 0, 100% 90%);
     }
     .whatsapp-icon{
         top: 27%;
