@@ -99,6 +99,7 @@
     font-size: 200%;
     color: white;
     background-color: rgb(184, 34, 7);
+    user-select: none;
 }.btn-index:hover{background-color: rgb(112, 19, 2)}
 /*Estilo para el video en forma de banner*/
 .container-clip{
