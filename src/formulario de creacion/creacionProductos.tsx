@@ -94,13 +94,7 @@ const CrearProducto: React.FC = () => {
             <option value="Cupcake personalizado">Cupcake personalizado</option>
             <option value="Pastel">Pastel</option>
             <option value="Pastel personalizado">Pastel personalizado</option>
-            <option value="Brownies">Brownies</option>
             <option value="Postre">Postre</option>
-            <option value="Postre personalizado">Postre personalizado</option>
-            <option value="Crepas">Crepas</option>
-            <option value="Roles">Roles</option>
-            <option value="Galleta">Galleta</option>
-            <option value="Galleta personalizada">Galleta personalizada</option>
             <option value="Producto de temporada">Producto de temporada</option>
           </select>
         </label>
