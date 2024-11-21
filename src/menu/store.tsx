@@ -1,23 +1,27 @@
-import { configureStore } from '@reduxjs/toolkit';
+import { configureStore, combineReducers } from '@reduxjs/toolkit';
 import storage from 'redux-persist/lib/storage'; 
 import { persistStore, persistReducer } from 'redux-persist';
-import cartReducer from './cartSlice'; 
+import cartReducer from './cartSlice';
+import productosReducer from './productosSlice'; // Importa productosSlice
 
 // Configuración de redux-persist
 const persistConfig = {
-  key: 'cart',
-  storage, // Usa localStorage
+  key: 'root',
+  storage,
+  whitelist: ['cart'], // Solo persiste el carrito
 };
 
-const persistedCartReducer = persistReducer(persistConfig, cartReducer);
+// Combina ambos reducers
+const rootReducer = combineReducers({
+  cart: persistReducer(persistConfig, cartReducer), // Persiste el carrito
+  productos: productosReducer, // No se persiste, ya que es dinámico
+});
 
 const store = configureStore({
-  reducer: {
-    cart: persistedCartReducer,
-  },
+  reducer: rootReducer,
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({
-      serializableCheck: false, // Necesario para evitar advertencias con redux-persist
+      serializableCheck: false, // Desactiva verificaciones de serialización
     }),
 });
 

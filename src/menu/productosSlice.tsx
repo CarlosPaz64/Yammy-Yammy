@@ -33,7 +33,18 @@ export const fetchProductos = createAsyncThunk('productos/fetchProductos', async
     if (!response.ok) {
       throw new Error(`Error ${response.status}: ${response.statusText}`);
     }
-    return await response.json(); // Retorna los datos como una lista de productos
+    const data = await response.json();
+
+    console.log('Productos recibidos:', data); // Verifica que los datos sean consistentes
+
+    if (!Array.isArray(data)) {
+      throw new Error('La respuesta de la API no es un array.');
+    }
+
+    return data.map((producto) => ({
+      ...producto,
+      precio: typeof producto.precio === 'string' ? parseFloat(producto.precio) : producto.precio,
+    }));
   } catch (error: any) {
     return rejectWithValue(error.message || 'Error al obtener productos');
   }
@@ -43,9 +54,7 @@ export const fetchProductos = createAsyncThunk('productos/fetchProductos', async
 const productosSlice = createSlice({
   name: 'productos',
   initialState,
-  reducers: {
-    // Puedes agregar acciones sincrónicas aquí si lo necesitas
-  },
+  reducers: {},
   extraReducers: (builder) => {
     builder
       .addCase(fetchProductos.pending, (state) => {
