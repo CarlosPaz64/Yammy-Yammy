@@ -155,10 +155,10 @@ const Pedido: React.FC = () => {
   };
 
   return isLoading ? (
-    <p>Cargando...</p>
+    <center><p>Cargando...</p></center>
   ) : (
     <div className='container-pedido'>
-      <form onSubmit={handleSubmit(onSubmit)}>
+      <form className='forms' onSubmit={handleSubmit(onSubmit)}>
         <div className="container-title"><h1>Haz un Pedido</h1></div>
 
         <label htmlFor="categoria">Selecciona el postre deseado:</label>

@@ -177,155 +177,179 @@ const RegisterForm: React.FC = () => {
   const prevStep = () => setCurrentStep((prev) => prev - 1);
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)}>
-      <div className="progress-bar">
-        {['Nombre', 'Usuario', 'Teléfono', 'Domicilio', 'Tarjeta'].map((step, index) => (
-          <div className={`step ${currentStep > index ? 'active' : ''}`} key={index}>
-            <p>{step}</p>
-            <div className="bullet"><span>{index + 1}</span></div>
-            <div className="check fas fa-check"></div>
-          </div>
-        ))}
-      </div>
-
-      {/* Paso 1: Nombre */}
-      {currentStep === 1 && (
-        <div className="page">
-          <div>
-            <label>Nombre</label>
-            <input {...register('nombre_cliente', { required: true })} />
-            {errors.nombre_cliente && <span>Este campo es requerido</span>}
-          </div>
-          <div>
-            <label>Apellido</label>
-            <input {...register('apellido_cliente', { required: true })} />
-            {errors.apellido_cliente && <span>Este campo es requerido</span>}
-          </div>
-          <button type="button" className="next" onClick={nextStep}>Next</button>
-        </div>
-      )}
-
-      {/* Paso 2: Usuario */}
-      {currentStep === 2 && (
-        <div className="page">
-          <div>
-            <label>Email</label>
-            <input type="email" {...register('email', { required: true })} />
-            {errors.email && <span>Este campo es requerido</span>}
-          </div>
-          <div>
-            <label>Contraseña</label>
-            <input type="password" {...register('password_cliente', {
-              required: 'La contraseña es obligatoria',
-              minLength: {
-                value: 6,
-                message: 'La contraseña debe tener al menos 6 caracteres',
-              },
-            })} />
-            {errors.password_cliente && <span>{errors.password_cliente.message}</span>}
-          </div>
-          <button type="button" className="prev" onClick={prevStep}>Previous</button>
-          <button type="button" className="next" onClick={nextStep}>Next</button>
-        </div>
-      )}
-
-      {/* Paso 3: Teléfono */}
-      {currentStep === 3 && (
-        <div className="page">
-          <div>
-            <label>Número de Teléfono</label>
-            <input {...register('numero_telefono')} />
-          </div>
-          <button type="button" className="prev" onClick={prevStep}>Previous</button>
-          <button type="button" className="next" onClick={nextStep}>Next</button>
-        </div>
-      )}
-
-      {/* Paso 4: Domicilio */}
-      {currentStep === 4 && (
-        <div className="page">
-                <div>
-                  <label>Calle</label>
-                  <input {...register('calle', { required: true })} />
-                  {errors.calle && <span>Este campo es requerido</span>}
-                </div>
-
-                <div>
-                  <label>Número Exterior</label>
-                  <input {...register('numero_exterior', { required: true })} />
-                  {errors.numero_exterior && <span>Este campo es requerido</span>}
-                </div>
-
-                <div>
-                  <label>Número Interior (Opcional)</label>
-                  <input {...register('numero_interior')} />
-                </div>
-          <div>
-            <label>Código Postal</label>
-            <input {...register('codigo_postal', { required: true })} value={codigoPostal} onChange={handlePostalCodeChange} />
-            {errors.codigo_postal && <span>Este campo es requerido</span>}
-          </div>
-          <div>
-            <label>Descripción</label>
-            <textarea {...register('descripcion_ubicacion')} />
-          </div>
-          {mostrarCampos && (
-            <>
-              <div>
-                <label>Colonia</label>
-                <select {...register('colonia', { required: true })}>
-                  {colonias.map((colonia, index) => (
-                    <option key={index} value={colonia}>{colonia}</option>
-                  ))}
-                </select>
-                {errors.colonia && <span>Este campo es requerido</span>}
+    <React.Fragment>{/* Fragmento react, se puede utilizar tambien el Fragmento <></> para envolver todos los hijos en un elemento padre */}
+      <section className='body-register'>
+        <div className='container'>
+          {/*Encabezado del formulario, aqui va el número de pasos de la página*/}
+          <header>Registro<br />de usuario</header>
+          <div className='progress-bar'>
+            {/*Se iteran los pasos del formulario del 1 al 5 y se le añade la clase active*/}
+            {['Nombre', 'Usuario', 'Teléfono', 'Domicilio', 'Tarjeta'].map((step, index) => (
+              <div className={`step ${currentStep > index ? 'active' : ''}`} key={index}>
+                <p>{step}</p>
+                <div className='bullet'><span>{index + 1}</span></div>
+                <div className='material-symbols-outlined'>check</div>
               </div>
-              <div>
-                <label>Ciudad</label>
-                <input {...register('ciudad')} value={ciudad} disabled />
-              </div>
-            </>
-          )}
-          <button type="button" className="prev" onClick={prevStep}>Previous</button>
-          <button type="button" className="next" onClick={nextStep}>Next</button>
+            ))}
+          </div>
+          {/*Formularios del 1 al 5*/}
+          <div className='form-outer'>
+            <form className='form-register' onSubmit={handleSubmit(onSubmit)}>
+              {/* Paso 1: Nombre */}
+              {currentStep === 1 && (
+                <div className='page slide-page'>
+                  <div className='title'>Nombre Completo</div>
+                  <div className='field'>
+                    <div className='label'>Nombre: </div>
+                    <input {...register('nombre_cliente', { required: true })} />
+                    {errors.nombre_cliente && <span>Este campo es requerido</span>}
+                  </div>
+                  <div className='field'>
+                    <div className='label'>Apellido: </div>
+                    <input {...register('apellido_cliente', { required: true })} />
+                    {errors.apellido_cliente && <span>Este campo es requerido</span>}
+                  </div>
+                  <div className='field'>
+                    <button type="button" className='firstNext next' onClick={nextStep}>Next</button>
+                  </div>
+                </div>
+              )}
+              {/* Paso 2: Usuario */}
+              {currentStep === 2 && (
+                <div className="page">
+                  <div className='title'>Usuario</div>
+                  <div className='field'>
+                    <div className='label'>Email: </div>
+                    <input type="email" {...register('email', { required: true })} />
+                    {errors.email && <span>Este campo es requerido</span>}
+                  </div>
+                  <div className='field'>
+                    <div className='label'>Contraseña: </div>
+                    <input type="password" {...register('password_cliente', {
+                      required: 'La contraseña es obligatoria',
+                      minLength: {
+                        value: 6,
+                        message: 'La contraseña debe tener al menos 6 caracteres',
+                      },
+                    })} />
+                    {errors.password_cliente && <span>{errors.password_cliente.message}</span>}
+                  </div>
+                  <div className='field btns'>                    
+                    <button type="button" className="prev-1 prev" onClick={prevStep}>Previous</button>
+                    <button type="button" className="next-1 next" onClick={nextStep}>Next</button>
+                  </div>
+                </div>
+              )}
+              {/* Paso 3: Teléfono */}
+              {currentStep === 3 && (
+                <div className="page">
+                  <div className='title'>Télefono</div>
+                  <div className='field'>
+                    <div className='label'>Número de Teléfono: </div>
+                    <input {...register('numero_telefono', {required: true})} />
+                  </div>
+                  <div className='field btns'>
+                    <button type="button" className="prev-2 prev" onClick={prevStep}>Previous</button>
+                    <button type="button" className="next-2 next" onClick={nextStep}>Next</button>
+                  </div>
+                </div>
+              )}
+              {/* Paso 4: Domicilio */}
+              {currentStep === 4 && (
+                <div className="page">
+                  <div className='title'>Domicilio</div>
+                  <div className='field'>
+                    <div className='label'>Calle: </div>
+                    <input {...register('calle', { required: true })} />
+                    {errors.calle && <span>Este campo es requerido</span>}
+                  </div>
+                  <div className='field'>
+                    <div className='label'>Número Exterior: </div>
+                    <input {...register('numero_exterior', { required: true })} />
+                    {errors.numero_exterior && <span>Este campo es requerido</span>}
+                  </div>
+                  <div className='field'>
+                    <div className='label'>Número Interior (Opcional): </div>
+                    <input {...register('numero_interior')} />
+                  </div>
+                  <div className='field'>
+                    <div className='label'>Código Postal: </div>
+                    <input {...register('codigo_postal', { required: true })} value={codigoPostal} onChange={handlePostalCodeChange} />
+                    {errors.codigo_postal && <span>Este campo es requerido</span>}
+                  </div>
+                  <div className='field'>
+                    <div className='label'>Descripción: </div>
+                    <textarea {...register('descripcion_ubicacion')} />
+                  </div>
+                  {mostrarCampos && (
+                    <>
+                      <div>
+                        <label>Colonia</label>
+                        <select {...register('colonia', { required: true })}>
+                          {colonias.map((colonia, index) => (
+                            <option key={index} value={colonia}>{colonia}</option>
+                          ))}
+                        </select>
+                        {errors.colonia && <span>Este campo es requerido</span>}
+                      </div>
+                      <div>
+                        <label>Ciudad</label>
+                        <input {...register('ciudad')} value={ciudad} disabled />
+                      </div>
+                    </>
+                  )}
+                  <div className='field btns'>
+                    <button type="button" className="prev-3 prev" onClick={prevStep}>Previous</button>
+                    <button type="button" className="next-3 next" onClick={nextStep}>Next</button>
+                  </div>
+                </div>
+              )}
+              {/* Paso 5: Tarjeta */}
+              {currentStep === 5 && (
+                <div className="page">
+                  <div className='title'>Datos de la Tarjeta</div>
+                  <div className='field'>
+                    <div className='label'>Tipo de Tarjeta: </div>
+                    <select {...register('tipo_tarjeta', { required: true })}>
+                      <option value="Visa">Visa</option>
+                      <option value="MasterCard">MasterCard</option>
+                      <option value="American Express">American Express</option>
+                    </select>
+                    {errors.tipo_tarjeta && <span>Este campo es requerido</span>}
+                  </div>
+                  {/* Aqui se visualiza la tarjeta seleccionada por el cliente */}
+                  <div className='card-preview'>
+                    <img id="cardType" alt="Card Preview" />
+                  </div>
+                  <div className='field'>
+                    <div className='label'>Número de Tarjeta: </div>
+                    <input {...register('numero_tarjeta', { required: true, minLength: 15, maxLength: 16 })} />
+                    {errors.numero_tarjeta && <span>El número de tarjeta es inválido</span>}
+                  </div>
+                  <div className='field'>
+                    <div className='label'>Fecha de Expiración: </div>
+                    <input type="text" placeholder="MM/YY" {...register('fecha_tarjeta', {
+                      required: true,
+                      pattern: /^(0[1-9]|1[0-2])\/?([0-9]{2})$/,
+                    })} />
+                    {errors.fecha_tarjeta && <span>Formato inválido. Usa MM/YY</span>}
+                  </div>
+                  <div className='field'>
+                    <div className='label'>CVV: </div>
+                    <input type="text" {...register('cvv', { required: true, minLength: 3, maxLength: 4 })} />
+                    {errors.cvv && <span>El CVV es inválido</span>}
+                  </div>
+                  <div className='field btns'>
+                    <button type="button" className="prev-4 prev" onClick={prevStep}>Previous</button>
+                    <button type="submit" className="next-4 next" disabled={isLoading}>{isLoading ? 'Registrando...' : 'Registrar'}</button>
+                  </div>
+                </div>
+              )}
+            </form>
+          </div>
         </div>
-      )}
-
-      {/* Paso 5: Tarjeta */}
-      {currentStep === 5 && (
-        <div className="page">
-          <div>
-            <label>Tipo de Tarjeta</label>
-            <select {...register('tipo_tarjeta', { required: true })}>
-              <option value="Visa">Visa</option>
-              <option value="MasterCard">MasterCard</option>
-              <option value="American Express">American Express</option>
-            </select>
-            {errors.tipo_tarjeta && <span>Este campo es requerido</span>}
-          </div>
-          <div>
-            <label>Número de Tarjeta</label>
-            <input {...register('numero_tarjeta', { required: true, minLength: 15, maxLength: 16 })} />
-            {errors.numero_tarjeta && <span>El número de tarjeta es inválido</span>}
-          </div>
-          <div>
-            <label>Fecha de Expiración</label>
-            <input type="text" placeholder="MM/YY" {...register('fecha_tarjeta', {
-              required: true,
-              pattern: /^(0[1-9]|1[0-2])\/?([0-9]{2})$/,
-            })} />
-            {errors.fecha_tarjeta && <span>Formato inválido. Usa MM/YY</span>}
-          </div>
-          <div>
-            <label>CVV</label>
-            <input type="text" {...register('cvv', { required: true, minLength: 3, maxLength: 4 })} />
-            {errors.cvv && <span>El CVV es inválido</span>}
-          </div>
-          <button type="button" className="prev" onClick={prevStep}>Previous</button>
-          <button type="submit" disabled={isLoading}>{isLoading ? 'Registrando...' : 'Registrar'}</button>
-        </div>
-      )}
-    </form>
+      </section>
+    </React.Fragment>
   );
 };
 

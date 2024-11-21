@@ -4,6 +4,7 @@ import { z } from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
 import CryptoJS from 'crypto-js';
 import { useNavigate } from 'react-router-dom';
+import './login.css';
 import { useDispatch } from 'react-redux';
 import { AppDispatch } from '../../redux/store';
 import { login } from '../../slices/autentiSlice';
@@ -81,7 +82,7 @@ const LoginForm: React.FC = () => {
 
   return (
     <div className="login-form-container">
-      <form onSubmit={handleSubmit(onSubmit)}>
+      <form className='forms' onSubmit={handleSubmit(onSubmit)}>
         <div className="form-group">
           <h2>Iniciar Sesión</h2>
           <label htmlFor="email">Correo Electrónico</label>
