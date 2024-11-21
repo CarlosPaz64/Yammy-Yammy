@@ -4,6 +4,7 @@ import { z } from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
 import CryptoJS from 'crypto-js';
 import { useNavigate } from 'react-router-dom';
+import './login.css';
 
 const API_LINK = import.meta.env.VITE_API_LINK || 'http://localhost:3000';
 const SECRET_KEY = 'tu_clave_secreta';
@@ -61,7 +62,7 @@ const LoginForm: React.FC = () => {
 
   return (
     <div className="login-form-container">
-      <form onSubmit={handleSubmit(onSubmit)}>
+      <form className='forms' onSubmit={handleSubmit(onSubmit)}>
         <div className="form-group">
           <h2>Iniciar Sesión</h2>
           <label htmlFor="email">Correo Electrónico</label>

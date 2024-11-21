@@ -13,8 +13,8 @@
   margin-top: 25px;
   padding: 0 0 100px 
 }
-/*estilo del formulario para Pedidos.CSS, register.css y Login.tsx*/
-/* form {
+/*estilo del formulario para Pedidos.CSS y Login.tsx*/
+.forms {
   background-color: #fff;
   padding: 20px;
   border-radius: 8px;
@@ -25,7 +25,7 @@
   flex-direction: column;
   justify-content: center;
   margin: 5em auto;
-} */
+}
 label {
   margin-top: 10px;
   margin-bottom: 8px;

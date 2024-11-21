@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import './creacion.css';
 
 const CrearProducto: React.FC = () => {
   const [nombreProducto, setNombreProducto] = useState('');
@@ -56,7 +57,7 @@ const CrearProducto: React.FC = () => {
   return (
     <div>
       <h1>Crear Producto</h1>
-      <form onSubmit={handleSubmit}>
+      <form className="forms" onSubmit={handleSubmit}>
         <label>
           Nombre del Producto:
           <input

@@ -36,33 +36,33 @@
     width: 100%;
     overflow: hidden;
 }
-.container .form-outer form {
+/*Aqui empieza el formulario por cada sección*/
+.container .form-outer .form-register {
     display: flex;
     width: calc(100% * var(--stepNumber));
 }
-.form-outer form .page {
+.form-outer .form-register .page {
     width: calc(100% / var(--stepNumber));
     transition: margin-left 0.3s ease-in-out;
 }
-.form-outer form .page .title {
+.form-outer .form-register .page .title {
     text-align: left;
     font-size: 25px;
     font-weight: 500;
 }
-.form-outer form .page .field {
+.form-outer .form-register .page .field {
     width: var(--containerWidth);
     height: 45px;
     margin: 45px 0;
     display: flex;
     position: relative;
 }
-/*Aqui empieza el formulario por cada sección*/
-form .page .field .label {
+.form-register .page .field .label {
     position: absolute;
     top: -30px;
     font-weight: 500;
 }
-form .page .field input {
+.form-register .page .field input {
     box-sizing: border-box;
     height: 100%;
     width: 100%;
@@ -74,10 +74,10 @@ form .page .field input {
     outline: none;
     transition: border-color 150ms ease;
 }
-form .page .field input.invalid-input {
+.form-register .page .field input.invalid-input {
     border-color: var(--errorColor);
 }
-form .page .field select {
+.form-register .page .field select {
     width: 100%;
     height: 100%;
     padding-left: 15px;
@@ -85,7 +85,7 @@ form .page .field select {
     font-weight: 500;
     outline: none;
 }
-form .page .field button {
+.form-register .page .field button {
     width: 100%;
     height: calc(100% + 5px);
     border: none;
@@ -100,17 +100,17 @@ form .page .field button {
     text-transform: uppercase;
     transition: 0.5s ease;
 }
-form .page .field button:hover {
+.form-register .page .field button:hover {
     background: #000;
 }
-form .page .btns button {
+.form-register .page .btns button {
     margin-top: -20px !important;
 }
-form .page .btns button.prev {
+.form-register .page .btns button.prev {
     margin-right: 3px;
     font-size: 17px;
 }
-form .page .btns button.next {
+.form-register .page .btns button.next {
     margin-left: 3px;
 }
 .container .progress-bar {

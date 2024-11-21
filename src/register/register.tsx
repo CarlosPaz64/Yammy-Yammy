@@ -196,7 +196,7 @@ const RegisterForm: React.FC = () => {
           </div>
           {/*Formularios del 1 al 5*/}
           <div className='form-outer'>
-            <form onSubmit={handleSubmit(onSubmit)}>
+            <form className='form-register' onSubmit={handleSubmit(onSubmit)}>
               {/* Paso 1: Nombre */}
               {currentStep === 1 && (
                 <div className='page slide-page'>
@@ -318,6 +318,10 @@ const RegisterForm: React.FC = () => {
                       <option value="American Express">American Express</option>
                     </select>
                     {errors.tipo_tarjeta && <span>Este campo es requerido</span>}
+                  </div>
+                  {/* Aqui se visualiza la tarjeta seleccionada por el cliente */}
+                  <div className='card-preview'>
+                    <img id="cardType" alt="Card Preview" />
                   </div>
                   <div className='field'>
                     <div className='label'>Número de Tarjeta: </div>
