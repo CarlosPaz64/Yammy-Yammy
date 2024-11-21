@@ -13,16 +13,25 @@ import RegisterForm from './register/register';
 import LoginForm from './pagina_principal/Login/Login';
 import Conocenos from './conocenos/conocenos';
 import ProtectedRoute from './ProtectRoute';
+import { store } from './redux/store'; // Ajusta la ruta según tu estructura
 
 function App() {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    // Inicializa el estado de auth basado en el token almacenado
     const token = localStorage.getItem('authToken');
+    console.log('Token desde localStorage:', token); // Verificar si el token existe
+  
+    // Despacha la acción para inicializar el estado
     dispatch(initializeAuth(token));
+  
+    // Log del estado global después de despachar
+    setTimeout(() => {
+      console.log('Estado global después de initializeAuth:', store.getState());
+    }, 100); // Agregar un pequeño retraso para asegurar que el estado se actualice
   }, [dispatch]);
-
+  
+  
   return (
     <>
       <NavBar />
@@ -34,12 +43,12 @@ function App() {
         <Route path="/registro" element={<RegisterForm />} />
         <Route path="/menu" element={<MenuPage />} />
         <Route path="/conocenos" element={<Conocenos />} />
+        <Route path="/creacion" element={<CrearProducto />} />
 
         {/* Rutas protegidas */}
         <Route element={<ProtectedRoute />}>
           <Route path="/pedido" element={<Pedido />} />
           <Route path="/carrito" element={<CartPage />} />
-          <Route path="/creacion" element={<CrearProducto />} />
         </Route>
       </Routes>
     </>

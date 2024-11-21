@@ -6,9 +6,10 @@ interface AuthState {
 }
 
 const initialState: AuthState = {
-  isAuthenticated: false,
-  token: null,
+  isAuthenticated: Boolean(localStorage.getItem('authToken')), // Verifica si hay un token
+  token: localStorage.getItem('authToken'),
 };
+
 
 const authSlice = createSlice({
   name: 'auth',
@@ -21,11 +22,17 @@ const authSlice = createSlice({
     logout(state) {
       state.isAuthenticated = false;
       state.token = null;
+    
+      // Opcional: Limpia el almacenamiento local
+      localStorage.removeItem('authToken');
+      localStorage.removeItem('userId');
     },
-    initializeAuth(state, action: PayloadAction<string | null>) {
-      state.token = action.payload;
-      state.isAuthenticated = !!action.payload;
-    },
+      initializeAuth(state, action: PayloadAction<string | null>) {
+      console.log('Inicializando auth con token:', action.payload);
+      state.token = action.payload; // Asigna el token al estado
+      state.isAuthenticated = !!action.payload; // Actualiza isAuthenticated a true si el token existe
+    }
+    ,
   },
 });
 
