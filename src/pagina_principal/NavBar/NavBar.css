@@ -5,7 +5,7 @@
 .secundary-nav{
   display: none; /*Se oculta el nav secundario al inicio de la página*/
 }
-/* styles.css */
+/* Muestra el conteo de los productos en el carrito */
 .cart-count {
   position: absolute;
   top: 10px;
@@ -16,7 +16,6 @@
   border-radius: 50%;
   font-size: 0.8em;
 }
-
 /*Estilo del navbar*/
 nav{
   display: flex;
@@ -92,7 +91,6 @@ nav ul li a .textNav::after{
     display: flex;
     justify-content: space-between;
     align-items: center;
-    
     margin: 0 auto;
     padding: 0;
   }
@@ -119,7 +117,7 @@ nav ul li a .textNav::after{
     width: 127px;
     height: 127px;
   }.img-nav:hover{opacity: 0.55;}
-  .icon-nav{font-size: 2.5em !important;} .navBar-rwd .navBar-list .icon-nav:hover{color: #F4538A; /*cursor: pointer;*/} .iconNav-left{margin-left: 30px;} .iconNav-right{margin-right: 30px;}
+  .icon-nav{font-size: 2.5em !important;} .navBar-rwd .navBar-list .icon-nav:hover{color: #F4538A;} .iconNav-left{margin-left: 30px;} .iconNav-right{margin-right: 30px;}
 
   /*Estilo para el sidebar responsivo*/
   .sideBar{
@@ -162,7 +160,7 @@ nav ul li a .textNav::after{
     border: .2px solid #27242462;
     background-color: #ffffffc9;
     user-select: none;
-  }.close:hover{/*cursor: pointer;*/ background-color: #B8001F; color: #FEFAE0; border: .2px solid #B8001F;}
+  }.close:hover{background-color: #B8001F; color: #FEFAE0; border: .2px solid #B8001F;}
   .sidebar-header{
     background:linear-gradient(to bottom right,#b7e0f9,#ffffff, #f2cce5);
     padding-right: 40px;
@@ -235,7 +233,7 @@ nav ul li a .textNav::after{
     width: 101.5px;
     height: 101.5px;
   }.img-nav:hover{opacity: 0.55;}
-  .icon-nav{font-size: 1.5em !important;} .navBar-rwd .navBar-list .icon-nav:hover{color: #F4538A; /*cursor: pointer;*/} .iconNav-left{margin-left: 30px;} .iconNav-right{margin-right: 30px;}
+  .icon-nav{font-size: 1.5em !important;} .navBar-rwd .navBar-list .icon-nav:hover{color: #F4538A;} .iconNav-left{margin-left: 30px;} .iconNav-right{margin-right: 30px;}
 
   /*Estilo para el sidebar responsivo*/
   .sideBar{
@@ -264,7 +262,7 @@ nav ul li a .textNav::after{
   .textNav{
     line-height: 2;
     color: #004182;
-  }.textNav:hover{color: #F4538A; padding: 0 0 0 12px; transition: padding 0.3s ease;} /*Empieza de arriba-derecha-abajo-izquierda*/
+  }.textNav:hover{color: #F4538A; padding: 0 0 0 12px; transition: padding 0.3s ease;} /*El padding empieza de arriba-derecha-abajo-izquierda*/
   .close-sidebar{
     position: absolute;
     list-style: none;
