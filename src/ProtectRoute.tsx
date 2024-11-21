@@ -1,11 +1,13 @@
 import React from 'react';
 import { Navigate, Outlet } from 'react-router-dom';
-import { useAppSelector } from './redux/store'; 
+import { useAppSelector } from './redux/store'; // Asegúrate de que esta ruta sea correcta
 
 const ProtectedRoute: React.FC = () => {
   const isAuthenticated = useAppSelector(
-    (state) => state.auth?.isAuthenticated ?? false
+    (state) => state.auth?.isAuthenticated ?? false // Evalúa correctamente el estado
   );
+
+  console.log('Estado de autenticación en ProtectedRoute:', isAuthenticated);
 
   return isAuthenticated ? <Outlet /> : <Navigate to="/login" />;
 };
