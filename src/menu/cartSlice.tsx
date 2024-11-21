@@ -1,7 +1,7 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import axios from 'axios';
 import axiosInstance from '../api/axiosInstance';
-import { Producto } from './menu';
+import { Producto } from './productosSlice';
 import { RootState } from './store';
 
 interface CartItem extends Producto {
