@@ -161,8 +161,6 @@ const RegisterForm: React.FC = () => {
         body: JSON.stringify({ encryptedData }),
       });
 
-      const result = await response.json();
-
       if (response.ok) {
         alert('Usuario registrado exitosamente');
       } else {

@@ -25,8 +25,8 @@
   margin: 20px 0; /* Espaciado alrededor de la imagen */
 }
 .conocenos-video {
-  max-width: 100%; /* Asegúrate de que el video no se desborde */
+  overflow: hidden; /* Asegúrate de que el video no se desborde */
   width: 100%; /*Mantiene la anchura del video*/
   height: 500px; /* Mantiene la proporción del video */
-  margin: 20px 0; /* Espaciado alrededor del video */
+  margin: 20px 0;/* Esto asegurará que ocupe el ancho completo en la página junto con object-fit:cover */
 }

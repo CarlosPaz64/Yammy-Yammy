@@ -1,25 +1,25 @@
 import React, { ReactNode, useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { selectTotalItems } from "../../menu/cartSlice";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
+import { AppDispatch } from "../../redux/store";
+import { clearUser } from "../../slices/userSlice";
 import "./NavBar.css";
 
 const NavBar: React.FC<{ children?: ReactNode }> = ({ children }) => {
     const totalItems = useSelector(selectTotalItems);
+    const { nombre_cliente = "Invitado", apellido_cliente = "" } = useSelector(
+        (state: any) => state.user || {}
+    );
+    const token = localStorage.getItem("authToken"); // Detectar si hay token
     const [sidebarOpen, setSidebarOpen] = useState(false);
-    const [isAuthenticated, setIsAuthenticated] = useState(false);
+    const dispatch = useDispatch<AppDispatch>();
     const navigate = useNavigate();
 
     // Función para abrir/cerrar el sidebar
     const openSidebar = () => {
         setSidebarOpen(!sidebarOpen);
     };
-
-    // Verificar si el usuario está autenticado al cargar el componente
-    useEffect(() => {
-        const token = localStorage.getItem("authToken");
-        setIsAuthenticated(!!token);
-    }, []);
 
     // Función para manejar el cambio de tamaño de la página
     const handleResize = () => {
@@ -40,7 +40,7 @@ const NavBar: React.FC<{ children?: ReactNode }> = ({ children }) => {
     const handleLogout = () => {
         localStorage.removeItem("authToken");
         localStorage.removeItem("userId");
-        setIsAuthenticated(false);
+        dispatch(clearUser()); // Limpia los datos del usuario en Redux
         navigate("/");
     };
 
@@ -51,7 +51,11 @@ const NavBar: React.FC<{ children?: ReactNode }> = ({ children }) => {
                     <ul>
                         <li>
                             <Link to="/">
-                                <img src='http://localhost:3000/assets/Yamy-Imagotipo.png' alt="Imagotipo" className="img-nav" />
+                                <img
+                                    src="http://localhost:3000/assets/Yamy-Imagotipo.png"
+                                    alt="Imagotipo"
+                                    className="img-nav"
+                                />
                             </Link>
                         </li>
                         <li>
@@ -71,7 +75,7 @@ const NavBar: React.FC<{ children?: ReactNode }> = ({ children }) => {
                         </li>
                         <div className="nav-right">
                             <div className="tooltip-container">
-                                {isAuthenticated ? (
+                                {token ? (
                                     <>
                                         <span className="tooltip-text">Cerrar sesión</span>
                                         <li>
@@ -81,6 +85,11 @@ const NavBar: React.FC<{ children?: ReactNode }> = ({ children }) => {
                                             >
                                                 logout
                                             </button>
+                                        </li>
+                                        <li>
+                                            <span className="textNav">
+                                                Hola, {nombre_cliente} {apellido_cliente}
+                                            </span>
                                         </li>
                                     </>
                                 ) : (
@@ -136,8 +145,12 @@ const NavBar: React.FC<{ children?: ReactNode }> = ({ children }) => {
                         </div>
                         <div className="nav-center">
                             <li>
-                                <Link to = "/">
-                                    <img src='http://localhost:3000/assets/Yamy-Imagotipo.png' alt="Imagotipo" className="img-nav" />
+                                <Link to="/">
+                                    <img
+                                        src="http://localhost:3000/assets/Yamy-Imagotipo.png"
+                                        alt="Imagotipo"
+                                        className="img-nav"
+                                    />
                                 </Link>
                             </li>
                         </div>
@@ -164,21 +177,22 @@ const NavBar: React.FC<{ children?: ReactNode }> = ({ children }) => {
                     <ul className="sideBar-panel">
                         <li>
                             <div className="sidebar-header">
-                                <a>
-                                    <i className="material-symbols-outlined icon-sid">
-                                        account_circle
-                                        <span className="sidText-header">¡Hola, Identifícate!</span>
-                                    </i>
-                                </a>
+                                {token ? (
+                                    <span className="sidText-header">
+                                        ¡Hola, {nombre_cliente} {apellido_cliente}!
+                                    </span>
+                                ) : (
+                                    <span className="sidText-header">¡Hola, Identifícate!</span>
+                                )}
                             </div>
                         </li>
                         <li>
-                            <Link to = "/menu">
+                            <Link to="/menu">
                                 <span className="textNav">Menú</span>
                             </Link>
                         </li>
                         <li>
-                            <Link to = "/pedido">
+                            <Link to="/pedido">
                                 <span className="textNav">Haz un pedido</span>
                             </Link>
                         </li>
@@ -188,7 +202,7 @@ const NavBar: React.FC<{ children?: ReactNode }> = ({ children }) => {
                             </Link>
                         </li>
                         <li>
-                            {isAuthenticated ? (
+                            {token ? (
                                 <button
                                     onClick={handleLogout}
                                     className="textNav textSid-logout"

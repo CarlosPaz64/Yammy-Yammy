@@ -5,6 +5,10 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import CryptoJS from 'crypto-js';
 import { useNavigate } from 'react-router-dom';
 import './login.css';
+import { useDispatch } from 'react-redux';
+import { AppDispatch } from '../../redux/store';
+import { login } from '../../slices/autentiSlice';
+import { setUser } from '../../slices/userSlice';
 
 const API_LINK = import.meta.env.VITE_API_LINK || 'http://localhost:3000';
 const SECRET_KEY = 'tu_clave_secreta';
@@ -17,13 +21,28 @@ const loginSchema = z.object({
 type LoginFormInputs = z.infer<typeof loginSchema>;
 
 const LoginForm: React.FC = () => {
-  const { register, handleSubmit, formState: { errors } } = useForm<LoginFormInputs>({
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<LoginFormInputs>({
     resolver: zodResolver(loginSchema),
   });
   const navigate = useNavigate();
+  const dispatch = useDispatch<AppDispatch>();
+
+  const handleLogin = (
+    token: string,
+    user: { nombre_cliente: string; apellido_cliente: string; email: string }
+  ) => {
+    // Actualiza el estado de autenticación y usuario en Redux
+    dispatch(login(token));
+    dispatch(setUser(user));
+  };
 
   const onSubmit = async (data: LoginFormInputs) => {
     try {
+      // Encripta los datos del formulario
       const encryptedData = CryptoJS.AES.encrypt(JSON.stringify(data), SECRET_KEY, {
         mode: CryptoJS.mode.CBC,
         padding: CryptoJS.pad.Pkcs7,
@@ -40,16 +59,17 @@ const LoginForm: React.FC = () => {
       const result = await response.json();
 
       if (response.ok) {
-        const { token, userId } = result;
+        const { token, userId, nombre_cliente, apellido_cliente, email } = result;
+
+        // Guarda el token y userId en localStorage
         localStorage.setItem('authToken', token);
         localStorage.setItem('userId', userId);
 
-        navigate('/'); // Redirige a la página principal
-        window.location.reload(); // Recarga la página para actualizar el estado de la sesión
+        // Actualiza Redux con el token y la información del usuario
+        handleLogin(token, { nombre_cliente, apellido_cliente, email });
 
-        console.log('Token:', token);
-        console.log('User ID:', userId);
-
+        // Redirige al usuario a la página principal
+        navigate('/');
       } else {
         console.error('Error al iniciar sesión:', result);
         alert(result.message || 'Error al iniciar sesión');
@@ -66,21 +86,13 @@ const LoginForm: React.FC = () => {
         <div className="form-group">
           <h2>Iniciar Sesión</h2>
           <label htmlFor="email">Correo Electrónico</label>
-          <input
-            type="email"
-            id="email"
-            {...register('email')}
-          />
+          <input type="email" id="email" {...register('email')} />
           {errors.email && <p>{errors.email.message}</p>}
         </div>
 
         <div className="form-group">
           <label htmlFor="password">Contraseña</label>
-          <input
-            type="password"
-            id="password"
-            {...register('password')}
-          />
+          <input type="password" id="password" {...register('password')} />
           {errors.password && <p>{errors.password.message}</p>}
         </div>
 
@@ -89,7 +101,10 @@ const LoginForm: React.FC = () => {
 
       <p className="register-link">
         ¿No estás registrado?{' '}
-        <span onClick={() => navigate('/registro')} style={{ color: 'blue', cursor: 'pointer' }}>
+        <span
+          onClick={() => navigate('/registro')}
+          style={{ color: 'blue', cursor: 'pointer' }}
+        >
           Dale click aquí
         </span>
       </p>
