@@ -2,11 +2,10 @@ import React, { useState, useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
-import CryptoJS from 'crypto-js';
+import { useAppDispatch, useAppSelector } from '../../hooks/reduxHooks';
+import { fetchClienteData, fetchCityAndColonies, enviarPedido, calcularPrecio } from './pedidoSlice';
+import { useNavigate } from 'react-router-dom';
 import './Pedidos.css';
-
-const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:3000';
-const SECRET_KEY = 'tu_clave_secreta';
 
 const schema = z.object({
   categoria: z.string().nonempty({ message: "Selecciona una categoría" }),
@@ -35,86 +34,46 @@ const Pedido: React.FC = () => {
     defaultValues: { cantidad: 1 },
   });
 
+  const dispatch = useAppDispatch();
+  const navigate = useNavigate();
+  const { cliente, colonias, ciudad, precio, isLoading, error } = useAppSelector((state) => state.pedido);
+
   const [imagenes, setImagenes] = useState<File[]>([]);
   const [opcionEntrega, setOpcionEntrega] = useState<string>('domicilio');
-  const [precio, setPrecio] = useState<number>(100); // Precio inicial
-  const [isLoading, setIsLoading] = useState(true);
-  const [colonias, setColonias] = useState<string[]>([]); // Estado para almacenar las colonias
-  const codigoPostal = watch('codigo_postal'); // Observa cambios en el código postal
-  const categoria = watch('categoria');
-  const ciudad = watch('ciudad');
-  const cantidad = watch('cantidad');
+  const [modalOpen, setModalOpen] = useState(false); // Estado del modal
 
-  // Desencriptar datos
-  const desencriptarDato = (dato: string) => {
-    const bytes = CryptoJS.AES.decrypt(dato, SECRET_KEY);
-    return bytes.toString(CryptoJS.enc.Utf8);
-  };
+  const codigoPostal = watch('codigo_postal');
+  const categoria = watch('categoria');
+  const cantidad = watch('cantidad');
 
   // Obtener datos del cliente al cargar el componente
   useEffect(() => {
-    const fetchClienteData = async () => {
-      const userId = localStorage.getItem('userId');
-      if (!userId) return;
-  
-      try {
-        const response = await fetch(`${API_URL}/api/cliente/${userId}`);
-        const data = await response.json();
-  
-        setValue('calle', data.calle);
-        setValue('numero_exterior', data.numero_exterior);
-        setValue('numero_interior', data.numero_interior);
-        setValue('colonia', data.colonia); // Setea la colonia directamente desde los datos del cliente
-        setValue('ciudad', data.ciudad);
-        setValue('codigo_postal', data.codigo_postal);
-        setValue('descripcion_ubicacion', data.descripcion_ubicacion);
-        setValue('numero_telefono', data.numero_telefono);
-  
-        setValue('tipo_tarjeta', desencriptarDato(data.tipo_tarjeta));
-        setValue('numero_tarjeta', desencriptarDato(data.numero_tarjeta));
-        setValue('fecha_tarjeta', desencriptarDato(data.fecha_tarjeta));
-        setValue('cvv', desencriptarDato(data.cvv));
-      } catch (error) {
-        console.error('Error al obtener los datos del cliente:', error);
-      } finally {
-        setIsLoading(false);
-      }
-    };
-  
-    fetchClienteData();
-  }, [setValue]);  
+    const userId = localStorage.getItem('userId');
+    if (userId) {
+      dispatch(fetchClienteData(userId));
+    }
+  }, [dispatch]);
+
+  // Sincroniza datos del cliente en el formulario
+  useEffect(() => {
+    if (cliente) {
+      Object.keys(cliente).forEach((key) => {
+        setValue(key as keyof FormData, cliente[key]);
+      });
+    }
+  }, [cliente, setValue]);
 
   // Llama a la API cuando cambia el código postal
   useEffect(() => {
-    const fetchCityAndColonies = async () => {
-      if (codigoPostal && codigoPostal.length === 5) {
-        try {
-          const response = await fetch(`${API_URL}/api/codigo-postal/${codigoPostal}`);
-          const data = await response.json();
-  
-          setValue('ciudad', data.ciudad);
-          setColonias(data.colonias);
-  
-          // Si la colonia actual no está en la lista obtenida, selecciona la primera por defecto
-          if (!data.colonias.includes(watch('colonia'))) {
-            setValue('colonia', data.colonias[0] || '');
-          }
-        } catch (error) {
-          console.error('Error al obtener ciudad y colonias:', error);
-        }
-      }
-    };
-  
-    fetchCityAndColonies();
-  }, [codigoPostal, setValue, watch]);
-  
+    if (codigoPostal && codigoPostal.length === 5) {
+      dispatch(fetchCityAndColonies(codigoPostal));
+    }
+  }, [codigoPostal, dispatch]);
+
   // Calcular el precio en función de la cantidad, categoría y ciudad
   useEffect(() => {
-    let precioBase = 100; // Precio base por categoría
-    const costoEnvio = ciudad === 'Mérida' ? 50 : ciudad === 'Progreso' ? 75 : ciudad === 'Umán' ? 80 : ciudad === 'Kanasín' ? 85 : 0;
-    const totalPrecio = (precioBase * (cantidad || 1)) + costoEnvio;
-    setPrecio(totalPrecio);
-  }, [categoria, ciudad, cantidad]);
+    dispatch(calcularPrecio({ categoria, ciudad, cantidad }));
+  }, [categoria, ciudad, cantidad, dispatch]);
 
   const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files) {
@@ -123,42 +82,38 @@ const Pedido: React.FC = () => {
   };
 
   const onSubmit = async (data: FormData) => {
-    try {
-      const userId = localStorage.getItem('userId');
-      const token = localStorage.getItem('authToken');
-      console.log('Este es el token de la sesión: ', token );
-      console.log('Este es el id del usuario: ', userId);
-      if (!userId || !token) return alert('Por favor, inicie sesión para continuar.');
+    const userId = localStorage.getItem('userId');
+    const token = localStorage.getItem('authToken');
 
-      const pedidoData = { client_id: userId, token, ...data, cantidad, precio };
-      const encryptedData = CryptoJS.AES.encrypt(JSON.stringify(pedidoData), SECRET_KEY).toString();
-      const formData = new FormData();
-      formData.append('encryptedData', encryptedData);
+    if (!userId || !token) {
+      alert('Por favor, inicie sesión para continuar.');
+      return;
+    }
 
-      imagenes.forEach((imagen) => {
-        formData.append('imagenes', imagen);
-      });
+    const pedidoData = {
+      client_id: userId,
+      token,
+      ...data,
+      cantidad,
+      precio,
+      imagenes,
+    };
 
-      const response = await fetch(`${API_URL}/api/pedido-personalizado`, {
-        method: 'POST',
-        headers: { Authorization: `Bearer ${token}` },
-        body: formData,
-      });
-
-      if (!response.ok) throw new Error((await response.json()).message);
-
-      alert('Pedido realizado exitosamente');
-    } catch (error: any) {
-      console.error('Error al enviar el pedido:', error);
-      alert(error.message || 'Error al enviar el pedido');
+    const result = await dispatch(enviarPedido(pedidoData));
+    if (enviarPedido.fulfilled.match(result)) {
+      setModalOpen(true); // Abre el modal
+      setTimeout(() => {
+        setModalOpen(false);
+        navigate('/'); // Redirige después de cerrar el modal
+      }, 3000); // 3 segundos
     }
   };
 
   return isLoading ? (
     <center><p>Cargando...</p></center>
   ) : (
-    <div className='container-pedido'>
-      <form className='forms' onSubmit={handleSubmit(onSubmit)}>
+    <div className="container-pedido">
+      <form className="forms" onSubmit={handleSubmit(onSubmit)}>
         <div className="container-title"><h1>Haz un Pedido</h1></div>
 
         <label htmlFor="categoria">Selecciona el postre deseado:</label>
@@ -222,7 +177,18 @@ const Pedido: React.FC = () => {
         <input type="file" id="imagenes" multiple accept="image/*" onChange={handleImageChange} />
 
         <button type="submit">Hacer Pedido</button>
+        {error && <p className="error-message">{error}</p>}
       </form>
+
+      {/* Modal de Éxito */}
+      {modalOpen && (
+        <div className="modal">
+          <div className="modal-content">
+            <h2>¡Pedido realizado con éxito!</h2>
+            <p>Redirigiendo a la página principal...</p>
+          </div>
+        </div>
+      )}
     </div>
   );
 };
