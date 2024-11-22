@@ -13,7 +13,7 @@ import RegisterForm from './register/register';
 import LoginForm from './pagina_principal/Login/Login';
 import Conocenos from './conocenos/conocenos';
 import ProtectedRoute from './ProtectRoute';
-import { store } from './redux/store'; // Ajusta la ruta según tu estructura
+import { store } from './menu/store'; // Ajusta la ruta según tu estructura
 
 function App() {
   const dispatch = useDispatch();

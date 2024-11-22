@@ -21,7 +21,7 @@ const rootReducer = combineReducers({
   auth: authReducer, // Reducer para autenticación
 });
 
-const store = configureStore({
+export const store = configureStore({
   reducer: rootReducer,
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({
