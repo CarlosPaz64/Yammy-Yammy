@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchProductos, Producto } from "./productosSlice";
 import { AppDispatch, RootState } from "./store";
@@ -8,6 +8,7 @@ import './menu.css';
 
 const MenuPage: React.FC = () => {
   const dispatch = useDispatch<AppDispatch>();
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   const { productos, loading, error } = useSelector(
     (state: RootState) => state.productos
@@ -33,6 +34,10 @@ const MenuPage: React.FC = () => {
     dispatch(addToCartAsync(producto));
   };
 
+  const toggleMenu = () => {
+    setIsMenuOpen(!isMenuOpen);
+  };
+
   if (loading) return <p>Cargando productos...</p>;
   if (error) return <p>Error: {error}</p>;
 
@@ -53,17 +58,29 @@ const MenuPage: React.FC = () => {
           </section>
         ))}
       </div>
-      <header className="section-nav">
-        <ol>
-          {categorias.map((categoria) => (
-            <li key={categoria}>
-              <a href={`#${categoria.toLowerCase().replace(/\s+/g, "-")}`}>
-                {categoria}
-              </a>
-            </li>
-          ))}
-        </ol>
-      </header>
+
+      {/* Menú hamburguesa */}
+      <div className="hamburger-menu-container">
+        <button className="hamburger-button" onClick={toggleMenu}>
+          ☰
+        </button>
+        {isMenuOpen && (
+          <nav className="dropdown-menu">
+            <ul>
+              {categorias.map((categoria) => (
+                <li key={categoria}>
+                  <a
+                    href={`#${categoria.toLowerCase().replace(/\s+/g, "-")}`}
+                    onClick={() => setIsMenuOpen(false)} // Cierra el menú al hacer clic en una categoría
+                  >
+                    {categoria}
+                  </a>
+                </li>
+              ))}
+            </ul>
+          </nav>
+        )}
+      </div>
     </main>
   );
 };
