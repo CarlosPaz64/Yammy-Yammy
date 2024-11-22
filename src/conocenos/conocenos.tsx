@@ -15,7 +15,7 @@ const Conocenos: React.FC = () => {
           Así que, ya sea que estés planeando una fiesta o simplemente te apetezca algo dulce, aquí en Yammy-Yammy tenemos lo que buscas. ¡Explora nuestro menú y déjanos ser parte de tus momentos más dulces!
         </p>
         {/* Video para Cónocenos tomada desde la API */}
-        <video className="conocenos-video" src="http://localhost:3000/assets/clips/videos_yamy.mp4" autoPlay muted loop disablePictureInPicture></video>
+        <video className="conocenos-video" src="http://localhost:3000/assets/clips/yamy_video.mp4" autoPlay muted loop disablePictureInPicture></video>
       </section>
 
       <section className="section">
@@ -40,7 +40,6 @@ const Conocenos: React.FC = () => {
           con la calidad, la creatividad y un servicio al cliente excepcional. A través de nuestra tienda online 
           buscamos llegar a más personas y hacer que disfrutar de algo dulce sea fácil y satisfactorio.
         </p>
-        
       </section>
 
       {/* Sección de ubicación */}
