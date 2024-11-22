@@ -1,11 +1,23 @@
-// src/api/axiosInstance.ts
-import axios from 'axios';
+import axios, { AxiosHeaders } from 'axios';
 
+const API_LINK = import.meta.env.VITE_API_LINK || 'http://localhost:3000/api';
+
+// Crear una instancia de Axios
 const axiosInstance = axios.create({
-  baseURL: import.meta.env.VITE_API_LINK || 'http://localhost:3000/api', // Configura la URL de tu API
-  headers: {
-    'Content-Type': 'application/json',
-  },
+  baseURL: API_LINK,
+});
+
+// Interceptor para incluir el token automáticamente en cada solicitud
+axiosInstance.interceptors.request.use((config) => {
+  const token = localStorage.getItem('authToken');
+  if (token) {
+    // Crear un objeto AxiosHeaders
+    const headers = new AxiosHeaders();
+    headers.set('Authorization', `Bearer ${token}`);
+
+    config.headers = headers;
+  }
+  return config;
 });
 
 export default axiosInstance;
