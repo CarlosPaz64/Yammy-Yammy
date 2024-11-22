@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import CryptoJS from 'crypto-js';
+import { useNavigate } from 'react-router-dom';
 import './register.css';
 
 interface IFormInput {
@@ -26,7 +27,7 @@ const API_LINK = import.meta.env.VITE_API_LINK || 'http://localhost:3000';
 const SECRET_KEY = 'tu_clave_secreta';
 
 const RegisterForm: React.FC = () => {
-  const { register, handleSubmit, formState: { errors }, setValue } = useForm<IFormInput>();
+  const { register, handleSubmit, formState: { errors }, setValue, trigger } = useForm<IFormInput>();
   const [currentStep, setCurrentStep] = useState(1);
   const [isLoading, setIsLoading] = useState(false);
   const [colonias, setColonias] = useState<string[]>([]);
@@ -70,23 +71,22 @@ const RegisterForm: React.FC = () => {
       setColonias([]);
     }
   };
+    // Configura la imagen predeterminada al cargar el componente
+    useEffect(() => {
+      const cardImage = document.getElementById('cardImage') as HTMLImageElement | null;
+      if (cardImage) {
+        cardImage.src = 'http://localhost:3000/assets/card_images/Default.png';
+      }
+    }, []);
 
   useEffect(() => {
     if (currentStep === 5) {
-      const cardTypeSelect = document.getElementById('cardType') as HTMLSelectElement | null;
+      const cardTypeSelect = document.getElementById('cardTypeSelect') as HTMLSelectElement | null;
       const cardImage = document.getElementById('cardImage') as HTMLImageElement | null;
-      const cardNumberInput = document.getElementById('cardNumber') as HTMLInputElement | null;
-      const expiryDateInput = document.getElementById('expiryDate') as HTMLInputElement | null;
-      const cvvInput = document.getElementById('cvv') as HTMLInputElement | null;
+      if (!cardImage) return;
   
-      const toggleCvvButton = document.createElement('button');
-      toggleCvvButton.textContent = 'Mostrar';
-      toggleCvvButton.type = 'button';
-      toggleCvvButton.style.marginLeft = '10px';
-  
-      if (cardTypeSelect && cardImage && cardNumberInput && expiryDateInput && cvvInput) {
-        // Evento para cambiar la imagen de la tarjeta
-        cardTypeSelect.addEventListener('change', (e: Event) => {
+      if (cardTypeSelect && cardImage) {
+        const updateCardImage = (e: Event) => {
           const cardType = (e.target as HTMLSelectElement).value.toLowerCase();
           switch (cardType) {
             case 'visa':
@@ -95,54 +95,25 @@ const RegisterForm: React.FC = () => {
             case 'mastercard':
               cardImage.src = 'http://localhost:3000/assets/card_images/MasterCard.png';
               break;
-            case 'amex':
+            case 'american express':
               cardImage.src = 'http://localhost:3000/assets/card_images/AmericanExpress.png';
               break;
-            default:
-              cardImage.src = 'http://localhost:3000/assets/card_images/Default.png';
+            case 'default':
+                default:
+              cardImage.src = ('http://localhost:3000/assets/card_images/Default.png');
           }
-        });
+        };
   
-        // Formatear número de tarjeta
-        cardNumberInput.addEventListener('input', () => {
-          let value = cardNumberInput.value.replace(/\D/g, '');
-          value = value.match(/.{1,4}/g)?.join(' ') || '';
-          cardNumberInput.value = value;
-        });
+        // Agrega el evento
+        cardTypeSelect.addEventListener('change', updateCardImage);
   
-        // Formatear fecha de vencimiento
-        expiryDateInput.addEventListener('input', () => {
-          let value = expiryDateInput.value.replace(/\D/g, '');
-          if (value.length > 2) {
-            value = value.substring(0, 2) + '/' + value.substring(2, 4);
-          }
-          expiryDateInput.value = value.substring(0, 5);
-        });
-  
-        // Mostrar/Ocultar CVV
-        cvvInput.type = 'password';
-        toggleCvvButton.addEventListener('click', () => {
-          if (cvvInput.type === 'password') {
-            cvvInput.type = 'text';
-            toggleCvvButton.textContent = 'Ocultar';
-          } else {
-            cvvInput.type = 'password';
-            toggleCvvButton.textContent = 'Mostrar';
-          }
-        });
-        cvvInput.parentElement?.appendChild(toggleCvvButton);
+        // Limpia el evento al desmontar
+        return () => {
+          cardTypeSelect.removeEventListener('change', updateCardImage);
+        };
       }
-  
-      return () => {
-        // Limpiar eventos
-        cardTypeSelect?.removeEventListener('change', () => {});
-        cardNumberInput?.removeEventListener('input', () => {});
-        expiryDateInput?.removeEventListener('input', () => {});
-        toggleCvvButton.removeEventListener('click', () => {});
-        toggleCvvButton.remove();
-      };
     }
-  }, [currentStep]); 
+  }, [currentStep]);
 
   const onSubmit = async (data: IFormInput) => {
     setIsLoading(true);
@@ -162,7 +133,7 @@ const RegisterForm: React.FC = () => {
       });
 
       if (response.ok) {
-        alert('Usuario registrado exitosamente');
+        navigate('/login'); // Mandal usuairo al login
       } else {
         alert('Error al registrar el usuario');
       }
@@ -173,8 +144,20 @@ const RegisterForm: React.FC = () => {
     }
   };
 
-  const nextStep = () => setCurrentStep((prev) => prev + 1);
+  const nextStep = async () => {
+    let fieldsToValidate: (keyof IFormInput)[] = [];
+    if (currentStep === 1) fieldsToValidate = ['nombre_cliente', 'apellido_cliente'];
+    if (currentStep === 2) fieldsToValidate = ['email', 'password_cliente'];
+    if (currentStep === 3) fieldsToValidate = ['numero_telefono'];
+    if (currentStep === 4) fieldsToValidate = ['calle', 'numero_exterior', 'codigo_postal', 'colonia'];
+  
+    const isValid = await trigger(fieldsToValidate);
+  
+    if (isValid) setCurrentStep((prev) => prev + 1);
+  };
+  
   const prevStep = () => setCurrentStep((prev) => prev - 1);
+  const navigate = useNavigate();
 
   return (
     <React.Fragment>{/* Fragmento react, se puede utilizar tambien el Fragmento <></> para envolver todos los hijos en un elemento padre */}
@@ -182,13 +165,21 @@ const RegisterForm: React.FC = () => {
         <div className='container'>
           {/*Encabezado del formulario, aqui va el número de pasos de la página*/}
           <header>Registro<br />de usuario</header>
-          <div className='progress-bar'>
-            {/*Se iteran los pasos del formulario del 1 al 5 y se le añade la clase active*/}
+          <div className="progress-bar">
             {['Nombre', 'Usuario', 'Teléfono', 'Domicilio', 'Tarjeta'].map((step, index) => (
-              <div className={`step ${currentStep > index ? 'active' : ''}`} key={index}>
+              <div
+                className={`step ${currentStep > index ? 'active' : ''} ${currentStep === index + 1 ? 'current' : ''}`}
+                key={index}
+              >
                 <p>{step}</p>
-                <div className='bullet'><span>{index + 1}</span></div>
-                <div className='material-symbols-outlined'>check</div>
+                <div className="bullet">
+                  {/* Muestra el número si es el paso actual, o un check si está completo */}
+                  {currentStep > index ? (
+                    <span className="check-symbol">✓</span>
+                  ) : (
+                    <span>{index + 1}</span>
+                  )}
+                </div>
               </div>
             ))}
           </div>
@@ -310,7 +301,8 @@ const RegisterForm: React.FC = () => {
                   <div className='title'>Datos de la Tarjeta</div>
                   <div className='field'>
                     <div className='label'>Tipo de Tarjeta: </div>
-                    <select {...register('tipo_tarjeta', { required: true })}>
+                    <select id="cardTypeSelect" {...register('tipo_tarjeta', { required: true })}>
+                      <option value="default">Selecciona un tipo de tarjeta</option>
                       <option value="Visa">Visa</option>
                       <option value="MasterCard">MasterCard</option>
                       <option value="American Express">American Express</option>
@@ -319,25 +311,76 @@ const RegisterForm: React.FC = () => {
                   </div>
                   {/* Aqui se visualiza la tarjeta seleccionada por el cliente */}
                   <div className='card-preview'>
-                    <img id="cardType" alt="Card Preview" />
+                    <img id="cardImage" alt="Card Preview" />
                   </div>
                   <div className='field'>
                     <div className='label'>Número de Tarjeta: </div>
-                    <input {...register('numero_tarjeta', { required: true, minLength: 15, maxLength: 16 })} />
-                    {errors.numero_tarjeta && <span>El número de tarjeta es inválido</span>}
+                    <input
+                      type="text"
+                      placeholder="1234 5678 9012 3456"
+                      maxLength={19} // Incluye espacios
+                      {...register('numero_tarjeta', {
+                        required: 'El número de tarjeta es obligatorio',
+                        pattern: {
+                          value: /^\d{4} \d{4} \d{4} \d{4}$/,
+                          message: 'El formato del número de tarjeta es inválido',
+                        },
+                      })}
+                      onInput={(e) => {
+                        const value = e.currentTarget.value.replace(/\D/g, ''); // Elimina caracteres no numéricos
+                        e.currentTarget.value = value.match(/.{1,4}/g)?.join(' ') || ''; // Agrega espacios cada 4 dígitos
+                      }}
+                    />
+                    {errors.numero_tarjeta && <span>{errors.numero_tarjeta.message}</span>}
                   </div>
                   <div className='field'>
                     <div className='label'>Fecha de Expiración: </div>
-                    <input type="text" placeholder="MM/YY" {...register('fecha_tarjeta', {
-                      required: true,
-                      pattern: /^(0[1-9]|1[0-2])\/?([0-9]{2})$/,
-                    })} />
-                    {errors.fecha_tarjeta && <span>Formato inválido. Usa MM/YY</span>}
+                    <input
+                      type="text"
+                      placeholder="MM/YY"
+                      maxLength={5}
+                      {...register('fecha_tarjeta', {
+                        required: 'La fecha de expiración es obligatoria',
+                        pattern: {
+                          value: /^(0[1-9]|1[0-2])\/?([0-9]{2})$/,
+                          message: 'Formato inválido. Usa MM/YY',
+                        },
+                      })}
+                      onInput={(e) => {
+                        let value = e.currentTarget.value.replace(/\D/g, ''); // Elimina caracteres no numéricos
+                        if (value.length > 2) {
+                          value = value.substring(0, 2) + '/' + value.substring(2, 4); // Agrega '/'
+                        }
+                        e.currentTarget.value = value.substring(0, 5); // Limita el largo
+                      }}
+                    />
+                    {errors.fecha_tarjeta && <span>{errors.fecha_tarjeta.message}</span>}
                   </div>
-                  <div className='field'>
-                    <div className='label'>CVV: </div>
-                    <input type="text" {...register('cvv', { required: true, minLength: 3, maxLength: 4 })} />
-                    {errors.cvv && <span>El CVV es inválido</span>}
+                  <div className="field">
+                    <div className="label">CVV:</div>
+                    <div style={{ display: 'flex', alignItems: 'center' }}>
+                      <input
+                        type="password"
+                        maxLength={4}
+                        {...register('cvv', {
+                          required: 'El CVV es obligatorio',
+                          minLength: { value: 3, message: 'El CVV debe tener al menos 3 dígitos' },
+                          maxLength: { value: 4, message: 'El CVV no debe exceder 4 dígitos' },
+                        })}
+                        style={{ marginRight: '10px' }}
+                      />
+                      <button
+                        type="button"
+                        onClick={(e) => {
+                          const input = e.currentTarget.previousSibling as HTMLInputElement;
+                          input.type = input.type === 'password' ? 'text' : 'password';
+                          e.currentTarget.textContent = input.type === 'password' ? 'Mostrar' : 'Ocultar';
+                        }}
+                      >
+                        Mostrar
+                      </button>
+                    </div>
+                    {errors.cvv && <span>{errors.cvv.message}</span>}
                   </div>
                   <div className='field btns'>
                     <button type="button" className="prev-4 prev" onClick={prevStep}>Previous</button>
