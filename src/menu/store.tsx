@@ -5,6 +5,7 @@ import cartReducer from './cartSlice';
 import productosReducer from './productosSlice';
 import userReducer from '../slices/userSlice'; // Importa el reducer de usuario
 import authReducer from '../slices/autentiSlice'; // Importa el reducer de autenticación
+import pedidoReducer from '../pagina_principal/HazUnpedido/pedidoSlice';
 
 // Configuración de redux-persist
 const persistConfig = {
@@ -19,6 +20,7 @@ const rootReducer = combineReducers({
   productos: productosReducer, // Reducer para productos (no persistente)
   user: userReducer, // Reducer para el usuario
   auth: authReducer, // Reducer para autenticación
+  pedido: pedidoReducer // Reducer del pedido personalizado
 });
 
 export const store = configureStore({
