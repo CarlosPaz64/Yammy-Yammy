@@ -45,15 +45,14 @@ textarea {
 }
 /*diseño de los botones*/
 button {
-  background:linear-gradient(to bottom, #96C9F4, #F9F9F9, #FFD0EC);
+  /* background:linear-gradient(to bottom, #96C9F4, #F9F9F9, #FFD0EC); */
   color: #000;
   padding: 10px;
   border: none;
   border-radius: 4px;
-  cursor: pointer;
 }
 button:hover {
-  background:linear-gradient(to bottom, #96C9F4, #F9F9F9, #FFD0EC);
+  /* background:linear-gradient(to bottom, #96C9F4, #F9F9F9, #FFD0EC); */
 }
 /* Fondo del modal */
 .modal {

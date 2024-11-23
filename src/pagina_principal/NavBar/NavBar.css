@@ -276,7 +276,7 @@ nav ul li a .textNav::after{
     border: .2px solid #27242462;
     background-color: #ffffffc9;
     user-select: none;
-  }.close:hover{/*cursor: pointer;*/ background-color: #B8001F; color: #FEFAE0; border: .2px solid #B8001F;}
+  }.close:hover{background-color: #B8001F; color: #FEFAE0; border: .2px solid #B8001F;}
   .sidebar-header{
     background:linear-gradient(to bottom right,#b7e0f9,#ffffff, #f2cce5);
     padding-right: 20px;

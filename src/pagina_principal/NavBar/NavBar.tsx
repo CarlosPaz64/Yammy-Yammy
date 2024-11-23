@@ -79,17 +79,12 @@ const NavBar: React.FC<{ children?: ReactNode }> = ({ children }) => {
                                     <>
                                         <span className="tooltip-text">Cerrar sesión</span>
                                         <li>
-                                            <button
+                                            <a
                                                 onClick={handleLogout}
                                                 className="material-symbols-outlined icon-nav"
                                             >
                                                 logout
-                                            </button>
-                                        </li>
-                                        <li>
-                                            <span className="textNav">
-                                                Hola, {nombre_cliente} {apellido_cliente}
-                                            </span>
+                                            </a>
                                         </li>
                                     </>
                                 ) : (
@@ -203,12 +198,12 @@ const NavBar: React.FC<{ children?: ReactNode }> = ({ children }) => {
                         </li>
                         <li>
                             {token ? (
-                                <button
+                                <a
                                     onClick={handleLogout}
                                     className="textNav textSid-logout"
                                 >
                                     Cerrar sesión
-                                </button>
+                                </a>
                             ) : (
                                 <Link to="/login">
                                     <span className="textNav textSid-loggin">Iniciar sesión</span>

@@ -106,7 +106,6 @@
     position: relative; /*Atrapa el overlay del video*/
     display: flex;
     justify-content: center;
-    /*align-items: center;*/
     overflow: hidden;
 }
 /*Fondo oscuro para el video*/
