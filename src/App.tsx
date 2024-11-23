@@ -8,7 +8,6 @@ import NavBar from './pagina_principal/NavBar/NavBar';
 import Index from './Index/Index';
 import Footer from './pagina_principal/Footer/Footer';
 import CartPage from './menu/carrito';
-import CrearProducto from './formulario de creacion/creacionProductos';
 import RegisterForm from './register/register';
 import LoginForm from './pagina_principal/Login/Login';
 import Conocenos from './conocenos/conocenos';
@@ -43,8 +42,7 @@ function App() {
         <Route path="/registro" element={<RegisterForm />} />
         <Route path="/menu" element={<MenuPage />} />
         <Route path="/conocenos" element={<Conocenos />} />
-        <Route path="/creacion" element={<CrearProducto />} />
-
+        
         {/* Rutas protegidas */}
         <Route element={<ProtectedRoute />}>
           <Route path="/pedido" element={<Pedido />} />

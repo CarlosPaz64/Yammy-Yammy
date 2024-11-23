@@ -24,7 +24,6 @@ const MenuPage: React.FC = () => {
     "Pastel",
     "Pastel personalizado",
     "Postre",
-    "Producto de temporada",
   ];
 
   const productosPorCategoria = (categoria: string) =>
