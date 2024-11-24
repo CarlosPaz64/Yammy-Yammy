@@ -52,22 +52,23 @@ export const fetchProductos = createAsyncThunk('productos/fetchProductos', async
 
 // Slice para los productos
 const productosSlice = createSlice({
-  name: 'productos',
+  name: "productos",
   initialState,
   reducers: {},
   extraReducers: (builder) => {
     builder
       .addCase(fetchProductos.pending, (state) => {
-        state.loading = true;
-        state.error = null;
+        state.loading = true; // Mantén el estado de carga
+        state.error = null; // Limpia cualquier error previo
       })
       .addCase(fetchProductos.fulfilled, (state, action) => {
-        state.loading = false;
-        state.productos = action.payload;
+        state.loading = false; // Detén el estado de carga
+        state.productos = action.payload; // Almacena los productos obtenidos
+        state.error = null; // Resetea errores
       })
       .addCase(fetchProductos.rejected, (state, action) => {
-        state.loading = false;
-        state.error = action.payload as string;
+        state.error = action.payload as string; // Registra el error
+        // No se cambia el loading a false para que permanezca cargando el fetch
       });
   },
 });
