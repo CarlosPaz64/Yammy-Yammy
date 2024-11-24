@@ -1,6 +1,6 @@
 .card-item {
-	height: 300px; /* Ajusta la altura */
-	width: 250px; /* Ajusta el ancho */
+	height: 370px; /* Ajusta la altura */
+	width: 280px; /* Ajusta el ancho */
 	display: flex;
 	flex-direction: column;
 	align-items: center;
@@ -15,12 +15,13 @@
   }
   
   .card-item img.user-image {
-	width: 120px; /* Ajusta el tamaño de la imagen */
-	height: 120px;
+	width: 180px; /* Ajusta el tamaño de la imagen */
+	height: 180px;
 	border-radius: 50%;
 	margin-bottom: 10px;
 	object-fit: cover;
-	border: 2px solid #ddd;
+	border: 8px solid #e6b0aa  ;
+
   }
   
   .card-item h2.user-name {
@@ -32,22 +33,23 @@
   .card-item p.user-profession {
 	font-size: 0.9rem;
 	color: #666;
-	margin-bottom: 10px;
+	margin-bottom: -1px;
   }
   
   .card-item button.message-button {
 	font-size: 1rem;
 	padding: 8px 20px;
 	color: #fff;
-	background: #007bff;
+	background:#f5b7b1  ;	
 	border: none;
 	border-radius: 5px;
 	cursor: pointer;
 	transition: background 0.2s ease;
+	margin-top: 5px;
   }
   
   .card-item button.message-button:hover {
-	background: #0056b3;
+	background:#73c6b6;
   }
   .swiper {
 	padding: 20px 0;
@@ -71,6 +73,12 @@
 	justify-content: center;
 	z-index: 1000;
   }
+  .modal-h2{
+	justify-content: center;
+	text-align: center;
+	font-size: 35px;
+	margin-top: 10px;
+  }
   
   .modal-content {
 	background: white;
@@ -83,8 +91,9 @@
   }
   
   .modal-image {
-	width: 100%;
-	height: auto;
+	margin-top: 20px;
+	width: 350px;
+	height: 350px;
 	border-radius: 10px;
 	margin-bottom: 20px;
   }
@@ -102,10 +111,11 @@
   .add-to-cart-modal {
 	padding: 10px 20px;
 	background-color: #4caf50;
-	color: black;
+	color: white;
 	border: none;
 	border-radius: 5px;
 	cursor: pointer;
+	margin-top: 10px;
   }
   
   .add-to-cart-modal:disabled {

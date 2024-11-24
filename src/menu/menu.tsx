@@ -82,6 +82,17 @@ const MenuPage: React.FC = () => {
             </section>
           ))
         )}
+          <section
+            className="section-menu"
+            id={categoria.toLowerCase().replace(/\s+/g, "-")}
+            key={categoria}
+          >
+            <h2 className="modal-h2">{categoria}</h2>
+            <Carousel
+              onAddToCart={handleAddToCart}
+            />
+          </section>
+        ))}
       </div>
 
       <div className="hamburger-menu-container">
