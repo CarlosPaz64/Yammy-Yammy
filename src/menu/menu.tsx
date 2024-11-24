@@ -82,6 +82,7 @@ const MenuPage: React.FC = () => {
             </section>
           ))
         )}
+        {categorias.map((categoria) => (
           <section
             className="section-menu"
             id={categoria.toLowerCase().replace(/\s+/g, "-")}
@@ -89,6 +90,7 @@ const MenuPage: React.FC = () => {
           >
             <h2 className="modal-h2">{categoria}</h2>
             <Carousel
+              productos={productosPorCategoria(categoria)}
               onAddToCart={handleAddToCart}
             />
           </section>
