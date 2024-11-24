@@ -3,6 +3,10 @@ import axios from 'axios';
 import axiosInstance from '../api/axiosInstance';
 import { Producto } from './productosSlice';
 import { RootState } from './store';
+import CryptoJS from 'crypto-js';
+
+// Clave secreta para encriptar los datos (debe mantenerse segura)
+const SECRET_KEY = 'tu_clave_secreta';
 
 interface CartItem extends Producto {
   quantity: number;
@@ -235,13 +239,30 @@ export const finalizeCartAsync = createAsyncThunk<
         0
       );
 
-      await axiosInstance.put(
-        `/carrito/finalize/${carritoId}`,
-        { ...clientData, client_id, precio_total: totalAmount },
-        {
-          headers: { Authorization: `Bearer ${token}` },
-        }
-      );
+      // Crear el objeto a encriptar
+      const dataToEncrypt = {
+        ...clientData,
+        client_id,
+        precio_total: totalAmount,
+      };
+
+      // Encriptar los datos
+      const encryptedData = CryptoJS.AES.encrypt(
+        JSON.stringify(dataToEncrypt),
+        SECRET_KEY
+      ).toString();
+      console.log('Datos encriptados enviados:', encryptedData);
+
+      // Crear FormData para enviar los datos encriptados
+      const formData = new FormData();
+      formData.append('encryptedData', encryptedData);
+
+      await axiosInstance.put(`/carrito/finalize/${carritoId}`, formData, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+          'Content-Type': 'multipart/form-data',
+        },
+      });
     } catch (error) {
       let errorMessage = 'Error al finalizar la compra.';
       if (axios.isAxiosError(error)) {
@@ -305,6 +326,9 @@ const cartSlice = createSlice({
       state.totalItems = 0;
       localStorage.removeItem('cart');
       localStorage.removeItem('carritoId');
+    },
+    clearError: (state) => {
+      state.error = null; // Limpia el error
     },
   },
   extraReducers: (builder) => {
@@ -378,7 +402,7 @@ const cartSlice = createSlice({
   },
 });
 
-export const { clearCart } = cartSlice.actions;
+export const { clearCart, clearError } = cartSlice.actions;
 export const selectCartItems = (state: RootState) => state.cart.items;
 export const selectCartStatus = (state: RootState) => state.cart.status;
 export const selectCartError = (state: RootState) => state.cart.error;
