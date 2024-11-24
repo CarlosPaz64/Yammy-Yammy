@@ -301,13 +301,19 @@ const RegisterForm: React.FC = () => {
                   <div className='title'>Datos de la Tarjeta</div>
                   <div className='field'>
                     <div className='label'>Tipo de Tarjeta: </div>
-                    <select id="cardTypeSelect" {...register('tipo_tarjeta', { required: true })}>
+                    <select
+                      id="cardTypeSelect"
+                      {...register('tipo_tarjeta', {
+                        validate: (value) =>
+                          value === 'Visa' || value === 'MasterCard' || value === 'American Express' || 'Debes seleccionar un tipo de tarjeta válido',
+                      })}
+                    >
                       <option value="default">Selecciona un tipo de tarjeta</option>
                       <option value="Visa">Visa</option>
                       <option value="MasterCard">MasterCard</option>
                       <option value="American Express">American Express</option>
                     </select>
-                    {errors.tipo_tarjeta && <span>Este campo es requerido</span>}
+                    {errors.tipo_tarjeta && <span>{errors.tipo_tarjeta.message}</span>}
                   </div>
                   {/* Aqui se visualiza la tarjeta seleccionada por el cliente */}
                   <div className='card-preview'>
