@@ -84,12 +84,12 @@ const Pedido: React.FC = () => {
   const onSubmit = async (data: FormData) => {
     const userId = localStorage.getItem('userId');
     const token = localStorage.getItem('authToken');
-
+  
     if (!userId || !token) {
       alert('Por favor, inicie sesión para continuar.');
       return;
     }
-
+  
     const pedidoData = {
       client_id: userId,
       token,
@@ -98,7 +98,19 @@ const Pedido: React.FC = () => {
       precio,
       imagenes,
     };
-
+  
+    // Eliminar campos de domicilio si la opción de entrega es "recoger"
+    if (data.opcion_entrega === 'recoger') {
+      delete pedidoData.calle;
+      delete pedidoData.numero_exterior;
+      delete pedidoData.numero_interior;
+      delete pedidoData.colonia;
+      delete pedidoData.ciudad;
+      delete pedidoData.codigo_postal;
+      delete pedidoData.descripcion_ubicacion;
+      delete pedidoData.numero_telefono;
+    }
+  
     const result = await dispatch(enviarPedido(pedidoData));
     if (enviarPedido.fulfilled.match(result)) {
       setModalOpen(true); // Abre el modal
@@ -107,7 +119,7 @@ const Pedido: React.FC = () => {
         navigate('/'); // Redirige después de cerrar el modal
       }, 3000); // 3 segundos
     }
-  };
+  };  
 
   return isLoading ? (
     <center><p>Cargando...</p></center>
