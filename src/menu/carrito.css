@@ -23,7 +23,7 @@
   .modal-content button {
     margin-top: 20px;
     padding: 10px 20px;
-    background-color: #28a745;
+    background-color: #ec7063 ;
     color: white;
     border: none;
     border-radius: 5px;
@@ -31,6 +31,6 @@
   }
   
   .modal-content button:hover {
-    background-color: #7dcea0;
+    background-color: #f5b7b1;
   }
   
