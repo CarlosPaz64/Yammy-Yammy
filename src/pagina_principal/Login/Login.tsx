@@ -5,8 +5,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import CryptoJS from 'crypto-js';
 import { useNavigate } from 'react-router-dom';
 import './login.css';
-import { useDispatch } from 'react-redux';
-import { AppDispatch } from '../../redux/store';
+import { useAppDispatch } from '../../hooks/reduxHooks'; 
 import { login } from '../../slices/autentiSlice';
 import { setUser } from '../../slices/userSlice';
 
@@ -29,7 +28,7 @@ const LoginForm: React.FC = () => {
     resolver: zodResolver(loginSchema),
   });
   const navigate = useNavigate();
-  const dispatch = useDispatch<AppDispatch>();
+  const dispatch = useAppDispatch();
 
   const handleLogin = (
     token: string,
