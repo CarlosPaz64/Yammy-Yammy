@@ -1,6 +1,6 @@
 import React from 'react';
 import { Navigate, Outlet } from 'react-router-dom';
-import { useAppSelector } from './redux/store'; // Asegúrate de que esta ruta sea correcta
+import { useAppSelector } from './hooks/reduxHooks'; // Asegúrate de que esta ruta sea correcta
 
 const ProtectedRoute: React.FC = () => {
   const isAuthenticated = useAppSelector(

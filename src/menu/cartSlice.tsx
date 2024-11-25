@@ -19,6 +19,7 @@ interface CartState {
   status: 'idle' | 'loading' | 'succeeded' | 'failed';
   totalItems: number;
   error: string | null;
+  carrito_id: number | null;
 }
 
 const initialState: CartState = {
@@ -26,6 +27,7 @@ const initialState: CartState = {
   status: 'idle',
   totalItems: 0,
   error: null,
+  carrito_id: null,
 };
 
 interface ClientData {
@@ -273,6 +275,44 @@ export const finalizeCartAsync = createAsyncThunk<
   }
 );
 
+// Thunk para obtener el carrito pendiente
+export const fetchPendingCartWithProductsAsync = createAsyncThunk<
+  { carrito_id: number; items: CartItem[] },
+  void,
+  { rejectValue: string }
+>('cart/fetchPendingCartWithProductsAsync', async (_, { rejectWithValue }) => {
+  try {
+    const token = localStorage.getItem('authToken');
+    if (!token) {
+      throw new Error('El token de autenticación es requerido');
+    }
+
+    // Paso 1: Obtener el carrito pendiente
+    const carritoResponse = await axiosInstance.get('/carrito/pending', {
+      headers: { Authorization: `Bearer ${token}` },
+    });
+
+    const carrito = carritoResponse.data;
+    const carritoId = carrito.carrito_id;
+
+    // Paso 2: Obtener los productos del carrito
+    const productosResponse = await axiosInstance.get(`/carrito/${carritoId}/products`, {
+      headers: { Authorization: `Bearer ${token}` },
+    });
+
+    return {
+      carrito_id: carritoId,
+      items: productosResponse.data, // Productos asociados al carrito
+    };
+  } catch (error) {
+    let errorMessage = 'Error al recuperar el carrito pendiente con productos.';
+    if (axios.isAxiosError(error)) {
+      errorMessage = error.response?.data?.message || 'Error desconocido.';
+    }
+    return rejectWithValue(errorMessage);
+  }
+});
+
 // Thunk para validar la sesión y limpiar el carrito si no hay sesión activa
 export const validateSessionAndClearCartAsync = createAsyncThunk<void, void, { rejectValue: string }>(
   'cart/validateSessionAndClearCartAsync',
@@ -398,7 +438,30 @@ const cartSlice = createSlice({
       .addCase(fetchCartProductsAsync.rejected, (state, action) => {
         state.status = 'failed';
         state.error = action.payload || 'Error al cargar los productos del carrito.';
-      });      
+      })
+      builder.addCase(fetchPendingCartWithProductsAsync.fulfilled, (state, action) => {
+        console.log("Carrito pendiente cargado:", action.payload); // Debug
+      
+        // Mapea los datos recibidos para convertir `cantidad` a `quantity`
+        state.items = action.payload.items.map((item: any) => ({
+          ...item,
+          quantity: item.cantidad, // Mapea `cantidad` a `quantity`
+        }));
+      
+        // Calcula el total de productos en el carrito
+        state.totalItems = state.items.reduce((total, item) => total + item.quantity, 0);
+      
+        // Actualiza el ID del carrito en el estado y en localStorage
+        state.carrito_id = action.payload.carrito_id;
+        localStorage.setItem('carritoId', String(action.payload.carrito_id));
+      
+        console.log("Estado del carrito después de cargar pendiente:", state); // Debug final
+      })
+      .addCase(fetchPendingCartWithProductsAsync.rejected, (state) => {
+        // Limpia el carrito si la acción es rechazada
+        state.items = [];
+        state.totalItems = 0;
+      });            
   },
 });
 

@@ -1,6 +1,5 @@
 import { useEffect } from 'react';
 import { Routes, Route } from 'react-router-dom';
-import { useDispatch } from 'react-redux';
 import { initializeAuth } from './slices/autentiSlice'; // Ajusta la ruta según tu estructura de archivos
 import MenuPage from './menu/menu';
 import Pedido from './pagina_principal/HazUnpedido/Pedidos';
@@ -13,9 +12,11 @@ import LoginForm from './pagina_principal/Login/Login';
 import Conocenos from './conocenos/conocenos';
 import ProtectedRoute from './ProtectRoute';
 import { store } from './menu/store'; // Ajusta la ruta según tu estructura
+import { fetchPendingCartWithProductsAsync, clearCart } from './menu/cartSlice';
+import { useAppDispatch } from './hooks/reduxHooks'; // Ajusta la ruta según tu estructura
 
 function App() {
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
 
   useEffect(() => {
     const token = localStorage.getItem('authToken');
@@ -29,6 +30,17 @@ function App() {
       console.log('Estado global después de initializeAuth:', store.getState());
     }, 100); // Agregar un pequeño retraso para asegurar que el estado se actualice
   }, [dispatch]);
+  
+  useEffect(() => {
+    const token = localStorage.getItem('authToken');
+    if (token) {
+      dispatch(fetchPendingCartWithProductsAsync()); // Cargar el carrito pendiente si el usuario tiene token
+    } else {
+      dispatch(clearCart()); // Asegúrate de limpiar el carrito si no hay sesión activa
+    }
+  }, [dispatch]);
+  
+  
   
   
   return (

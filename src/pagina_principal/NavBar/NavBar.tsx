@@ -1,9 +1,10 @@
 import React, { ReactNode, useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { selectTotalItems } from "../../menu/cartSlice";
-import { useSelector, useDispatch } from "react-redux";
-import { AppDispatch } from "../../redux/store";
+import { useSelector } from "react-redux";
+import { useAppDispatch } from "../../hooks/reduxHooks";
 import { clearUser } from "../../slices/userSlice";
+import { clearCart, fetchPendingCartWithProductsAsync } from "../../menu/cartSlice";
 import "./NavBar.css";
 
 const NavBar: React.FC<{ children?: ReactNode }> = ({ children }) => {
@@ -13,7 +14,7 @@ const NavBar: React.FC<{ children?: ReactNode }> = ({ children }) => {
     );
     const token = localStorage.getItem("authToken"); // Detectar si hay token
     const [sidebarOpen, setSidebarOpen] = useState(false);
-    const dispatch = useDispatch<AppDispatch>();
+    const dispatch = useAppDispatch();
     const navigate = useNavigate();
 
     // Función para abrir/cerrar el sidebar
@@ -36,10 +37,18 @@ const NavBar: React.FC<{ children?: ReactNode }> = ({ children }) => {
         };
     }, []);
 
+    // Función que obtiene el carrito pendiente de la sesión
+    useEffect(() => {
+        if (token) {
+          dispatch(fetchPendingCartWithProductsAsync());
+        }
+      }, [token, dispatch]);
+
     // Función de logout
     const handleLogout = () => {
         localStorage.removeItem("authToken");
         localStorage.removeItem("userId");
+        dispatch(clearCart()); // Limpia el carrito al cerrar sesión
         dispatch(clearUser()); // Limpia los datos del usuario en Redux
         navigate("/");
     };
