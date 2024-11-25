@@ -1,60 +1,93 @@
-import React, { ReactNode, useState } from "react";
+import React, { ReactNode, useEffect } from "react";
 import Carrusel1 from '../pagina_principal/Carrusel/Carrusel1';
 import './index.css';
+//Agregamos redux, Slice y store para la obtención de los datos
+import { useSelector, useDispatch } from "react-redux";
+import { Producto } from "../menu/productosSlice";
+import { AppDispatch, RootState } from "../menu/store";
+//funciones que obtienen los datos de los productos
+import { fetchProductos } from "../menu/productosSlice";
+/*Librerias para implementar diseño del carrusel con Swiper para React*/
+import { Swiper, SwiperSlide } from "swiper/react";
+import { Navigation } from "swiper/modules";
+import "swiper/css";
+import "swiper/css/navigation";
 
-//Componente del Inicio
+// Función para mezclar las imagenes con (shuffle) manejo de array, con esto ponemos de manera aleatoria las imagenes al mostrarlas
+const shuffleArray = <T,>(array: T[]): T[] => {
+    return array
+      .map((item) => ({ item, sort: Math.random() }))
+      .sort((a, b) => a.sort - b.sort)
+      .map(({ item }) => item);
+};
+
+//Componente del Inicio(Index)
 const Index: React.FC<{ children?: ReactNode }> = ({ children }) => {
-    /*Función para establecer la posición inicial del carrusel*/
-    const [initialCarousel, setCarousel] = useState(0);
-    const img = [
-        'http://localhost:3000/assets/Pruebas/P1_cake.jpg',
-        'http://localhost:3000/assets/pruebas/P2_cake.jpg',
-        'http://localhost:3000/assets/pruebas/P3_cake.jpg',
-        'http://localhost:3000/assets/pruebas/P4_cake.jpg',
-        'http://localhost:3000/assets/pruebas/P5_cake.jpg',
-        'http://localhost:3000/assets/pruebas/P6_cake.jpg',
-        'http://localhost:3000/assets/pruebas/P7.avif',
-    ];
-    
-    //Funciones para los controles del carrusel
-    const visibleImg = 1; //Desplaza 1 imagen por cada clic
-    const totalimgs = img.length;
-    const showItems = 3; //Renderiza el número de imágenes visibles como maximo a la vista
+    const dispatch = useDispatch<AppDispatch>();
 
-    const nextSlide = () => {
-        setCarousel((prevIndex) => (prevIndex + visibleImg) % totalimgs);
-    };
+    //Se Obtiene productos del estado global
+    const { productos, loading } = useSelector((state: RootState) => state.productos);
 
-    const prevSlide = () => {
-        setCarousel((prevIndex) => (prevIndex - visibleImg + totalimgs) % totalimgs);
-    };
+    //Fetch inicial de productos
+    useEffect(() => {
+        dispatch(fetchProductos());
+    }, [dispatch]);
 
-    const getTransformValue = () => {
-        return `translateX(-${(initialCarousel % totalimgs) * (100 / showItems)}%)`;
+    //Se filtra productos de la categoría "Pastel"
+    const pasteles = productos.filter((producto) => producto.categoria === "Pastel");
+
+    //Mezclamos los productos para mostrarlos de forma aleatoria al cargar la página
+    const randomObjects = shuffleArray(pasteles);
+
+    /*Garantiza una mejor experiencia al usuario de manera fluida al haber un bucle(duplicado) con pocos slides, 
+    garantizando que el modo loop funcione de manera correcta en el carrusel*/
+    const duplicarSlides = (slides: Producto[], numDuplicados: number) => {
+        if (slides.length > 1) return slides; // No duplicar si ya hay suficientes slides
+        return [...slides, ...Array(numDuplicados).fill(slides).flat()];
     };
+      
+    // Duplica los objetos del carrusel si hay pocos
+    const pastelesDuplicados = duplicarSlides(randomObjects, 3);
 
     return(
         <>
             {/*Inicio de la página principal*/}
-                <Carrusel1></Carrusel1>
+                <Carrusel1></Carrusel1>{/* Carrusel de los banners personalizados */}
                 <section className="section-index">
                     <div className="container-titleIndex">
                         <h1 className="title-index">¡Tu antojo una realidad!</h1>
                     </div>
-                    {/* Aquí empieza el carrusel de imágenes pertenecientes al menú */}
-                    <div className="container-sliderMenu">
-                        {/*Imagenes del carrusel*/}
-                        <div className="img-sliderMenu" style={{transform: getTransformValue()}}>
-                            {img.map((src, index) => (
-                                <img key={index} src={src} alt={`Slide ${index + 1}`} />
+                    {/* Aquí empieza el carrusel de imágenes pertenecientes del menú con Swiper y randomizado */}
+                    {loading ? (
+                      <p>Cargando productos...</p>
+                    ) : (
+                        <Swiper
+                            modules={[Navigation]}
+                            loop={true}
+                            grabCursor={true}
+                            spaceBetween={30}
+                            navigation={true}
+                            //Medidas responsivas para el carrusel de la dependencia Swiper
+                            breakpoints={{
+                                0: { slidesPerView: 1 },
+                                768: { slidesPerView: 2 },
+                                1024: { slidesPerView: 3 },
+                            }}                        >
+                            {pastelesDuplicados.map((pastel, index) => (
+                                /*Muestra las imágenes de forma aleatoria con el nombre del producto*/
+                                <SwiperSlide key={index}>
+                                    <div className="container-sliderMenu">
+                                        <div className="img-sliderMenu" data-label={pastel.nombre_producto}>
+                                            <img 
+                                                src={pastel.url_imagen} 
+                                                alt={pastel.nombre_producto} 
+                                            />
+                                        </div>
+                                    </div>
+                                </SwiperSlide>
                             ))}
-                        </div>
-                        {/*Controles del carrusel en forma de flechas*/}
-                        <div className="control-sliderMenu">
-                            <button className="left" onClick={prevSlide}>&#10094;</button>
-                            <button className="right" onClick={nextSlide}>&#10095;</button>
-                        </div>
-                    </div>
+                        </Swiper>
+                    )}
                     {/* Botón para dirigirce al menú */}
                     <div className="container-btnIndex">
                         <a href="/menu" target="_self" className="btn-index">Descubre Más &#187;</a>
