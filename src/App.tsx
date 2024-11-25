@@ -12,7 +12,7 @@ import LoginForm from './pagina_principal/Login/Login';
 import Conocenos from './conocenos/conocenos';
 import ProtectedRoute from './ProtectRoute';
 import { store } from './menu/store'; // Ajusta la ruta según tu estructura
-import { validateSessionAndClearCartAsync } from './menu/cartSlice';
+import { fetchPendingCartWithProductsAsync, clearCart } from './menu/cartSlice';
 import { useAppDispatch } from './hooks/reduxHooks'; // Ajusta la ruta según tu estructura
 
 function App() {
@@ -32,8 +32,14 @@ function App() {
   }, [dispatch]);
   
   useEffect(() => {
-    dispatch(validateSessionAndClearCartAsync());
+    const token = localStorage.getItem('authToken');
+    if (token) {
+      dispatch(fetchPendingCartWithProductsAsync()); // Cargar el carrito pendiente si el usuario tiene token
+    } else {
+      dispatch(clearCart()); // Asegúrate de limpiar el carrito si no hay sesión activa
+    }
   }, [dispatch]);
+  
   
   
   

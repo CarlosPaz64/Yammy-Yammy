@@ -4,7 +4,7 @@ import { selectTotalItems } from "../../menu/cartSlice";
 import { useSelector } from "react-redux";
 import { useAppDispatch } from "../../hooks/reduxHooks";
 import { clearUser } from "../../slices/userSlice";
-import { clearCart } from "../../menu/cartSlice";
+import { clearCart, fetchPendingCartWithProductsAsync } from "../../menu/cartSlice";
 import "./NavBar.css";
 
 const NavBar: React.FC<{ children?: ReactNode }> = ({ children }) => {
@@ -36,6 +36,13 @@ const NavBar: React.FC<{ children?: ReactNode }> = ({ children }) => {
             window.removeEventListener("resize", handleResize);
         };
     }, []);
+
+    // Función que obtiene el carrito pendiente de la sesión
+    useEffect(() => {
+        if (token) {
+          dispatch(fetchPendingCartWithProductsAsync());
+        }
+      }, [token, dispatch]);
 
     // Función de logout
     const handleLogout = () => {

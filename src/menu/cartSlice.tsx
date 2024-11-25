@@ -19,6 +19,7 @@ interface CartState {
   status: 'idle' | 'loading' | 'succeeded' | 'failed';
   totalItems: number;
   error: string | null;
+  carrito_id: number | null;
 }
 
 const initialState: CartState = {
@@ -26,6 +27,7 @@ const initialState: CartState = {
   status: 'idle',
   totalItems: 0,
   error: null,
+  carrito_id: null,
 };
 
 interface ClientData {
@@ -437,15 +439,29 @@ const cartSlice = createSlice({
         state.status = 'failed';
         state.error = action.payload || 'Error al cargar los productos del carrito.';
       })
-      .addCase(fetchPendingCartWithProductsAsync.fulfilled, (state, action) => {
-        state.items = action.payload.items;
+      builder.addCase(fetchPendingCartWithProductsAsync.fulfilled, (state, action) => {
+        console.log("Carrito pendiente cargado:", action.payload); // Debug
+      
+        // Mapea los datos recibidos para convertir `cantidad` a `quantity`
+        state.items = action.payload.items.map((item: any) => ({
+          ...item,
+          quantity: item.cantidad, // Mapea `cantidad` a `quantity`
+        }));
+      
+        // Calcula el total de productos en el carrito
         state.totalItems = state.items.reduce((total, item) => total + item.quantity, 0);
+      
+        // Actualiza el ID del carrito en el estado y en localStorage
+        state.carrito_id = action.payload.carrito_id;
         localStorage.setItem('carritoId', String(action.payload.carrito_id));
+      
+        console.log("Estado del carrito después de cargar pendiente:", state); // Debug final
       })
       .addCase(fetchPendingCartWithProductsAsync.rejected, (state) => {
+        // Limpia el carrito si la acción es rechazada
         state.items = [];
         state.totalItems = 0;
-      });      
+      });            
   },
 });
 
