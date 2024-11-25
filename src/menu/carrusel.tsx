@@ -81,9 +81,6 @@ const Carousel: React.FC<CarouselProps> = ({ productos, onAddToCart }) => {
             className="modal-content"
             onClick={(e) => e.stopPropagation()} // Evita que el clic dentro del modal cierre el modal
           >
-            <button className="close-button" onClick={closeModal}>
-              ×
-            </button>
             <img
               src={
                 selectedProducto.url_imagen.startsWith("data:")

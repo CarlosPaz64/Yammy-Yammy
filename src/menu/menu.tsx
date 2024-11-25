@@ -74,7 +74,7 @@ const MenuPage: React.FC = () => {
               id={categoria.toLowerCase().replace(/\s+/g, "-")}
               key={categoria}
             >
-              <h2>{categoria}</h2>
+              <h2 className="modal-h2">{categoria}</h2>
               <Carousel
                 productos={productosPorCategoria(categoria)}
                 onAddToCart={handleAddToCart}
@@ -82,19 +82,6 @@ const MenuPage: React.FC = () => {
             </section>
           ))
         )}
-        {categorias.map((categoria) => (
-          <section
-            className="section-menu"
-            id={categoria.toLowerCase().replace(/\s+/g, "-")}
-            key={categoria}
-          >
-            <h2 className="modal-h2">{categoria}</h2>
-            <Carousel
-              productos={productosPorCategoria(categoria)}
-              onAddToCart={handleAddToCart}
-            />
-          </section>
-        ))}
       </div>
 
       <div className="hamburger-menu-container">
