@@ -153,6 +153,7 @@ footer{
     margin-top: -85px;
     display: flex;
     justify-content: center;
+    user-select: none;
 }
 @keyframes bgText {
     to{background-position: 200% center;}
@@ -194,6 +195,7 @@ footer{
     animation: bgText 2.5s linear infinite;
     width: 100%;
     margin-bottom: 20px;
+    user-select: none;
 }
 /*Derechos reservados*/
 .content-rightsReserved{
@@ -202,7 +204,7 @@ footer{
     text-transform: uppercase;
     text-align: center;
 }
-.text-rightsReserved{color: #7f9093;}
+.text-rightsReserved{color: #4a585b;}
 
 /*Media para tabletas*/
 @media only screen and (min-width: 768px) and (max-width: 1024px) {
