@@ -274,16 +274,24 @@ const RegisterForm: React.FC = () => {
                   </div>
                   <div className="field">
                     <div className="label">Código Postal: </div>
-                    <input
-                      {...register("codigo_postal", {
-                        required: "Este campo es obligatorio",
-                        minLength: { value: 5, message: "El código postal debe tener 5 caracteres" },
-                        maxLength: { value: 5, message: "El código postal debe tener 5 caracteres" },
-                      })}
-                      value={codigoPostal}
-                      onChange={handlePostalCodeChange}
-                      maxLength={5}
-                    />
+                    <div className="input-with-icon">
+                      <input
+                        {...register("codigo_postal", {
+                          required: "Este campo es obligatorio",
+                          minLength: { value: 5, message: "El código postal debe tener 5 caracteres" },
+                          maxLength: { value: 5, message: "El código postal debe tener 5 caracteres" },
+                        })}
+                        value={codigoPostal}
+                        onChange={handlePostalCodeChange}
+                        maxLength={5}
+                        placeholder="97000"
+                      />
+                      <i
+                        className="fa fa-info-circle tooltip-icon"
+                        aria-hidden="true"
+                        title="Solo se aceptan códigos postales de Mérida, Progreso, Kanasí y Umán"
+                      ></i>
+                    </div>
                     {errors.codigo_postal && <span>{errors.codigo_postal.message}</span>}
                     {errorFetch && <span style={{ color: "red" }}>{errorFetch}</span>}
                   </div>

@@ -250,6 +250,38 @@
     font-size: 14px;
     outline: none;
 }
+.input-with-icon {
+    position: relative;
+    display: flex;
+    align-items: center;
+  }
+  
+  .input-with-icon input {
+    flex: 1;
+    padding-right: 30px; /* Espacio para el ícono */
+  }
+  
+  .tooltip-icon {
+    position: absolute;
+    right: 10px;
+    color: #007bff; /* Color del ícono */
+    cursor: pointer;
+  }
+  
+  .tooltip-icon:hover::after {
+    content: attr(title); /* Usa el atributo title para el mensaje */
+    position: absolute;
+    top: -30px;
+    right: 0;
+    background: rgba(0, 0, 0, 0.7);
+    color: white;
+    font-size: 12px;
+    padding: 5px;
+    border-radius: 4px;
+    white-space: nowrap;
+    z-index: 1000;
+  }
+  
 
 @media screen and (max-width: 660px) {
     :root {
