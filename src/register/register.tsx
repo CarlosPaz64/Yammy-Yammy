@@ -34,25 +34,31 @@ const RegisterForm: React.FC = () => {
   const [codigoPostal, setCodigoPostal] = useState('');
   const [ciudad, setCiudad] = useState('');
   const [mostrarCampos, setMostrarCampos] = useState(false);
+  const [errorFetch, setErrorFetch] = useState<string | false>(false);
 
   const fetchColoniasYCiudad = async (codigo_postal: string) => {
     try {
       const response = await fetch(`${API_LINK}/api/codigo-postal/${codigo_postal}`);
       if (!response.ok) {
+        const errorData = await response.json(); // Captura el mensaje del backend
+        setErrorFetch(errorData.message || "Código postal no encontrado");
         setColonias([]);
         setCiudad('');
         setMostrarCampos(false);
-        return null;
+        return;
       }
+  
       const data = await response.json();
       const { ciudad, colonias } = data;
-
+  
       setCiudad(ciudad);
       setColonias(colonias);
       setValue('ciudad', ciudad);
       setMostrarCampos(true);
+      setErrorFetch(false); // Limpia el error si el fetch es exitoso
     } catch (error) {
       console.error('Error al obtener la ciudad y colonias:', error);
+      setErrorFetch("Error al conectarse al servidor"); // Mensaje genérico para errores de conexión
       setColonias([]);
       setCiudad('');
       setMostrarCampos(false);
@@ -62,15 +68,18 @@ const RegisterForm: React.FC = () => {
   const handlePostalCodeChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const codigo_postal = e.target.value;
     setCodigoPostal(codigo_postal);
-
+  
     if (codigo_postal.length === 5) {
       await fetchColoniasYCiudad(codigo_postal);
     } else {
       setMostrarCampos(false);
       setCiudad('');
       setColonias([]);
+      setErrorFetch(false); // Limpia el error cuando el código postal no es válido
     }
   };
+  
+  
     // Configura la imagen predeterminada al cargar el componente
     useEffect(() => {
       const cardImage = document.getElementById('cardImage') as HTMLImageElement | null;
@@ -263,10 +272,28 @@ const RegisterForm: React.FC = () => {
                     <div className='label'>Número Interior (Opcional): </div>
                     <input {...register('numero_interior')} />
                   </div>
-                  <div className='field'>
-                    <div className='label'>Código Postal: </div>
-                    <input {...register('codigo_postal', { required: true })} value={codigoPostal} onChange={handlePostalCodeChange} />
-                    {errors.codigo_postal && <span>Este campo es requerido</span>}
+                  <div className="field">
+                    <div className="label">Código Postal: </div>
+                    <div className="input-with-icon">
+                      <input
+                        {...register("codigo_postal", {
+                          required: "Este campo es obligatorio",
+                          minLength: { value: 5, message: "El código postal debe tener 5 caracteres" },
+                          maxLength: { value: 5, message: "El código postal debe tener 5 caracteres" },
+                        })}
+                        value={codigoPostal}
+                        onChange={handlePostalCodeChange}
+                        maxLength={5}
+                        placeholder="97000"
+                      />
+                      <i
+                        className="fa fa-info-circle tooltip-icon"
+                        aria-hidden="true"
+                        title="Solo se aceptan códigos postales de Mérida, Progreso, Kanasí y Umán"
+                      ></i>
+                    </div>
+                    {errors.codigo_postal && <span>{errors.codigo_postal.message}</span>}
+                    {errorFetch && <span style={{ color: "red" }}>{errorFetch}</span>}
                   </div>
                   <div className='field'>
                     <div className='label'>Descripción: </div>
