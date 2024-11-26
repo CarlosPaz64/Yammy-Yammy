@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Navigation, Pagination } from "swiper/modules";
+import { useNavigate } from "react-router-dom";
 import "swiper/css";
 import "swiper/css/navigation";
 import "swiper/css/pagination";
@@ -9,12 +10,21 @@ import { Producto } from "./productosSlice";
 interface CarouselProps {
   productos: Producto[];
   onAddToCart: (producto: Producto) => void;
+  isLoggedIn: boolean;
 }
 
-const Carousel: React.FC<CarouselProps> = ({ productos, onAddToCart }) => {
-  const [selectedProducto, setSelectedProducto] = useState<Producto | null>(
-    null
-  );
+const Carousel: React.FC<CarouselProps> = ({ productos, onAddToCart, isLoggedIn }) => {
+  const [selectedProducto, setSelectedProducto] = useState<Producto | null>(null);
+
+  const navigate = useNavigate();
+
+  const handleAddToCart = (producto: Producto) => {
+    if (!isLoggedIn) {
+      navigate("/login"); // Redirige al login si no está autenticado
+      return;
+    }
+    onAddToCart(producto); // Agrega el producto al carrito si está autenticado
+  };
 
   const handleImageClick = (producto: Producto) => {
     setSelectedProducto(producto);
@@ -64,7 +74,7 @@ const Carousel: React.FC<CarouselProps> = ({ productos, onAddToCart }) => {
               </p>
               <button
                 className="message-button"
-                onClick={() => onAddToCart(producto)}
+                onClick={() => handleAddToCart(producto)} // Usa handleAddToCart aquí
                 disabled={producto.stock === 0}
               >
                 {producto.stock > 0 ? "Añadir al carrito" : "Agotado"}
@@ -102,7 +112,7 @@ const Carousel: React.FC<CarouselProps> = ({ productos, onAddToCart }) => {
             <button
               className="add-to-cart-modal"
               onClick={() => {
-                onAddToCart(selectedProducto);
+                handleAddToCart(selectedProducto!); // Usa handleAddToCart aquí
                 closeModal();
               }}
               disabled={selectedProducto.stock === 0}

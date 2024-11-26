@@ -16,6 +16,10 @@ const MenuPage: React.FC = () => {
     (state: RootState) => state.productos
   );
 
+  const isAuthenticated = useSelector(
+    (state: RootState) => state.auth.isAuthenticated
+  ); // Obtener autenticación desde Redux
+
   // Fetch inicial
   useEffect(() => {
     dispatch(fetchProductos());
@@ -99,6 +103,7 @@ const MenuPage: React.FC = () => {
               <Carousel
                 productos={productosPorCategoria(categoria)}
                 onAddToCart={handleAddToCart}
+                isLoggedIn={isAuthenticated}
               />
             </section>
           ))
