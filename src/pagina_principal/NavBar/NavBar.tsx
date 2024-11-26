@@ -10,7 +10,7 @@ import { logout } from "../../slices/autentiSlice";
 
 const NavBar: React.FC<{ children?: ReactNode }> = ({ children }) => {
     const totalItems = useSelector(selectTotalItems);
-    const { nombre_cliente = "Invitado", apellido_cliente = "" } = useSelector(
+    const { nombre_cliente, apellido_cliente } = useSelector(
         (state: any) => state.user || {}
     );
     const token = localStorage.getItem("authToken"); // Detectar si hay token
@@ -58,7 +58,9 @@ const NavBar: React.FC<{ children?: ReactNode }> = ({ children }) => {
 
     return (
         <>
+            {/* Configuracion para navbar cuando pasa a pantallas más grandes o de alta resolución(PC) */}
             <div className="main-nav">
+                {/* Navbar principal */}
                 <nav>
                     <ul>
                         <li>
@@ -131,11 +133,12 @@ const NavBar: React.FC<{ children?: ReactNode }> = ({ children }) => {
                     </ul>
                 </nav>
             </div>
-
+            {/* Configuracion para navbar y sidebar cuando pasa a pantallas más pequeñas(tabletas, laptops y celulares) */}
             <div
                 className={`overlay ${sidebarOpen ? "overlay-visible" : ""}`}
                 onClick={openSidebar}
             ></div>
+            {/* Navbar secundario */}
             <div className="secundary-nav">
                 <nav className="navBar-rwd">
                     <ul className="navBar-list">
@@ -174,7 +177,7 @@ const NavBar: React.FC<{ children?: ReactNode }> = ({ children }) => {
                         </div>
                     </ul>
                 </nav>
-
+                {/* sidebar del menú */}
                 <div className={`sideBar ${sidebarOpen ? "sideBar-visible" : ""}`}>
                     <div className="close-sidebar" onClick={openSidebar}>
                         <li>
@@ -186,7 +189,7 @@ const NavBar: React.FC<{ children?: ReactNode }> = ({ children }) => {
                             <div className="sidebar-header">
                                 {token ? (
                                     <span className="sidText-header">
-                                        ¡Hola, {nombre_cliente} {apellido_cliente}!
+                                        ¡Hola, {nombre_cliente || "Invitado" } {apellido_cliente}!
                                     </span>
                                 ) : (
                                     <span className="sidText-header">¡Hola, Identifícate!</span>
