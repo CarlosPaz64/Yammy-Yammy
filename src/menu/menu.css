@@ -131,19 +131,20 @@
   }
   /* Menú hamburguesa */
 /* Menú hamburguesa */
-.hamburger-menu-container {
-	position: fixed; /* Cambiado a fixed */
-	top: 10px; /* Manténlo en la esquina superior derecha */
-	right: 10px;
-	z-index: 1000; /* Asegúrate de que esté por encima de otros elementos */
+.hamburger-menu-container { 
+	position: relative;/* Cambiado a fixed */
+    top: 0%;/* Manténlo en la esquina superior derecha */
+    z-index: 1;/* Asegúrate de que esté por encima de otros elementos */
   }
   
   .hamburger-button {
-	background: #333;
+	right: 20px;
+	position: absolute;
+	background: #f5b7b1;
 	color: white;
 	border: none;
 	font-size: 1.5rem;
-	padding: 10px;
+	padding: 0 7px 0 7px;
 	border-radius: 50%;
 	cursor: pointer;
 	box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);

@@ -53,6 +53,27 @@ const MenuPage: React.FC = () => {
 
   return (
     <main>
+       <div className="hamburger-menu-container">
+        <button className="hamburger-button" onClick={toggleMenu}>
+          ☰
+        </button>
+        {isMenuOpen && (
+          <nav className="dropdown-menu">
+            <ul>
+              {categorias.map((categoria) => (
+                <li key={categoria}>
+                  <a
+                    href={`#${categoria.toLowerCase().replace(/\s+/g, "-")}`}
+                    onClick={() => setIsMenuOpen(false)}
+                  >
+                    {categoria}
+                  </a>
+                </li>
+              ))}
+            </ul>
+          </nav>
+        )}
+      </div>
       <div className="product-page">
         {loading ? (
           <div className="skeleton-container">
@@ -81,28 +102,6 @@ const MenuPage: React.FC = () => {
               />
             </section>
           ))
-        )}
-      </div>
-
-      <div className="hamburger-menu-container">
-        <button className="hamburger-button" onClick={toggleMenu}>
-          ☰
-        </button>
-        {isMenuOpen && (
-          <nav className="dropdown-menu">
-            <ul>
-              {categorias.map((categoria) => (
-                <li key={categoria}>
-                  <a
-                    href={`#${categoria.toLowerCase().replace(/\s+/g, "-")}`}
-                    onClick={() => setIsMenuOpen(false)}
-                  >
-                    {categoria}
-                  </a>
-                </li>
-              ))}
-            </ul>
-          </nav>
         )}
       </div>
     </main>
