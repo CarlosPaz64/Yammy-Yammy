@@ -6,6 +6,7 @@ import { useAppDispatch } from "../../hooks/reduxHooks";
 import { clearUser } from "../../slices/userSlice";
 import { clearCart, fetchPendingCartWithProductsAsync } from "../../menu/cartSlice";
 import "./NavBar.css";
+import { logout } from "../../slices/autentiSlice";
 
 const NavBar: React.FC<{ children?: ReactNode }> = ({ children }) => {
     const totalItems = useSelector(selectTotalItems);
@@ -48,6 +49,8 @@ const NavBar: React.FC<{ children?: ReactNode }> = ({ children }) => {
     const handleLogout = () => {
         localStorage.removeItem("authToken");
         localStorage.removeItem("userId");
+
+        dispatch(logout()); // Actualiza el estado de autenticación en Redux
         dispatch(clearCart()); // Limpia el carrito al cerrar sesión
         dispatch(clearUser()); // Limpia los datos del usuario en Redux
         navigate("/");
