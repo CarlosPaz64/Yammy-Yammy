@@ -58,14 +58,14 @@ const LoginForm: React.FC = () => {
       const result = await response.json();
 
       if (response.ok) {
-        const { token, userId, nombre_cliente, apellido_cliente, email } = result;
+        const { token, userId, nombre, apellido, email } = result;
 
         // Guarda el token y userId en localStorage
         localStorage.setItem('authToken', token);
         localStorage.setItem('userId', userId);
 
         // Actualiza Redux con el token y la información del usuario
-        handleLogin(token, { nombre_cliente, apellido_cliente, email });
+        handleLogin(token, { nombre_cliente: nombre, apellido_cliente: apellido, email });
 
         // Redirige al usuario a la página principal
         navigate('/');
