@@ -51,9 +51,6 @@ button {
   border: none;
   border-radius: 4px;
 }
-button:hover {
-  /* background:linear-gradient(to bottom, #96C9F4, #F9F9F9, #FFD0EC); */
-}
 /* Fondo del modal */
 .modal {
   position: fixed;
