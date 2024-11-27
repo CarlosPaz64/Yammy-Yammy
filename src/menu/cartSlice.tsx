@@ -69,13 +69,10 @@ export const addToCartAsync = createAsyncThunk<
         token,
       });
 
-      const carrito_id = response.data.carrito_id; // Verifica si carrito_id está presente
-      console.log('carrito_id devuelto por la API:', carrito_id); // <-- Debug
+      const carrito_id = response.data.carrito_id;
 
       if (carrito_id) {
-        localStorage.setItem('carritoId', carrito_id); // Guarda en localStorage
-      } else {
-        console.error('No se recibió carrito_id en la respuesta'); // <-- Debug
+        localStorage.setItem('carritoId', carrito_id);
       }
 
       return {
@@ -89,18 +86,16 @@ export const addToCartAsync = createAsyncThunk<
       if (axios.isAxiosError(error)) {
         errorMessage = error.response?.data?.message ?? 'Error al agregar producto al carrito.';
       }
-      return rejectWithValue(errorMessage);
+      return rejectWithValue(errorMessage); // Rechaza con el mensaje de error del backend
     }
   }
 );
 
-
-
 // Thunk para aumentar la cantidad de un producto
 export const incrementQuantityAsync = createAsyncThunk<
-  { carrito_producto_id: number; cantidad: number }, // Tipo de datos retornados
-  { carrito_producto_id: number; cantidad: number }, // Tipo de argumentos pasados al thunk
-  { rejectValue: string } // Tipo de valor en caso de error
+  { carrito_producto_id: number; cantidad: number },
+  { carrito_producto_id: number; cantidad: number },
+  { rejectValue: string }
 >(
   'cart/incrementQuantityAsync',
   async ({ carrito_producto_id, cantidad }, { rejectWithValue }) => {
@@ -111,7 +106,6 @@ export const incrementQuantityAsync = createAsyncThunk<
         throw new Error('El token de autenticación es requerido.');
       }
 
-      // Realiza la petición PATCH para incrementar la cantidad
       const response = await axiosInstance.patch(
         `/carrito/increment-quantity/${carrito_producto_id}`,
         { cantidad },
