@@ -10,7 +10,7 @@ import { logout } from "../../slices/autentiSlice";
 
 const NavBar: React.FC<{ children?: ReactNode }> = ({ children }) => {
     const totalItems = useSelector(selectTotalItems);
-    const { nombre_cliente, apellido_cliente } = useSelector(
+    const { nombre_cliente } = useSelector(
         (state: any) => state.user || {}
     );
     const token = localStorage.getItem("authToken"); // Detectar si hay token
@@ -165,16 +165,19 @@ const NavBar: React.FC<{ children?: ReactNode }> = ({ children }) => {
                             </li>
                         </div>
                         <div className="tooltip-container">
-                            <span className="tooltip-text">Ver Carrito</span>
-                            <li>
-                                <Link
-                                    to="/carrito"
-                                    className="material-symbols-outlined icon-nav iconNav-right"
-                                >
-                                    shopping_bag
-                                </Link>
-                            </li>
-                        </div>
+                                <span className="tooltip-text">Ver Carrito</span>
+                                <li>
+                                    <Link
+                                        to="/carrito"
+                                        className="material-symbols-outlined icon-nav"
+                                    >
+                                        shopping_bag
+                                    </Link>
+                                    {totalItems > 0 && (
+                                        <span className="cart-count">{totalItems}</span>
+                                    )}
+                                </li>
+                            </div>
                     </ul>
                 </nav>
                 {/* sidebar del menú */}
@@ -189,7 +192,7 @@ const NavBar: React.FC<{ children?: ReactNode }> = ({ children }) => {
                             <div className="sidebar-header">
                                 {token ? (
                                     <span className="sidText-header">
-                                        ¡Hola, {nombre_cliente || "Invitado" } {apellido_cliente}!
+                                        ¡Hola, {nombre_cliente || "Invitado" }!
                                     </span>
                                 ) : (
                                     <span className="sidText-header">¡Hola, Identifícate!</span>
