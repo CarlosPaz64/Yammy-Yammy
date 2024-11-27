@@ -205,180 +205,190 @@ const CartPage: React.FC = () => {
   };
 
   return (
-    <div>
-      <h2>Tu Carrito de Compras</h2>
-      {cartError && <p style={{ color: 'red' }}>{cartError}</p>}
-      {cartItems.length === 0 ? (
-        <p>No tienes productos en el carrito.</p>
-      ) : (
-        <>
-          <table>
-            <thead>
-              <tr>
-                <th>Imagen</th>
-                <th>Producto</th>
-                <th>Cantidad</th>
-                <th>Precio Unitario</th>
-                <th>Total</th>
-                <th>Acciones</th>
-              </tr>
-            </thead>
-            <tbody>
-              {cartItems.map((item) => (
-                <tr key={item.carrito_producto_id}>
-                  <td>
-                    {item.url_imagen ? (
-                      <img
-                        src={
-                          item.url_imagen.startsWith('data:')
-                            ? item.url_imagen
-                            : `data:image/jpeg;base64,${item.url_imagen}`
-                        }
-                        alt={item.nombre_producto || 'Producto'}
-                        style={{ width: '50px', height: '50px', objectFit: 'cover' }}
-                      />
-                    ) : (
-                      <span>Sin imagen</span>
-                    )}
-                  </td>
-                  <td>{item.nombre_producto}</td>
-                  <td>{item.quantity}</td>
-                  <td>${(Number(item.precio) || 0).toFixed(2)}</td>
-                  <td>${((Number(item.precio) || 0) * item.quantity).toFixed(2)}</td>
-                  <td>
-                    <button
-                      onClick={() => handleDecrementQuantity(item.carrito_producto_id)}
-                      disabled={item.quantity <= 1}
-                    >
-                      -
-                    </button>
-                    <button onClick={() => handleIncrementQuantity(item.carrito_producto_id)}>+</button>
-                    <button onClick={() => handleRemoveItem(item.carrito_producto_id)}>🗑️</button>
-                  </td>
+    <div className='shopping-container'>
+      <div className='shopping-content'>
+        <h2>Tu Carrito de Compras</h2>
+        {cartError && <p style={{ color: 'red' }}>{cartError}</p>}
+        {cartItems.length === 0 ? (
+          <p>No tienes productos en el carrito.</p>
+        ) : (
+          <>
+            <table>
+              <thead>
+                <tr>
+                  <th>Imagen</th>
+                  <th>Producto</th>
+                  <th>Cantidad</th>
+                  <th>Precio Unitario</th>
+                  <th>Total</th>
+                  <th>Acciones</th>
                 </tr>
-              ))}
-            </tbody>
-          </table>
-          <h3>Total de Artículos: {totalItems}</h3>
-          <h3>Monto Total: ${totalAmount.toFixed(2)}</h3>
-          {!isFinalizing ? (
-            <button onClick={() => setIsFinalizing(true)}>Finalizar Compra</button>
-          ) : (
-            <form onSubmit={(e) => { e.preventDefault(); handleFinalizePurchase(); }}>
-              <h3>Opción de Entrega</h3>
-              <select name="opcion_entrega" value={clientData.opcion_entrega} onChange={handleInputChange} required>
-                <option value="domicilio">Domicilio</option>
-                <option value="recoger">Recoger en tienda</option>
-              </select>
-              {clientData.opcion_entrega === 'domicilio' && (
-                <>
-                  <h3>Datos de Envío</h3>
-                  <input
-                    type="text"
-                    name="codigo_postal"
-                    placeholder="Código Postal"
-                    value={clientData.codigo_postal}
-                    onChange={handleInputChange}
-                    required
-                  />
-                  <input type="text" name="ciudad" placeholder="Ciudad" value={clientData.ciudad} readOnly />
-                  <select name="colonia" value={clientData.colonia} onChange={handleInputChange} required>
-                    {colonias.map((colonia, index) => (
-                      <option key={index} value={colonia}>
-                        {colonia}
-                      </option>
-                    ))}
-                  </select>
-                  <input
-                    type="text"
-                    name="calle"
-                    placeholder="Calle"
-                    value={clientData.calle}
-                    onChange={handleInputChange}
-                    required
-                  />
-                  <input
-                    type="text"
-                    name="numero_exterior"
-                    placeholder="Número Exterior"
-                    value={clientData.numero_exterior}
-                    onChange={handleInputChange}
-                    required
-                  />
-                  <input
-                    type="text"
-                    name="numero_interior"
-                    placeholder="Número Interior (Opcional)"
-                    value={clientData.numero_interior}
-                    onChange={handleInputChange}
-                  />
-                  <input
-                    type="text"
-                    name="descripcion_ubicacion"
-                    placeholder="Descripción de Ubicación"
-                    value={clientData.descripcion_ubicacion}
-                    onChange={handleInputChange}
-                    required
-                  />
-                  <input
-                    type="text"
-                    name="numero_telefono"
-                    placeholder="Número de Teléfono"
-                    value={clientData.numero_telefono}
-                    onChange={handleInputChange}
-                    required
-                  />
-                </>
-              )}
-              <h3>Datos de la Tarjeta</h3>
-              <select
-                name="tipo_tarjeta"
-                value={clientData.tipo_tarjeta}
-                onChange={handleInputChange}
-                required
-              >
-                <option value="">Seleccione el tipo de tarjeta</option>
-                <option value="Visa">Visa</option>
-                <option value="MasterCard">MasterCard</option>
-                <option value="American Express">American Express</option>
-              </select>
-              <input
-                type="text"
-                name="numero_tarjeta"
-                placeholder="Número de Tarjeta"
-                value={clientData.numero_tarjeta}
-                onChange={handleInputChange}
-                required
-              />
-              <input
-                type="text"
-                name="fecha_tarjeta"
-                placeholder="Fecha de Expiración (MM/AA)"
-                value={clientData.fecha_tarjeta}
-                onChange={handleInputChange}
-                required
-              />
-              <input
-                type="text"
-                name="cvv"
-                placeholder="CVV"
-                value={clientData.cvv}
-                onChange={handleInputChange}
-                required
-              />
-              <button type="submit">Confirmar Compra</button>
-            </form>
-          )}
-        </>
-      )}
-      {isModalOpen && (
-        <div className="modal">
-          <div className="modal-content">
-            <p>{modalMessage}</p>
-            <button onClick={closeModal}>Cerrar</button>
+              </thead>
+              <tbody>
+                {cartItems.map((item) => (
+                  <tr key={item.carrito_producto_id}>
+                    <td>
+                      {item.url_imagen ? (
+                        <img
+                          src={
+                            item.url_imagen.startsWith('data:')
+                              ? item.url_imagen
+                              : `data:image/jpeg;base64,${item.url_imagen}`
+                          }
+                          alt={item.nombre_producto || 'Producto'}
+                          style={{ width: '50px', height: '50px', objectFit: 'cover' }}
+                        />
+                      ) : (
+                        <span>Sin imagen</span>
+                      )}
+                    </td>
+                    <td>{item.nombre_producto}</td>
+                    <td>{item.quantity}</td>
+                    <td>${(Number(item.precio) || 0).toFixed(2)}</td>
+                    <td>${((Number(item.precio) || 0) * item.quantity).toFixed(2)}</td>
+                    <td>
+                      <button
+                        onClick={() => handleDecrementQuantity(item.carrito_producto_id)}
+                        disabled={item.quantity <= 1}
+                      >
+                        -
+                      </button>
+                      <button onClick={() => handleIncrementQuantity(item.carrito_producto_id)}>+</button>
+                      <button onClick={() => handleRemoveItem(item.carrito_producto_id)}>🗑️</button>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </>
+        )}
+      </div>
+      <div className='finalizing-container'>
+        <div className='finalizing-content'>
+          <div className='Purchase-completion'>
+            <h3>Total de Artículos: <span className='colorPurchase-stock'>{totalItems}</span></h3>
+            <h3>Monto Total: <span className='colorPurchase-value'>${totalAmount.toFixed(2)}</span></h3>
+            {!isFinalizing ? (
+            <button onClick={() => setIsFinalizing(true)}>Proceder Compra</button>
+            ) : (
+              <form onSubmit={(e) => { e.preventDefault(); handleFinalizePurchase(); }}>
+                <h3>Opción de Entrega</h3>
+                <select name="opcion_entrega" value={clientData.opcion_entrega} onChange={handleInputChange} required>
+                  <option value="domicilio">Domicilio</option>
+                  <option value="recoger">Recoger en tienda</option>
+                </select>
+                {clientData.opcion_entrega === 'domicilio' && (
+                  <>
+                    <h3>Datos de Envío</h3>
+                    <input
+                      type="text"
+                      name="codigo_postal"
+                      placeholder="Código Postal"
+                      value={clientData.codigo_postal}
+                      onChange={handleInputChange}
+                      required
+                    />
+                    <input type="text" name="ciudad" placeholder="Ciudad" value={clientData.ciudad} readOnly />
+                    <select name="colonia" value={clientData.colonia} onChange={handleInputChange} required>
+                      {colonias.map((colonia, index) => (
+                        <option key={index} value={colonia}>
+                          {colonia}
+                        </option>
+                      ))}
+                    </select>
+                    <input
+                      type="text"
+                      name="calle"
+                      placeholder="Calle"
+                      value={clientData.calle}
+                      onChange={handleInputChange}
+                      required
+                    />
+                    <input
+                      type="text"
+                      name="numero_exterior"
+                      placeholder="Número Exterior"
+                      value={clientData.numero_exterior}
+                      onChange={handleInputChange}
+                      required
+                    />
+                    <input
+                      type="text"
+                      name="numero_interior"
+                      placeholder="Número Interior (Opcional)"
+                      value={clientData.numero_interior}
+                      onChange={handleInputChange}
+                    />
+                    <input
+                      type="text"
+                      name="descripcion_ubicacion"
+                      placeholder="Descripción de Ubicación"
+                      value={clientData.descripcion_ubicacion}
+                      onChange={handleInputChange}
+                      required
+                    />
+                    <input
+                      type="text"
+                      name="numero_telefono"
+                      placeholder="Número de Teléfono"
+                      value={clientData.numero_telefono}
+                      onChange={handleInputChange}
+                      required
+                    />
+                  </>
+                )}
+                <h3>Datos de la Tarjeta</h3>
+                <select
+                  name="tipo_tarjeta"
+                  value={clientData.tipo_tarjeta}
+                  onChange={handleInputChange}
+                  required
+                >
+                  <option value="">Seleccione el tipo de tarjeta</option>
+                  <option value="Visa">Visa</option>
+                  <option value="MasterCard">MasterCard</option>
+                  <option value="American Express">American Express</option>
+                </select>
+                <input
+                  type="text"
+                  name="numero_tarjeta"
+                  placeholder="Número de Tarjeta"
+                  value={clientData.numero_tarjeta}
+                  onChange={handleInputChange}
+                  required
+                />
+                <input
+                  type="text"
+                  name="fecha_tarjeta"
+                  placeholder="Fecha de Expiración (MM/AA)"
+                  value={clientData.fecha_tarjeta}
+                  onChange={handleInputChange}
+                  required
+                />
+                <input
+                  type="text"
+                  name="cvv"
+                  placeholder="CVV"
+                  value={clientData.cvv}
+                  onChange={handleInputChange}
+                  required
+                />
+                <button type="submit">Confirmar Compra</button>
+              </form>
+            )}
           </div>
         </div>
-      )}
+      </div>
+
+      {/* Modal de la finalización de compra */}
+      {isModalOpen && (
+          <div className="modal">
+            <div className="modal-content">
+              <p>{modalMessage}</p>
+              <button onClick={closeModal}>Cerrar</button>
+            </div>
+          </div>
+        )}
     </div>
   );
 };
