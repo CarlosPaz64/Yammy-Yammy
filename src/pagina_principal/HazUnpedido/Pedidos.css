@@ -101,3 +101,36 @@ button {
 .modal-content {
   animation: fadeIn 0.3s ease-in-out;
 }
+.imagenes-preview {
+  display: flex;
+  gap: 10px;
+  margin-top: 10px;
+}
+
+.imagen-item {
+  position: relative;
+  display: inline-block;
+}
+
+.imagen-preview {
+  width: 100px;
+  height: 100px;
+  object-fit: cover;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+
+.remove-image-btn {
+  position: absolute;
+  top: -5px;
+  right: -5px;
+  background: red;
+  color: white;
+  border: none;
+  border-radius: 50%;
+  cursor: pointer;
+  width: 20px;
+  height: 20px;
+  font-size: 12px;
+}
+

@@ -38,6 +38,7 @@ const Pedido: React.FC = () => {
   const navigate = useNavigate();
   const { cliente, colonias, ciudad, precio, isLoading, error } = useAppSelector((state) => state.pedido);
 
+  const fileInputRef = React.useRef<HTMLInputElement | null>(null); // Referencia al input file 
   const [imagenes, setImagenes] = useState<File[]>([]);
   const [opcionEntrega, setOpcionEntrega] = useState<string>('domicilio');
   const [modalOpen, setModalOpen] = useState(false); // Estado del modal
@@ -75,11 +76,28 @@ const Pedido: React.FC = () => {
     dispatch(calcularPrecio({ categoria, ciudad, cantidad }));
   }, [categoria, ciudad, cantidad, dispatch]);
 
+  // Manejo de selección de imágenes
   const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files) {
-      setImagenes(Array.from(e.target.files).slice(0, 2));
+      const selectedFiles = Array.from(e.target.files);
+  
+      if (selectedFiles.length > 2) {
+        alert('Solo puedes subir un máximo de 2 imágenes.');
+        // Resetea el valor del input file
+        if (fileInputRef.current) {
+          fileInputRef.current.value = '';
+        }
+        return;
+      }
+  
+      setImagenes(selectedFiles);
     }
-  };
+  }; 
+
+    // Eliminar una imagen
+    const handleRemoveImage = (index: number) => {
+      setImagenes((prev) => prev.filter((_, i) => i !== index));
+    };
 
   const onSubmit = async (data: FormData) => {
     const userId = localStorage.getItem('userId');
@@ -186,7 +204,34 @@ const Pedido: React.FC = () => {
         <input {...register('cvv')} placeholder="CVV" />
 
         <label htmlFor="imagenes">Subir imágenes de referencia (máximo 2):</label>
-        <input type="file" id="imagenes" multiple accept="image/*" onChange={handleImageChange} />
+        <input
+        type="file"
+        id="imagenes"
+        multiple
+        accept="image/*"
+        onChange={handleImageChange}
+        ref={fileInputRef} // Asocia la referencia al input
+      />
+
+        {/* Previsualización de imágenes */}
+        <div className="imagenes-preview">
+          {imagenes.map((imagen, index) => (
+            <div key={index} className="imagen-item">
+              <img
+                src={URL.createObjectURL(imagen)}
+                alt={`Vista previa ${index + 1}`}
+                className="imagen-preview"
+              />
+              <button
+                type="button"
+                className="remove-image-btn"
+                onClick={() => handleRemoveImage(index)}
+              >
+                X
+              </button>
+            </div>
+          ))}
+        </div>
 
         <button type="submit">Hacer Pedido</button>
         {error && <p className="error-message">{error}</p>}
