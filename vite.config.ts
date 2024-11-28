@@ -7,5 +7,6 @@ export default defineConfig({
   build: {
     outDir: './dist/',
     target: 'esnext', // Soporte de características modernas como top-level await
+    chunkSizeWarningLimit: 1000, // Aumenta el límite de 500 KB a 1000 KB
   },
 })
