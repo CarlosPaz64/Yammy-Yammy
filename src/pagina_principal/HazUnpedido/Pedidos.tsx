@@ -21,7 +21,16 @@ const schema = z.object({
   descripcion_ubicacion: z.string().optional(),
   numero_telefono: z.string().optional(),
   tipo_tarjeta: z.string(),
-  numero_tarjeta: z.string().min(16).max(16),
+  numero_tarjeta: z
+  .string()
+  .refine(
+    (value) => value.replace(/\s+/g, '').length === 16, // Valida 16 dígitos eliminando espacios
+    { message: "El número de tarjeta debe tener exactamente 16 dígitos" }
+  )
+  .refine(
+    (value) => /^\d{4} \d{4} \d{4} \d{4}$/.test(value), // Valida el formato con espacios
+    { message: "El formato del número de tarjeta es inválido (usa 1234 5678 9012 3456)" }
+  ),
   fecha_tarjeta: z.string().regex(/^(0[1-9]|1[0-2])\/[0-9]{2}$/),
   cvv: z.string().min(3).max(3),
 });
@@ -70,7 +79,7 @@ const Pedido: React.FC = () => {
       dispatch(fetchCityAndColonies(codigoPostal));
     }
   }, [codigoPostal, dispatch]);
-
+  
   // Calcular el precio en función de la cantidad, categoría y ciudad
   useEffect(() => {
     dispatch(calcularPrecio({ categoria, ciudad, cantidad }));
@@ -179,29 +188,117 @@ const Pedido: React.FC = () => {
             <input {...register('calle')} placeholder="Calle" />
             <input {...register('numero_exterior')} placeholder="Número Exterior" />
             <input {...register('numero_interior')} placeholder="Número Interior" />
-            <select {...register('colonia')} value={watch('colonia')}>
+            <select {...register('colonia')}>
               {colonias.map((colonia, index) => (
                 <option key={index} value={colonia}>
                   {colonia}
                 </option>
               ))}
             </select>
-            <input {...register('ciudad')} placeholder="Ciudad" disabled />
-            <input {...register('codigo_postal')} placeholder="Código Postal" />
-            <input {...register('descripcion_ubicacion')} placeholder="Descripción Ubicación" />
+            <input {...register('ciudad')} value={ciudad || ""} disabled placeholder="Ciudad" />
+            <div className="label">Código Postal: </div>
+              <div className="input-with-icon">
+                <input
+                  {...register("codigo_postal", {
+                    required: "Este campo es obligatorio",
+                    minLength: { value: 5, message: "El código postal debe tener 5 caracteres" },
+                    maxLength: { value: 5, message: "El código postal debe tener 5 caracteres" },
+                    pattern: {
+                      value: /^[0-9]{5}$/,
+                      message: "El código postal debe ser un número de 5 dígitos",
+                    },
+                  })}
+                  maxLength={5}
+                  placeholder="97000"
+                />
+                <i
+                  className="fa fa-info-circle tooltip-icon"
+                  aria-hidden="true"
+                  title="Solo se aceptan códigos postales de Mérida, Progreso, Kanasín y Umán"
+                ></i>
+              </div>
+              {errors.codigo_postal && <span>{errors.codigo_postal.message}</span>}
+              {error && <span style={{ color: "red" }}>{error}</span>}
+            <textarea {...register('descripcion_ubicacion')} placeholder="Descripción Ubicación" />
             <input {...register('numero_telefono')} placeholder="Teléfono" />
           </>
         )}
 
         <h3>Método de Pago</h3>
-        <select {...register('tipo_tarjeta')}>
+        <select
+          {...register('tipo_tarjeta', {
+            validate: (value) =>
+              value === 'Visa' || value === 'MasterCard' || value === 'American Express' || 'Debes seleccionar un tipo de tarjeta válido',
+          })}
+        >
+          <option value="default">Selecciona un tipo de tarjeta</option>
           <option value="Visa">Visa</option>
           <option value="MasterCard">MasterCard</option>
           <option value="American Express">American Express</option>
         </select>
-        <input {...register('numero_tarjeta')} placeholder="Número de Tarjeta" />
-        <input {...register('fecha_tarjeta')} placeholder="Fecha (MM/YY)" />
-        <input {...register('cvv')} placeholder="CVV" />
+        {errors.tipo_tarjeta && <span>{errors.tipo_tarjeta.message}</span>}
+        <input
+          type="text"
+          placeholder="1234 5678 9012 3456"
+          maxLength={19} // Permite 16 dígitos y 3 espacios
+          {...register('numero_tarjeta', {
+            required: 'El número de tarjeta es obligatorio',
+            validate: {
+              length: (value) => value.replace(/\s+/g, '').length === 16 || 'El número de tarjeta debe tener exactamente 16 dígitos',
+              format: (value) =>
+                /^\d{4} \d{4} \d{4} \d{4}$/.test(value) || 'El formato del número de tarjeta es inválido',
+            },
+          })}
+          onInput={(e) => {
+            const value = e.currentTarget.value.replace(/\D/g, ''); // Elimina caracteres no numéricos
+            e.currentTarget.value = value.match(/.{1,4}/g)?.join(' ') || ''; // Agrega espacios cada 4 dígitos
+          }}
+        />
+        {errors.numero_tarjeta && <span>{errors.numero_tarjeta.message}</span>}
+        <input
+            type="text"
+            placeholder="MM/YY"
+            maxLength={5}
+            {...register('fecha_tarjeta', {
+              required: 'La fecha de expiración es obligatoria',
+              pattern: {
+                value: /^(0[1-9]|1[0-2])\/?([0-9]{2})$/,
+                message: 'Formato inválido. Usa MM/YY',
+              },
+            })}
+            onInput={(e) => {
+              let value = e.currentTarget.value.replace(/\D/g, ''); // Elimina caracteres no numéricos
+              if (value.length > 2) {
+                value = value.substring(0, 2) + '/' + value.substring(2, 4); // Agrega '/'
+              }
+              e.currentTarget.value = value.substring(0, 5); // Limita el largo
+            }}
+          />
+          {errors.fecha_tarjeta && <span>{errors.fecha_tarjeta.message}</span>}
+          <div style={{ display: 'flex', alignItems: 'center' }}>
+            <input
+              type="password"
+              maxLength={4}
+              placeholder="CVV"
+              {...register('cvv', {
+                required: 'El CVV es obligatorio',
+                minLength: { value: 3, message: 'El CVV debe tener al menos 3 dígitos' },
+                maxLength: { value: 4, message: 'El CVV no debe exceder 4 dígitos' },
+              })}
+              style={{ marginRight: '10px' }}
+            />
+            <button
+              type="button"
+              onClick={(e) => {
+                const input = e.currentTarget.previousSibling as HTMLInputElement;
+                input.type = input.type === 'password' ? 'text' : 'password';
+                e.currentTarget.textContent = input.type === 'password' ? 'Mostrar' : 'Ocultar';
+              }}
+            >
+              Mostrar
+            </button>
+          </div>
+          {errors.cvv && <span>{errors.cvv.message}</span>}
 
         <label htmlFor="imagenes">Subir imágenes de referencia (máximo 2):</label>
         <input
