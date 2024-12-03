@@ -1,51 +1,260 @@
-/*Estilos para la tabla(Lista) del carrito*/
+/*Contenedor para la tabla(Lista) del carrito*/
 .shopping-container{
   display: flex;
   justify-content: center;
-  margin: 35px 0 20px 0;
+  margin: 35px 0px 35px 25px;
   gap: 20px;
+  width: 100%;
 }
 .shopping-content{
   display: flex;
   flex-direction: column;
   background: #ffffff;
   padding: 20px;
-  border-radius: 8px;
+  border-radius: 10px;
   filter: drop-shadow(2px 2px 10px #7d797986);
+  width: 65vw;
+  height: 100%;
 }
-/*Estilos para la finalización de compra*/
-.finalizing-container{
+.shopping-title{
+  font-size: 200%;
+  font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+  font-weight: 700;
+  margin: 10px 0 20px 0;
+  text-align: center;
+  color: #524A4E;
+  text-shadow: 2px 2px 2px #9e8c8c2e
+}
+/*Diseño de la tabla(Lista) del carrito*/
+.list-object{
+  width: 100%; 
+  border-spacing: 0; 
+  border-collapse: collapse; 
+  border: 1px solid;
+}
+/*Encabezado de la tabla*/
+.list-object thead{font-size: 1.35em; background: #f57fb4;}
+.list-object th{color: white;border: none;}
+/*Cuerpo de la tabla*/
+.list-object tbody td{ border: 1px solid;}
+.list-object tbody tr:nth-child(n+1):hover{
+  background-color: #FFDDD2;
+  transition: 0.6s ease;
+}
+/*Renderiza un color diferente, cada segundo articulo*/
+.list-object tbody tr:nth-child(even){background-color: rgba(244, 186, 242, 0.294);}
+/*Estilos de las celdas de encabezado(th) y datos(td) en la tabla*/
+.list-object th, td{
+  width: 100vw;
+  font-size: 100%;
+  vertical-align: middle;
+  text-align: center;
+  padding: 6px;
+}
+/*Estilos para proceder compra*/
+.procedure-container{
+  /*Propiedades para el menú deslizante*/
+  position: sticky;
+  top: 10px;
+  /*otras propiedades para el menú*/
   display: flex;
   justify-content: center;
   text-align: center;
-  width: 325px;
-  height: 325px;
+  align-items: normal;
+  width: 22%;
+  height: 250px;
+  margin-right: 25px;
 }
-.finalizing-content{
+.procedure-content{
   flex: 1;
   background: #ffffff;
-  border-radius: 8px;
+  border-radius: 10px;
   filter: drop-shadow(2px 2px 10px #7d797986);
 }
-.Purchase-completion{
+/*Información de proceder compra*/
+.informationPurchase-procedure{
   position: relative;
   top: 50%;
   transform: translate(0%, -50%);
 }
-.Purchase-completion h3{margin: 15px 0 15px 0; font-weight: 500;}
-.colorPurchase-stock{color:red; font-family: 'Lucida Sans';}
-.colorPurchase-value{color: green; font-family: 'Lucida Sans';}
-.Purchase-completion button{
+.informationPurchase-procedure h3{margin: 15px 0 15px 0; font-weight: 500; font-size: 100%;}
+.colorPurchase-stock{color:red; font-family: 'Lucida Sans'; font-weight: bolder;}
+.colorPurchase-amount{color: rgb(10, 160, 10); font-family: 'Lucida Sans'; font-weight: bolder;}
+.informationPurchase-procedure button{
   background: #f5b7b1;
   color: white;
-  font-size: larger;
+  font-size: medium;
   font-weight: bolder;
   margin: 10px 0 10px 0;
   width: 80%;
   border-radius: 20px;
   padding: 8px;
   transition: 0.35s ease;
-} .Purchase-completion button:hover{background-color: #ec7063;} 
+} .informationPurchase-procedure button:hover{background-color: #ec7063;} 
+/*Estilo para los botones de acciones*/
+.btn-actions{
+  padding: 2% 6% 2% 6%;
+  font-size: 100%;
+  margin: 4%;
+  font-weight: 900;
+  border: none;
+}
+.btn-action-delete{
+  background-color: rgb(240, 86, 83);
+  color: white;
+  filter: contrast(115%);
+}.btn-action-delete:hover{background-color: #f72c28eb; transition: 0.4s; filter: contrast(200%);}
+.btn-action-add{
+  background-color: rgb(100, 199, 116);
+  color: white;
+  filter: contrast(115%);
+}.btn-action-add:hover{background-color: #599463; transition: 0.4s; filter: contrast(200%);}
+.icon-trash{
+  font-size: 100% !important;
+  vertical-align: middle;
+  color: white;
+}
+/*Modal para confirmar compra*/
+/*overlay del Modal*/
+.overModal{
+  width: 100vw;
+  height: 100vh;
+  position: fixed;
+  top: 0;
+  left: 0;
+  padding: 0;
+  display: flex;
+  justify-content:center ;
+  align-items: center;
+  background: rgba(0,0,0,.5);
+  z-index: 9999;
+}
+/*Contenedor del modal*/
+.modal-container{
+  width: 35em;
+  height: 31.5em;
+  background: #fff;
+  position: relative;
+  border-radius: 12px;
+  filter: drop-shadow(0 6px 5px #fff);
+  animation: modalInScale 0.3s ease-out; /*Se agrega la animacion del keyframes para el modal*/
+  overflow: auto;
+  scrollbar-width: thin; /* Hace más delgado el scrollbar*/
+}
+/*Animacion para la entrada del modal Confirmar compra*/
+@keyframes modalInScale{
+  from {
+    opacity: 0;
+    transform: Scale(0.7);
+  }
+  to {
+    opacity: 1;
+    transform: Scale(1);
+  }
+}
+/*Encabezado del modal*/
+.header-formModal{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 50px;
+  margin: 0 0 10px 0;
+  position: sticky;
+  top: 0;
+  z-index: 1;
+  background: #FFC0D9;
+  user-select: none;
+}
+.container-titleModal{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 40px;
+}
+.container-titleModal img{
+  width: 100px;
+  height: auto;
+  vertical-align: middle;
+  filter: contrast(55%);
+  pointer-events: none;
+}
+.titleModal{
+  font-size: 180%;
+  margin: 0;
+  font-weight: bold;
+}
+.container-btn-closeModal{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex: 1;
+  max-width: 10%;
+  height: 30px;
+}
+.btn-closeModal{
+  background-color: #ff1c1c;
+  color: white;
+  font-size: xx-large;
+  padding-top: 5px;
+  padding-bottom: 10px;
+  border-radius: 5px;
+  filter: contrast(130%);
+}.btn-closeModal:hover{margin-top: 6.5px; background-color: #b50606;}
+/*Animacion para la salida del modal Confirmar compra*/
+.modal-container.modal-closing{
+  animation: modalCloseScale 0.3s ease-out;
+}
+/*Animación de cierre del overlay*/
+.overModal.closing{
+  animation: overOut 0.3s ease-out;
+}
+@keyframes modalCloseScale{
+  from {
+    opacity: 1;
+    transform: Scale(1);
+  }
+  to {
+    opacity: 0;
+    transform: Scale(0.7);
+  }
+}
+@keyframes overOut{
+  from {
+    opacity: 1;
+  }
+  to{
+    opacity: 0;
+  }
+}
+/*Cuerpo del modal*/
+.body-formModal{padding: 20px;}
+.body-titleModal{margin: 0 0 10px 0;}
+.select-formModal{
+  width: 100%;
+  font-size: larger;
+  outline: none;
+  border: 2px solid #726c6c97;
+}
+.input-formModal{
+  font-size: larger;
+  outline: none;
+  border: 2px solid #726c6c97;
+}
+.btnValue-formModal{
+  display: flex;
+  position: relative;
+  justify-content: center ;
+  align-items: center;
+  text-align: center;
+  width: 50%;
+  padding: 14px;
+  border-radius: 10px;
+  color: white;
+  background-color: #f5b7b1;
+  font-size: large;
+  font-weight: bold;
+  transform: translateX(50%);
+}.btnValue-formModal:hover{  transition: 0.6s; background-color: #ec7063;}
 
 /*Modal de la finalización de compra*/
 .modal {
@@ -60,7 +269,6 @@
   justify-content: center;
   z-index: 1000;
 }
-  
 .modal-content {
   background: white;
   padding: 20px;
@@ -68,8 +276,7 @@
   text-align: center;
   max-width: 400px;
   width: 90%;
-}
-  
+} 
 .modal-content button {
   margin-top: 20px;
   padding: 10px 20px;
@@ -79,7 +286,27 @@
   border-radius: 5px;
   cursor: pointer;
 }
-  
 .modal-content button:hover {
   background-color: #f5b7b1;
+}
+
+/*Media para tabletas/laptops*/
+@media only screen and (min-width: 768px) and (max-width: 1024px) {
+  .shopping-container{
+    display: flex;
+    flex-direction: column-reverse;
+    align-items: center;
+  }
+  .shopping-content{
+    margin-top: 20px;
+  }
+  .procedure-container{
+    position: relative;
+    margin-right: 0;
+  }
+}
+
+/*Media para teléfonos/Smartphone*/
+@media only screen and (max-width: 767px) {
+  
 }

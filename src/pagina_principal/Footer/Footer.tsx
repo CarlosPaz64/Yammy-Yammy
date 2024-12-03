@@ -90,7 +90,7 @@ const Footer: React.FC<{ children?: ReactNode }> = ({ children }) => {
                         <a href="https://www.tiktok.com/@yamyyamyp?is_from_webapp=1&sender_device=pc" target="_blank" rel="noopener noreferrer" aria-label="Síguenos en Tiktok">
                             <img src="http://localhost:3000/assets/img-social/Simple_Icons/tiktok.svg" alt="Tiktok" className="social-icons" />
                         </a>
-                        <a href="mailto:yamygomez.19@gmail.comsubject=Obtener más información" target="_blank" rel="noopener noreferrer" aria-label="Síguenos en Gmail">
+                        <a href="mailto:yamygomez.19@gmail.com?subject=Quiero%20saber%20m%C3%A1s%20de%20los%20productos%20de%20Yamy%20Yamy" target="_blank" rel="noopener noreferrer" aria-label="Síguenos en Gmail">
                             <img src="http://localhost:3000/assets/img-social/Simple_Icons/gmail.svg" alt="Gmail" className="social-icons" />
                         </a>
                     </div>

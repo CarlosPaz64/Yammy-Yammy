@@ -74,6 +74,7 @@
     object-fit: cover;
     border-radius: 12px;
     user-select: none;
+    filter: contrast(140%);
 }
 /*Contenedor del botón para ir al menú*/
 .container-btnIndex{
@@ -105,6 +106,7 @@
     justify-content: center;
     overflow: hidden;
     user-select: none;
+    filter: contrast(140%);
 }
 /*Fondo oscuro para el video*/
 .video-overlay{
