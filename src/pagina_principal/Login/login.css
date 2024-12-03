@@ -15,4 +15,11 @@
     display: flex;
     justify-content: center;
     align-items: center;
+    margin-top: 15px;
+    
+}
+.login-button{
+    color: #000;
+    background-color: #FFD0EC;
+
 }

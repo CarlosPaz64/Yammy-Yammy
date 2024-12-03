@@ -25,17 +25,20 @@
 
 }
   
-.card-item h2.user-name {
-	font-size: 1.2rem;
-	margin: 10px 0;
-	color: #333;
-}
-  
 .card-item p.user-profession {
 	font-size: 0.9rem;
 	color: #666;
 	margin-bottom: -1px;
 }
+  
+  .card-item h2.user-name {
+	font-size: 1.2rem;
+	margin: 10px 0;
+	color: #333;
+	white-space: nowrap; /* Evita que el texto se divida en varias líneas */
+	text-overflow: ellipsis; /* Muestra los puntos suspensivos cuando el texto se desborda */
+	
+  }
   
 .card-item button.message-button {
 	font-size: 1rem;
@@ -74,14 +77,16 @@
 	justify-content: center;
 	z-index: 1000;
 }
-.modal-h2{
+
+  .modal-h2{
 	justify-content: center;
 	text-align: center;
 	font-size: 35px;
 	margin-top: 10px;
 }
   
-.modal-content {
+  .modal-content {
+	position: relative;
 	background: white;
 	padding: 20px;
 	border-radius: 10px;
@@ -93,13 +98,18 @@
   
 .modal-image {
 	margin-top: 20px;
-	width: 350px;
-	height: 350px;
 	border-radius: 10px;
 	margin-bottom: 20px;
 	object-fit: cover;
 	filter: contrast(140%);
-}
+    width: 100%;
+    height: 100%;
+    border-radius: 10px;
+    margin-bottom: 20px;
+    max-height: 45vh;
+    object-fit: contain;
+    overflow: hidden;
+  }
   
 .close-button {
 	position: absolute;

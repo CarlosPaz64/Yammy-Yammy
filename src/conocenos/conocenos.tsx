@@ -1,64 +1,83 @@
 import React from 'react';
-import './concenos.css';
+import './conocenos.css';
 
 const Conocenos: React.FC = () => {
   return (
-    <div className="conocenosContainer">
-      <h2>CÓNOCENOS</h2>
+    <section className="about-us">
+      {/* Primera sección */}
+      <div className="about reverse">
+        <img src="http://localhost:3000/assets/Yammy.jpeg" className="pic animate" alt="Deliciosos postres de Yammy-Yammy" />
+        <div className="text animate">
+          <h2>Conócenos</h2>
+          <h5>Pastelería Online <span className='conocenos'>Yammy-Yammy</span></h5>
+          <p>
+            Nuestra pastelería online está aquí para satisfacer todos tus antojos. Desde Mérida, Yucatán, ofrecemos una
+            gran variedad de postres, desde pasteles y cupcakes hasta galletas y otras delicias. Nos especializamos en
+            personalizar tus postres para que sean perfectos para tus celebraciones especiales. ¡Explora nuestro menú y
+            déjanos ser parte de tus momentos más dulces!
+          </p>
+        </div>
+      </div>
 
-      <section className="section">
-        <h3>Descripción de la Empresa</h3>
-        <p>
-          Nuestra pastelería online está aquí para satisfacer todos tus antojos. Desde Mérida, Yucatán, traemos Yammy-Yammy, una pastelería con una gran variedad de postres que van desde pasteles y cupcakes hasta galletas y otras delicias. Nuestra misión es endulzar tus momentos, ya sea una celebración especial o simplemente un capricho después de un largo día.
-          Lo que nos hace diferentes es que cada producto está hecho con ingredientes frescos y de calidad. No solo queremos que se vea bien, ¡sino que también sea increíble! Nos encanta personalizar pasteles para que sean exactamente lo que necesitas para tus eventos, así que si tienes una idea en mente, estamos aquí para hacerlo realidad.
-          La experiencia de comprar en Yammy-Yammy es súper fácil. Con solo un clic, puedes elegir lo que quieras desde la comodidad de tu casa, y nosotros nos encargamos del resto. Queremos que disfrutes cada bocado y que cada postre te haga sonreír.
-          Así que, ya sea que estés planeando una fiesta o simplemente te apetezca algo dulce, aquí en Yammy-Yammy tenemos lo que buscas. ¡Explora nuestro menú y déjanos ser parte de tus momentos más dulces!
-        </p>
-        {/* Video para Cónocenos tomada desde la API */}
-        <video className="conocenos-video" src="http://localhost:3000/assets/clips/yamy_video.mp4" autoPlay muted loop disablePictureInPicture></video>
-      </section>
+      {/* Segunda sección */}
+      <div className="about">
+        <img src="http://localhost:3000/assets/conocenos2.jpg" className="pic animate" alt="Nuestra misión en Yammy-Yammy" />
+        <div className="text animate">
+          <h2>Misión</h2>
+          <h5>Pastelería Online <span className='conocenos'>Yammy-Yammy</span></h5>
+          <p>
+            Somos una empresa que quiere endulzar los momentos especiales de nuestros clientes, ofreciendo postres 
+            de alta calidad, siempre frescos y llenos de sabor. Buscamos que cada experiencia de nuestros 
+            clientes sea única y accesible, brindando un servicio rápido y eficiente de alta calidad desde nuestra 
+            tienda online y directo a la comodidad de tu casa.
+          </p>
+        </div>
+      </div>
 
-      <section className="section">
-        <h3>Misión</h3>
-        <p>
-          Somos una empresa que quiere endulzar los momentos especiales de nuestros clientes, ofreciendo postres 
-          de alta calidad, siempre frescos y llenos de sabor. Buscamos que cada experiencia de nuestros 
-          clientes sea única y accesible, brindando un servicio rápido y eficiente de alta calidad desde nuestra 
-          tienda online y directo a la comodidad de tu casa. Buscamos ser tu opción número uno cuando pienses en 
-          consentirte o en hacer de una celebración algo inolvidable.
-        </p>
-        {/* Imagen del Banner tomada desde la API*/}
-        <img src='http://localhost:3000/assets/pastel.png' alt="Deliciosos postres de Yammy-Yammy" className="bannerImage" />
-      </section>
-      
-      <section className="section">
-        <h3>Visión</h3>
-        <p>
-          Buscamos convertirnos en la pastelería más reconocida y querida de Mérida, Yucatán, y más allá. Aspiramos 
-          a ser el destino preferido para aquellos que buscan postres excepcionales, innovadores y accesibles. 
-          Queremos inspirar momentos de alegría y celebración a través de nuestros productos, siempre comprometidos 
-          con la calidad, la creatividad y un servicio al cliente excepcional. A través de nuestra tienda online 
-          buscamos llegar a más personas y hacer que disfrutar de algo dulce sea fácil y satisfactorio.
-        </p>
-      </section>
+      {/* Tercera sección */}
+      <div className="about reverse">
+        <img src="http://localhost:3000/assets/vision.jpg" className="pic animate" alt="Nuestra visión en Yammy-Yammy" />
+        <div className="text animate">
+          <h2>Visión</h2>
+          <h5>Pastelería Online <span className='conocenos'>Yammy-Yammy</span></h5>
+          <p>
+            Buscamos convertirnos en la pastelería más reconocida y querida de Mérida, Yucatán, y más allá. Aspiramos 
+            a ser el destino preferido para aquellos que buscan postres excepcionales, innovadores y accesibles. 
+            Queremos inspirar momentos de alegría y celebración a través de nuestros productos, siempre comprometidos 
+            con la calidad, la creatividad y un servicio al cliente excepcional.
+          </p>
+        </div>
+      </div>
 
-      {/* Sección de ubicación */}
-      <section className="section">
-        <h3>Ubicación</h3>
-        <p>C. 22 101B, Chuminópolis, 97158 Mérida, Yuc., México</p>
-        <div className="mapContainer">
+      {/* Cuarta sección */}
+      <div className="about">
+        <div className="mapContainer animate">
           <iframe
-            title="Ubicación de Yamy-Yamy"
-            src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3724.0000000000000000!2d-89.6000000000000!3d20.970000000000000!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0000000000000000!2sYamy-Yamy!5e0!3m2!1ses-419!2smx!4v1615971234567"
-            width="100%"
-            height="300"
-            style={{ border: "0" }}
+            title="Ubicación de Yammy-Yammy"
+            src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3727.809572064686!2d-89.6563126241615!3d20.879724392879698!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x8f566d97f18084bd%3A0x745021f405ef5f20!2sSin%20Nombre%20No.%207%2C%2097315%20hacienda%20Santa%20cruz%20palomeque%2C%20Yuc.!5e0!3m2!1ses!2smx!4v1733205265053!5m2!1ses!2smx"
+            width="600"
+            height="450"
+            style={{
+              border: "0",
+              maxWidth: "100%",
+              borderRadius: "12px",
+            }}
             allowFullScreen
             loading="lazy"
+            referrerPolicy="no-referrer-when-downgrade"
           ></iframe>
         </div>
-      </section>
-    </div>
+        <div className="text animate">
+          <h2>Ubicación</h2>
+          <h5>¡Visítanos en <span className='conocenos'>Mérida, Yucatán</span>!</h5>
+          <p>
+            Estamos ubicados en C. 22 101B, Chuminópolis, 97158 Mérida, Yuc., México.
+            También puedes disfrutar de todos nuestros productos desde la comodidad
+            de tu hogar gracias a nuestro sistema de pedidos en línea.
+          </p>
+        </div>
+      </div>
+    </section>
   );
 };
 
