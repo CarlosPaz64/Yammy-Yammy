@@ -95,10 +95,8 @@ const LoginForm: React.FC = () => {
           {errors.password && <p>{errors.password.message}</p>}
         </div>
 
-        <button type="submit">Iniciar Sesión</button>
-      </form>
-
-      <p className="register-link">
+        <button type="submit" className="login-button">Iniciar Sesión</button>
+        <p className="register-link">
         ¿No estás registrado?{' '}
         <span
           onClick={() => navigate('/registro')}
@@ -107,6 +105,7 @@ const LoginForm: React.FC = () => {
           Dale click aquí
         </span>
       </p>
+      </form>
     </div>
   );
 };

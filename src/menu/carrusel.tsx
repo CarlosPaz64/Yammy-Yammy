@@ -87,6 +87,7 @@ const Carousel: React.FC<CarouselProps> = ({ productos, onAddToCart, isLoggedIn 
       {/* Modal */}
       {selectedProducto && (
         <div className="modal-overlay" onClick={closeModal}>
+          
           <div
             className="modal-content"
             onClick={(e) => e.stopPropagation()} // Evita que el clic dentro del modal cierre el modal
@@ -100,6 +101,9 @@ const Carousel: React.FC<CarouselProps> = ({ productos, onAddToCart, isLoggedIn 
               alt={selectedProducto.nombre_producto}
               className="modal-image"
             />
+            <button className="close-button" onClick={closeModal}>
+              ×
+            </button>
             <h2>{selectedProducto.nombre_producto}</h2>
             <p>{selectedProducto.descripcion_producto}</p>
             <p>Precio: ${selectedProducto.precio.toFixed(2)}</p>
