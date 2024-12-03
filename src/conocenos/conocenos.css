@@ -59,8 +59,14 @@
   margin-bottom: 20px;
 }
 
-span {
-  color: #4070f4;
+.conocenos {
+  background: linear-gradient(90deg, #ff7e5f, #feb47b, #86a8e7, #d16ba5, #ff7e5f); /* Degradado arcoíris cíclico */
+  background-size: 200% auto; /* Asegura el movimiento del degradado */
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  --text-fill-color: transparent;
+  animation: gradientAnimation 3s linear infinite; /* Animación del degradado */
 }
 
 .text p {
@@ -99,5 +105,17 @@ span {
   to {
     opacity: 1;
     transform: translateY(0);
+  }
+}
+/* Animación para el degradado */
+@keyframes gradientAnimation {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
   }
 }

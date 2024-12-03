@@ -9,7 +9,7 @@ const Conocenos: React.FC = () => {
         <img src="http://localhost:3000/assets/Yammy.jpeg" className="pic animate" alt="Deliciosos postres de Yammy-Yammy" />
         <div className="text animate">
           <h2>Conócenos</h2>
-          <h5>Pastelería Online <span>Yammy-Yammy</span></h5>
+          <h5>Pastelería Online <span className='conocenos'>Yammy-Yammy</span></h5>
           <p>
             Nuestra pastelería online está aquí para satisfacer todos tus antojos. Desde Mérida, Yucatán, ofrecemos una
             gran variedad de postres, desde pasteles y cupcakes hasta galletas y otras delicias. Nos especializamos en
@@ -24,7 +24,7 @@ const Conocenos: React.FC = () => {
         <img src="http://localhost:3000/assets/conocenos2.jpg" className="pic animate" alt="Nuestra misión en Yammy-Yammy" />
         <div className="text animate">
           <h2>Misión</h2>
-          <h5>Pastelería Online <span>Yammy-Yammy</span></h5>
+          <h5>Pastelería Online <span className='conocenos'>Yammy-Yammy</span></h5>
           <p>
             Somos una empresa que quiere endulzar los momentos especiales de nuestros clientes, ofreciendo postres 
             de alta calidad, siempre frescos y llenos de sabor. Buscamos que cada experiencia de nuestros 
@@ -39,7 +39,7 @@ const Conocenos: React.FC = () => {
         <img src="http://localhost:3000/assets/vision.jpg" className="pic animate" alt="Nuestra visión en Yammy-Yammy" />
         <div className="text animate">
           <h2>Visión</h2>
-          <h5>Pastelería Online <span>Yammy-Yammy</span></h5>
+          <h5>Pastelería Online <span className='conocenos'>Yammy-Yammy</span></h5>
           <p>
             Buscamos convertirnos en la pastelería más reconocida y querida de Mérida, Yucatán, y más allá. Aspiramos 
             a ser el destino preferido para aquellos que buscan postres excepcionales, innovadores y accesibles. 
@@ -69,7 +69,7 @@ const Conocenos: React.FC = () => {
         </div>
         <div className="text animate">
           <h2>Ubicación</h2>
-          <h5>¡Visítanos en <span>Mérida, Yucatán</span>!</h5>
+          <h5>¡Visítanos en <span className='conocenos'>Mérida, Yucatán</span>!</h5>
           <p>
             Estamos ubicados en C. 22 101B, Chuminópolis, 97158 Mérida, Yuc., México.
             También puedes disfrutar de todos nuestros productos desde la comodidad
