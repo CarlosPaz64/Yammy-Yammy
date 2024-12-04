@@ -1,9 +1,5 @@
 @import url("https://fonts.googleapis.com/css2?family=Poppins:wght@200;300;400;500&display=swap");
 
-* {
-  font-family: "Poppins", sans-serif;
-}
-
 .about-us {
   display: flex;
   flex-direction: column;
@@ -47,6 +43,7 @@
   font-size: 36px;
   font-weight: 600;
   margin-bottom: 10px;
+  font-family: "Poppins", sans-serif;
 }
 
 .text h5 {
@@ -54,6 +51,7 @@
   font-size: 20px;
   font-weight: 500;
   margin-bottom: 20px;
+  font-family: "Poppins", sans-serif;
 }
 
 .conocenos {
@@ -64,6 +62,7 @@
   background-clip: text;
   --text-fill-color: transparent;
   animation: gradientAnimation 3s linear infinite; /* Animación del degradado */
+  font-family: "Poppins", sans-serif;
 }
 
 .text p {
@@ -71,6 +70,7 @@
   font-size: 16px;
   line-height: 25px;
   letter-spacing: 1px;
+  font-family: "Poppins", sans-serif;
 }
 
 .mapContainer iframe {
