@@ -33,6 +33,8 @@ const CartPage: React.FC = () => {
   const [isFinalizing, setIsFinalizing] = useState(false); // Modo de finalizar compra + Modal de confirmar compra y Finalización de compra
   const [isClosing, setIsClosing] = useState(false); // Animacion del cierre del modal confirmar compra 
   const [colonias, setColonias] = useState<string[]>([]); // Opciones de colonias
+  const [errors, setErrors] = useState<{ numero_tarjeta?: string; fecha_tarjeta?: string; cvv?: string; }>({}); // Tipado de errores para los valores bancarios
+  const [errorFetch, setErrorFetch] = useState<string | null>(null); // Errores del fetch del código postal, ciudad y colonias
   const [clientData, setClientData] = useState({
     opcion_entrega: 'domicilio',
     calle: '',
@@ -99,8 +101,11 @@ const CartPage: React.FC = () => {
   // Buscar datos del código postal
   const fetchZipCodeData = async (codigoPostal: string) => {
     try {
+      setErrorFetch(null); // Resetea errores previos
       const response = await axios.get(`http://localhost:3000/api/codigo-postal/${codigoPostal}`);
       const { ciudad, colonias } = response.data;
+  
+      // Actualiza los datos del cliente con ciudad y primera colonia
       setClientData((prevData) => ({
         ...prevData,
         ciudad,
@@ -109,6 +114,7 @@ const CartPage: React.FC = () => {
       setColonias(colonias);
     } catch (error) {
       console.error('Error al obtener datos del código postal:', error);
+      setErrorFetch('No se encontraron datos para este código postal');
       setClientData((prevData) => ({
         ...prevData,
         ciudad: '',
@@ -128,8 +134,67 @@ const CartPage: React.FC = () => {
   // Manejar cambios en los inputs
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
     const { name, value } = e.target;
+  
+    // Lógica específica para el número de tarjeta
+    if (name === 'numero_tarjeta') {
+      let sanitizedValue = value.replace(/\D/g, ''); // Elimina caracteres no numéricos
+      if (sanitizedValue.length > 16) sanitizedValue = sanitizedValue.slice(0, 16); // Limita a 16 dígitos
+      const formattedValue = sanitizedValue.match(/.{1,4}/g)?.join(' ') || ''; // Agrega espacios cada 4 dígitos
+  
+      // Validación del formato de la tarjeta
+      const isValid = /^\d{4} \d{4} \d{4} \d{4}$/.test(formattedValue);
+      setErrors((prevErrors) => ({
+        ...prevErrors,
+        numero_tarjeta: isValid ? undefined : 'El formato del número de tarjeta es inválido',
+      }));
+  
+      setClientData((prevData) => ({
+        ...prevData,
+        [name]: formattedValue, // Actualiza el estado con el valor formateado
+      }));
+      return;
+    }
+    if (name === 'fecha_tarjeta') {
+      // Validación de fecha de expiración
+      let sanitizedValue = value.replace(/\D/g, '');
+      if (sanitizedValue.length > 2) {
+        sanitizedValue = sanitizedValue.substring(0, 2) + '/' + sanitizedValue.substring(2, 4);
+      }
+      sanitizedValue = sanitizedValue.substring(0, 5); // Limita el largo a 5 caracteres (MM/YY)
+      const isValid = /^(0[1-9]|1[0-2])\/?([0-9]{2})$/.test(sanitizedValue);
+  
+      setErrors((prevErrors) => ({
+        ...prevErrors,
+        fecha_tarjeta: isValid ? undefined : 'Formato inválido. Usa MM/YY',
+      }));
+  
+      setClientData((prevData) => ({
+        ...prevData,
+        [name]: sanitizedValue,
+      }));
+      return;
+    }
+  
+    if (name === 'cvv') {
+      // Validación de CVV
+      const sanitizedValue = value.replace(/\D/g, '').substring(0, 4); // Solo números, máximo 4 dígitos
+      const isValid = sanitizedValue.length >= 3 && sanitizedValue.length <= 4;
+  
+      setErrors((prevErrors) => ({
+        ...prevErrors,
+        cvv: isValid ? undefined : 'El CVV debe tener entre 3 y 4 dígitos',
+      }));
+  
+      setClientData((prevData) => ({
+        ...prevData,
+        [name]: sanitizedValue,
+      }));
+      return;
+    }
+  
+    // Lógica general para otros campos
     setClientData((prevData) => ({ ...prevData, [name]: value }));
-  };
+  };  
 
   // Cierra el formulario si no hay productos en el carrito
   useEffect(() => {
@@ -239,7 +304,7 @@ const CartPage: React.FC = () => {
       document.body.style.overflowX = 'hidden';
     };
   }, [isFinalizing]);
-
+  
   return (
     <div className='shopping-container'>
       <div className='shopping-content'>
@@ -344,22 +409,50 @@ const CartPage: React.FC = () => {
                 <>
                   <h3 className='body-titleModal'>Datos de Envío</h3>
                   <input
-                    className='input-formModal'
+                    className="input-formModal"
                     type="text"
                     name="codigo_postal"
                     placeholder="Código Postal"
                     value={clientData.codigo_postal}
-                    onChange={handleInputChange}
+                    onChange={(e) => {
+                      const { value } = e.target;
+                      const sanitizedValue = value.replace(/\D/g, '').substring(0, 5); // Acepta solo números
+                      setClientData((prevData) => ({
+                        ...prevData,
+                        codigo_postal: sanitizedValue,
+                      }));
+                      if (sanitizedValue.length === 5) fetchZipCodeData(sanitizedValue); // Llama a la API al completar
+                    }}
+                    maxLength={5}
                     required
                   />
-                  <input className='input-formModal' type="text" name="ciudad" placeholder="Ciudad" value={clientData.ciudad} readOnly />
-                  <select className="select-formModal" name="colonia" value={clientData.colonia} onChange={handleInputChange} required>
-                    {colonias.map((colonia, index) => (
-                      <option key={index} value={colonia}>
-                        {colonia}
-                      </option>
-                    ))}
-                  </select>
+                  {errorFetch && <span style={{ color: 'red' }}>{errorFetch}</span>}
+                  <input
+                    className="input-formModal"
+                    type="text"
+                    name="ciudad"
+                    placeholder="Ciudad"
+                    value={clientData.ciudad}
+                    readOnly
+                  />
+                        <select
+                          className="select-formModal"
+                          name="colonia"
+                          value={clientData.colonia}
+                          onChange={(e) =>
+                            setClientData((prevData) => ({
+                              ...prevData,
+                              colonia: e.target.value,
+                            }))
+                          }
+                          required
+                        >
+                          {colonias.map((colonia, index) => (
+                            <option key={index} value={colonia}>
+                              {colonia}
+                            </option>
+                          ))}
+                        </select>
                   <input
                     className='input-formModal'
                     type="text"
@@ -420,32 +513,39 @@ const CartPage: React.FC = () => {
                 <option value="American Express">American Express</option>
               </select>
               <input
-                className='input-formModal'
+                className="input-formModal"
                 type="text"
                 name="numero_tarjeta"
-                placeholder="Número de Tarjeta"
+                placeholder="1234 5678 9012 3456"
                 value={clientData.numero_tarjeta}
                 onChange={handleInputChange}
+                maxLength={19} // Incluye espacios
                 required
               />
+              {errors.numero_tarjeta && <span style={{ color: 'red' }}>{errors.numero_tarjeta}</span>}
               <input
-                className='input-formModal'
+                className="input-formModal"
                 type="text"
                 name="fecha_tarjeta"
-                placeholder="Fecha de Expiración (MM/AA)"
+                placeholder="MM/YY"
                 value={clientData.fecha_tarjeta}
                 onChange={handleInputChange}
+                maxLength={5}
                 required
               />
+              {errors.fecha_tarjeta && <span style={{ color: 'red' }}>{errors.fecha_tarjeta}</span>}
               <input
-                className='input-formModal'
-                type="text"
+                className="input-formModal"
+                type="password"
                 name="cvv"
                 placeholder="CVV"
                 value={clientData.cvv}
                 onChange={handleInputChange}
+                maxLength={4}
                 required
+                style={{ marginRight: '10px' }}
               />
+               {errors.cvv && <span style={{ color: 'red' }}>{errors.cvv}</span>}
               <button className="btnValue-formModal" type="submit">Confirmar Compra</button>
             </div>
           </form>
