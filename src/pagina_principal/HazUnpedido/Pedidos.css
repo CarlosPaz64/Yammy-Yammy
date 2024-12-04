@@ -26,14 +26,14 @@
   justify-content: center;
   margin: 5em auto;
 }
-label {
+.forms label {
   margin-top: 10px;
   margin-bottom: 8px;
   font-weight: bold;
   color: #555;
 }
 /*diseño del select*/
-select, textarea, input {
+.forms select, .forms textarea, .forms input {
   width: 95%;
   padding: 10px;
   margin-bottom: 15px;
@@ -133,4 +133,3 @@ button {
   height: 20px;
   font-size: 12px;
 }
-

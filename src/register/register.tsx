@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import CryptoJS from 'crypto-js';
 import { useNavigate } from 'react-router-dom';
@@ -78,51 +78,6 @@ const RegisterForm: React.FC = () => {
       setErrorFetch(false); // Limpia el error cuando el código postal no es válido
     }
   };
-  
-  
-    // Configura la imagen predeterminada al cargar el componente
-    useEffect(() => {
-      const cardImage = document.getElementById('cardImage') as HTMLImageElement | null;
-      if (cardImage) {
-        cardImage.src = 'http://localhost:3000/assets/card_images/Default.png';
-      }
-    }, []);
-
-  useEffect(() => {
-    if (currentStep === 5) {
-      const cardTypeSelect = document.getElementById('cardTypeSelect') as HTMLSelectElement | null;
-      const cardImage = document.getElementById('cardImage') as HTMLImageElement | null;
-      if (!cardImage) return;
-  
-      if (cardTypeSelect && cardImage) {
-        const updateCardImage = (e: Event) => {
-          const cardType = (e.target as HTMLSelectElement).value.toLowerCase();
-          switch (cardType) {
-            case 'visa':
-              cardImage.src = 'http://localhost:3000/assets/card_images/Visa.png';
-              break;
-            case 'mastercard':
-              cardImage.src = 'http://localhost:3000/assets/card_images/MasterCard.png';
-              break;
-            case 'american express':
-              cardImage.src = 'http://localhost:3000/assets/card_images/AmericanExpress.png';
-              break;
-            case 'default':
-                default:
-              cardImage.src = ('http://localhost:3000/assets/card_images/Default.png');
-          }
-        };
-  
-        // Agrega el evento
-        cardTypeSelect.addEventListener('change', updateCardImage);
-  
-        // Limpia el evento al desmontar
-        return () => {
-          cardTypeSelect.removeEventListener('change', updateCardImage);
-        };
-      }
-    }
-  }, [currentStep]);
 
   const onSubmit = async (data: IFormInput) => {
     setIsLoading(true);
@@ -202,12 +157,12 @@ const RegisterForm: React.FC = () => {
                   <div className='field'>
                     <div className='label'>Nombre: </div>
                     <input {...register('nombre_cliente', { required: true })} />
-                    {errors.nombre_cliente && <span>Este campo es requerido</span>}
+                    {errors.nombre_cliente && <span className='span'>Este campo es requerido</span>}
                   </div>
                   <div className='field'>
                     <div className='label'>Apellido: </div>
                     <input {...register('apellido_cliente', { required: true })} />
-                    {errors.apellido_cliente && <span>Este campo es requerido</span>}
+                    {errors.apellido_cliente && <span className='span'>Este campo es requerido</span>}
                   </div>
                   <div className='field'>
                     <button type="button" className='firstNext next' onClick={nextStep}>Next</button>
@@ -221,7 +176,7 @@ const RegisterForm: React.FC = () => {
                   <div className='field'>
                     <div className='label'>Email: </div>
                     <input type="email" {...register('email', { required: true })} />
-                    {errors.email && <span>Este campo es requerido</span>}
+                    {errors.email && <span className='span'>Este campo es requerido</span>}
                   </div>
                   <div className='field'>
                     <div className='label'>Contraseña: </div>
@@ -232,7 +187,7 @@ const RegisterForm: React.FC = () => {
                         message: 'La contraseña debe tener al menos 6 caracteres',
                       },
                     })} />
-                    {errors.password_cliente && <span>{errors.password_cliente.message}</span>}
+                    {errors.password_cliente && <span className='span'>{errors.password_cliente.message}</span>}
                   </div>
                   <div className='field btns'>                    
                     <button type="button" className="prev-1 prev" onClick={prevStep}>Previous</button>
@@ -261,12 +216,12 @@ const RegisterForm: React.FC = () => {
                   <div className='field'>
                     <div className='label'>Calle: </div>
                     <input {...register('calle', { required: true })} />
-                    {errors.calle && <span>Este campo es requerido</span>}
+                    {errors.calle && <span className='span'>Este campo es requerido</span>}
                   </div>
                   <div className='field'>
                     <div className='label'>Número Exterior: </div>
                     <input {...register('numero_exterior', { required: true })} />
-                    {errors.numero_exterior && <span>Este campo es requerido</span>}
+                    {errors.numero_exterior && <span className='span'>Este campo es requerido</span>}
                   </div>
                   <div className='field'>
                     <div className='label'>Número Interior (Opcional): </div>
@@ -292,8 +247,8 @@ const RegisterForm: React.FC = () => {
                         title="Solo se aceptan códigos postales de Mérida, Progreso, Kanasí y Umán"
                       ></i>
                     </div>
-                    {errors.codigo_postal && <span>{errors.codigo_postal.message}</span>}
-                    {errorFetch && <span style={{ color: "red" }}>{errorFetch}</span>}
+                    {errors.codigo_postal && <span className='span'>{errors.codigo_postal.message}</span>}
+                    {errorFetch && <span className='span' style={{ color: "red" }}>{errorFetch}</span>}
                   </div>
                   <div className='field'>
                     <div className='label'>Descripción: </div>
@@ -301,17 +256,17 @@ const RegisterForm: React.FC = () => {
                   </div>
                   {mostrarCampos && (
                     <>
-                      <div>
-                        <label>Colonia</label>
+                      <div className='field'>
+                        <label className='label'>Colonia</label>
                         <select {...register('colonia', { required: true })}>
                           {colonias.map((colonia, index) => (
                             <option key={index} value={colonia}>{colonia}</option>
                           ))}
                         </select>
-                        {errors.colonia && <span>Este campo es requerido</span>}
+                        {errors.colonia && <span className='span'>Este campo es requerido</span>}
                       </div>
-                      <div>
-                        <label>Ciudad</label>
+                      <div className='field'>
+                        <label className='label'>Ciudad</label>
                         <input {...register('ciudad')} value={ciudad} disabled />
                       </div>
                     </>
@@ -340,11 +295,7 @@ const RegisterForm: React.FC = () => {
                       <option value="MasterCard">MasterCard</option>
                       <option value="American Express">American Express</option>
                     </select>
-                    {errors.tipo_tarjeta && <span>{errors.tipo_tarjeta.message}</span>}
-                  </div>
-                  {/* Aqui se visualiza la tarjeta seleccionada por el cliente */}
-                  <div className='card-preview'>
-                    <img id="cardImage" alt="Card Preview" />
+                    {errors.tipo_tarjeta && <span className='span'>{errors.tipo_tarjeta.message}</span>}
                   </div>
                   <div className='field'>
                     <div className='label'>Número de Tarjeta: </div>
@@ -364,7 +315,7 @@ const RegisterForm: React.FC = () => {
                         e.currentTarget.value = value.match(/.{1,4}/g)?.join(' ') || ''; // Agrega espacios cada 4 dígitos
                       }}
                     />
-                    {errors.numero_tarjeta && <span>{errors.numero_tarjeta.message}</span>}
+                    {errors.numero_tarjeta && <span className='span'>{errors.numero_tarjeta.message}</span>}
                   </div>
                   <div className='field'>
                     <div className='label'>Fecha de Expiración: </div>
@@ -387,7 +338,7 @@ const RegisterForm: React.FC = () => {
                         e.currentTarget.value = value.substring(0, 5); // Limita el largo
                       }}
                     />
-                    {errors.fecha_tarjeta && <span>{errors.fecha_tarjeta.message}</span>}
+                    {errors.fecha_tarjeta && <span className='span'>{errors.fecha_tarjeta.message}</span>}
                   </div>
                   <div className="field">
                     <div className="label">CVV:</div>
@@ -413,7 +364,7 @@ const RegisterForm: React.FC = () => {
                         Mostrar
                       </button>
                     </div>
-                    {errors.cvv && <span>{errors.cvv.message}</span>}
+                    {errors.cvv && <span className='span'>{errors.cvv.message}</span>}
                   </div>
                   <div className='field btns'>
                     <button type="button" className="prev-4 prev" onClick={prevStep}>Previous</button>

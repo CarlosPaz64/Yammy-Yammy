@@ -234,11 +234,18 @@
   font-size: larger;
   outline: none;
   border: 2px solid #726c6c97;
+  padding: 10px;
+  margin-bottom: 15px;
+  border-radius: 4px;
 }
 .input-formModal{
+  width: 95%;
   font-size: larger;
   outline: none;
   border: 2px solid #726c6c97;
+  padding: 10px;
+  margin-bottom: 15px;
+  border-radius: 4px;
 }
 .btnValue-formModal{
   display: flex;
