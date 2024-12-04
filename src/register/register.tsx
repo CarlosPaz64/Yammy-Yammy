@@ -196,19 +196,42 @@ const RegisterForm: React.FC = () => {
                 </div>
               )}
               {/* Paso 3: Teléfono */}
-              {currentStep === 3 && (
-                <div className="page">
-                  <div className='title'>Télefono</div>
-                  <div className='field'>
-                    <div className='label'>Número de Teléfono: </div>
-                    <input {...register('numero_telefono', {required: true})} />
+                {currentStep === 3 && (
+                  <div className="page">
+                    <div className="title">Teléfono</div>
+                    <div className="field">
+                      <div className="label">Número de Teléfono:</div>
+                      <input
+                        {...register('numero_telefono', {
+                          required: 'El número de teléfono es obligatorio',
+                          minLength: {
+                            value: 10,
+                            message: 'El número de teléfono debe tener 10 caracteres',
+                          },
+                          maxLength: {
+                            value: 10,
+                            message: 'El número de teléfono debe tener 10 caracteres',
+                          },
+                          pattern: {
+                            value: /^[0-9]+$/,
+                            message: 'Solo se permiten números',
+                          },
+                        })}
+                      />
+                      {errors.numero_telefono && (
+                        <p className="error-message">{errors.numero_telefono.message}</p>
+                      )}
+                    </div>
+                    <div className="field btns">
+                      <button type="button" className="prev-2 prev" onClick={prevStep}>
+                        Previous
+                      </button>
+                      <button type="button" className="next-2 next" onClick={nextStep}>
+                        Next
+                      </button>
+                    </div>
                   </div>
-                  <div className='field btns'>
-                    <button type="button" className="prev-2 prev" onClick={prevStep}>Previous</button>
-                    <button type="button" className="next-2 next" onClick={nextStep}>Next</button>
-                  </div>
-                </div>
-              )}
+                )}
               {/* Paso 4: Domicilio */}
               {currentStep === 4 && (
                 <div className="page">

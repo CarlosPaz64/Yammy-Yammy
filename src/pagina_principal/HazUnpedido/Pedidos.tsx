@@ -19,7 +19,10 @@ const schema = z.object({
   ciudad: z.string().optional(),
   codigo_postal: z.string().optional(),
   descripcion_ubicacion: z.string().optional(),
-  numero_telefono: z.string().optional(),
+  numero_telefono: z
+    .string()
+    .length(10, { message: "El número de teléfono debe tener exactamente 10 dígitos" }) // Valida que tenga 10 caracteres
+    .regex(/^\d{10}$/, { message: "El número de teléfono solo debe contener dígitos" }), // Valida que sean solo números
   tipo_tarjeta: z.string(),
   numero_tarjeta: z
   .string()
@@ -159,7 +162,6 @@ const Pedido: React.FC = () => {
         delete pedidoData.ciudad;
         delete pedidoData.codigo_postal;
         delete pedidoData.descripcion_ubicacion;
-        delete pedidoData.numero_telefono;
       }
     
       // Enviar pedido
@@ -247,7 +249,27 @@ const Pedido: React.FC = () => {
               {errors.codigo_postal && <span>{errors.codigo_postal.message}</span>}
               {error && <span style={{ color: "red" }}>{error}</span>}
             <textarea {...register('descripcion_ubicacion')} placeholder="Descripción Ubicación" />
-            <input {...register('numero_telefono')} placeholder="Teléfono" />
+            <input
+              {...register('numero_telefono', {
+                required: 'El número de teléfono es obligatorio',
+                minLength: {
+                  value: 10,
+                  message: 'El número de teléfono debe tener exactamente 10 caracteres',
+                },
+                maxLength: {
+                  value: 10,
+                  message: 'El número de teléfono debe tener exactamente 10 caracteres',
+                },
+                pattern: {
+                  value: /^[0-9]+$/,
+                  message: 'Solo se permiten números',
+                },
+              })}
+              placeholder="Teléfono"
+            />
+            {errors.numero_telefono && (
+              <p className="error-message">{errors.numero_telefono.message}</p>
+            )}
           </>
         )}
 
