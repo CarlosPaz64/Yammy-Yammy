@@ -1,17 +1,8 @@
-.container-title{
-  text-align: center;
-  color: #555; 
-  top: 150px;
-  margin-top: 10px;
-  margin-bottom: 8px;
-}
 .container-pedido{
   display: flex;
   align-items: center;
   justify-content: center;
   position: relative;
-  margin-top: 25px;
-  padding: 0 0 100px 
 }
 /*estilo del formulario para Pedidos.CSS y Login.tsx*/
 .forms {
@@ -26,6 +17,13 @@
   justify-content: center;
   margin: 5em auto;
 }
+.container-title{
+  text-align: center;
+  color: #555; 
+  top: 150px;
+  margin-top: 10px;
+  margin-bottom: 8px;
+}
 .forms label {
   margin-top: 10px;
   margin-bottom: 8px;
@@ -34,22 +32,32 @@
 }
 /*diseño del select*/
 .forms select, .forms textarea, .forms input {
-  width: 95%;
   padding: 10px;
   margin-bottom: 15px;
-  border: 1px solid #ccc;
+  border: 1px solid #ed9db5;
   border-radius: 4px;
+  outline: none;
 }
-textarea {
+.forms textarea {
+  height: 60px;
   resize: none;
 }
-/*diseño de los botones*/
+/*diseño de los botones - Estilo general*/
 button {
-  /* background:linear-gradient(to bottom, #96C9F4, #F9F9F9, #FFD0EC); */
   color: #000;
   padding: 10px;
   border: none;
   border-radius: 4px;
+}
+.forms button{
+  color: white;
+  background-color: #0D92F4;
+}
+.btn-prueba{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 15px;
 }
 /* Fondo del modal */
 .modal {
@@ -103,8 +111,10 @@ button {
 }
 .imagenes-preview {
   display: flex;
-  gap: 10px;
-  margin-top: 10px;
+  justify-content: center;
+  align-items: center;
+  gap: 35px;
+  margin: 10px;
 }
 
 .imagen-item {
@@ -113,23 +123,29 @@ button {
 }
 
 .imagen-preview {
-  width: 100px;
-  height: 100px;
+  width: 150px;
+  height: 150px;
   object-fit: cover;
   border: 1px solid #ccc;
   border-radius: 5px;
+  filter: contrast(120%);
 }
 
 .remove-image-btn {
   position: absolute;
   top: -5px;
   right: -5px;
-  background: red;
-  color: white;
+  background: red !important;
   border: none;
   border-radius: 50%;
   cursor: pointer;
   width: 20px;
   height: 20px;
+}
+.remove-btn-text{
+  position: relative;
+  top: -10px;
+  left: -4px;
+  color: white;
   font-size: 12px;
 }

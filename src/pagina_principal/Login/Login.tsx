@@ -80,27 +80,27 @@ const LoginForm: React.FC = () => {
   };
 
   return (
-    <div className="login-form-container">
-      <form className='forms' onSubmit={handleSubmit(onSubmit)}>
+    <div>
+      <form className='form-login' onSubmit={handleSubmit(onSubmit)}>
+        <h2 className='text-login'>Iniciar Sesión</h2>
         <div className="form-group">
-          <h2>Iniciar Sesión</h2>
-          <label htmlFor="email">Correo Electrónico</label>
-          <input type="email" id="email" {...register('email')} />
+          <label className='label-login' htmlFor="email">Correo Electrónico</label>
+          <input className='input-login' type="email" id="email" {...register('email')} />
           {errors.email && <p>{errors.email.message}</p>}
         </div>
 
         <div className="form-group">
-          <label htmlFor="password">Contraseña</label>
-          <input type="password" id="password" {...register('password')} />
+          <label className='label-login' htmlFor="password">Contraseña</label>
+          <input className='input-login' type="password" id="password" {...register('password')} />
           {errors.password && <p>{errors.password.message}</p>}
         </div>
 
         <button type="submit" className="login-button">Iniciar Sesión</button>
         <p className="register-link">
         ¿No estás registrado?{' '}
-        <span
+        <span 
+          className='register-link-text'
           onClick={() => navigate('/registro')}
-          style={{ color: 'blue', cursor: 'pointer' }}
         >
           Dale click aquí
         </span>
