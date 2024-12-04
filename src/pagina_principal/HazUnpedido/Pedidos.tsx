@@ -79,6 +79,13 @@ const Pedido: React.FC = () => {
       dispatch(fetchCityAndColonies(codigoPostal));
     }
   }, [codigoPostal, dispatch]);
+
+  useEffect(() => {
+    if (ciudad) {
+      setValue('ciudad', ciudad); // Actualiza el valor del campo 'ciudad' en el formulario
+    }
+  }, [ciudad, setValue]);
+  
   
   // Calcular el precio en función de la cantidad, categoría y ciudad
   useEffect(() => {
@@ -108,45 +115,54 @@ const Pedido: React.FC = () => {
       setImagenes((prev) => prev.filter((_, i) => i !== index));
     };
 
-  const onSubmit = async (data: FormData) => {
-    const userId = localStorage.getItem('userId');
-    const token = localStorage.getItem('authToken');
-  
-    if (!userId || !token) {
-      alert('Por favor, inicie sesión para continuar.');
-      return;
-    }
-  
-    const pedidoData = {
-      client_id: userId,
-      token,
-      ...data,
-      cantidad,
-      precio,
-      imagenes,
-    };
-  
-    // Eliminar campos de domicilio si la opción de entrega es "recoger"
-    if (data.opcion_entrega === 'recoger') {
-      delete pedidoData.calle;
-      delete pedidoData.numero_exterior;
-      delete pedidoData.numero_interior;
-      delete pedidoData.colonia;
-      delete pedidoData.ciudad;
-      delete pedidoData.codigo_postal;
-      delete pedidoData.descripcion_ubicacion;
-      delete pedidoData.numero_telefono;
-    }
-  
-    const result = await dispatch(enviarPedido(pedidoData));
-    if (enviarPedido.fulfilled.match(result)) {
-      setModalOpen(true); // Abre el modal
-      setTimeout(() => {
-        setModalOpen(false);
-        navigate('/'); // Redirige después de cerrar el modal
-      }, 3000); // 3 segundos
-    }
-  };  
+    const onSubmit = async (data: FormData) => {
+      // Verifica errores globales de Redux antes de enviar
+      if (error) {
+        alert('Por favor, corrige los errores antes de enviar el formulario.');
+        return;
+      }
+    
+      const userId = localStorage.getItem('userId');
+      const token = localStorage.getItem('authToken');
+    
+      if (!userId || !token) {
+        alert('Por favor, inicie sesión para continuar.');
+        return;
+      }
+    
+      const pedidoData = {
+        client_id: userId,
+        token,
+        ...data,
+        cantidad,
+        precio,
+        imagenes,
+      };
+    
+      // Eliminar campos de domicilio si la opción de entrega es "recoger"
+      if (data.opcion_entrega === 'recoger') {
+        delete pedidoData.calle;
+        delete pedidoData.numero_exterior;
+        delete pedidoData.numero_interior;
+        delete pedidoData.colonia;
+        delete pedidoData.ciudad;
+        delete pedidoData.codigo_postal;
+        delete pedidoData.descripcion_ubicacion;
+        delete pedidoData.numero_telefono;
+      }
+    
+      // Enviar pedido
+      const result = await dispatch(enviarPedido(pedidoData));
+      if (enviarPedido.fulfilled.match(result)) {
+        setModalOpen(true);
+        setTimeout(() => {
+          setModalOpen(false);
+          navigate('/');
+        }, 3000);
+      } else {
+        alert('Hubo un error al procesar el pedido. Inténtalo de nuevo más tarde.');
+      }
+    };      
 
   return isLoading ? (
     <center><p>Cargando...</p></center>
