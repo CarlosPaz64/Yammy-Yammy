@@ -33,7 +33,7 @@ const CartPage: React.FC = () => {
   const [isFinalizing, setIsFinalizing] = useState(false); // Modo de finalizar compra + Modal de confirmar compra y Finalización de compra
   const [isClosing, setIsClosing] = useState(false); // Animacion del cierre del modal confirmar compra 
   const [colonias, setColonias] = useState<string[]>([]); // Opciones de colonias
-  const [errors, setErrors] = useState<{ numero_tarjeta?: string; fecha_tarjeta?: string; cvv?: string; }>({}); // Tipado de errores para los valores bancarios
+  const [errors, setErrors] = useState<{ numero_tarjeta?: string; fecha_tarjeta?: string; cvv?: string; numero_telefono?: string; }>({}); // Tipado de errores para los valores bancarios
   const [errorFetch, setErrorFetch] = useState<string | null>(null); // Errores del fetch del código postal, ciudad y colonias
   const [clientData, setClientData] = useState({
     opcion_entrega: 'domicilio',
@@ -134,7 +134,31 @@ const CartPage: React.FC = () => {
   // Manejar cambios en los inputs
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
     const { name, value } = e.target;
-  
+
+      // Validación específica para el número de teléfono
+      if (name === 'numero_telefono') {
+        const sanitizedValue = value.replace(/\D/g, ''); // Elimina caracteres no numéricos
+        if (sanitizedValue.length > 10) {
+          return; // No permite más de 10 caracteres
+        }
+
+        setClientData((prevData) => ({
+          ...prevData,
+          [name]: sanitizedValue,
+        }));
+
+        // Validar longitud del teléfono
+        setErrors((prevErrors) => ({
+          ...prevErrors,
+          numero_telefono:
+            sanitizedValue.length === 10
+              ? undefined
+              : 'El número de teléfono debe tener exactamente 10 dígitos',
+        }));
+
+        return;
+      }
+
     // Lógica específica para el número de tarjeta
     if (name === 'numero_tarjeta') {
       let sanitizedValue = value.replace(/\D/g, ''); // Elimina caracteres no numéricos
@@ -304,7 +328,7 @@ const CartPage: React.FC = () => {
       document.body.style.overflowX = 'hidden';
     };
   }, [isFinalizing]);
-  
+
   return (
     <div className='shopping-container'>
       <div className='shopping-content'>
@@ -489,14 +513,15 @@ const CartPage: React.FC = () => {
                     required
                   />
                   <input
-                    className='input-formModal'
-                    type="text"
-                    name="numero_telefono"
-                    placeholder="Número de Teléfono"
-                    value={clientData.numero_telefono}
-                    onChange={handleInputChange}
-                    required
-                  />
+                  className="input-formModal"
+                  type="text"
+                  name="numero_telefono"
+                  placeholder="Número de Teléfono"
+                  value={clientData.numero_telefono}
+                  onChange={handleInputChange}
+                  required
+                />
+                {errors.numero_telefono && <span style={{ color: 'red' }}>{errors.numero_telefono}</span>}
                 </>
               )}
               <h3 className='body-titleModal'>Datos de la Tarjeta</h3>
