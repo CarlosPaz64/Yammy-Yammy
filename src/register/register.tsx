@@ -303,6 +303,7 @@ const RegisterForm: React.FC = () => {
               {/* Paso 5: Tarjeta */}
               {currentStep === 5 && (
                 <div className="page">
+                  <p className='worning-text'>Yamy Yamy no realizará ningún cobro sin tu autorización</p>
                   <div className='title'>Datos de la Tarjeta</div>
                   <div className='field'>
                     <div className='label'>Tipo de Tarjeta: </div>

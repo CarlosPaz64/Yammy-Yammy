@@ -336,7 +336,7 @@ const Pedido: React.FC = () => {
               })}
               style={{ marginRight: '10px' }}
             />
-            <button
+            <button className='btn-prueba'
               type="button"
               onClick={(e) => {
                 const input = e.currentTarget.previousSibling as HTMLInputElement;
@@ -373,7 +373,7 @@ const Pedido: React.FC = () => {
                 className="remove-image-btn"
                 onClick={() => handleRemoveImage(index)}
               >
-                X
+                <span className='remove-btn-text'>X</span>
               </button>
             </div>
           ))}

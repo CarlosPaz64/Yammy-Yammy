@@ -1,5 +1,5 @@
 /*estilo del formulario para Pedidos.CSS y Login.tsx*/
-.forms {
+.form-login {
     background-color: #fff;
     padding: 20px;
     border-radius: 8px;
@@ -11,15 +11,83 @@
     justify-content: center;
     margin: 5em auto;
 }
+.text-login{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: xx-large;
+    margin: 0 0 25px 0;
+    color: #ed39a2;
+    font-weight: 900;
+}
+.form-group{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+.label-login{
+    margin: 10px 0 10px 0;
+    font-size: large;
+    font-weight: 600;
+}
+.input-login{
+    width: 90%;
+    height: 35px;
+    padding-left: 10px;
+    padding-right: 10px;
+    border-radius: 5px; 
+    border: 1px solid #fdc0e4;
+    font-size: larger;
+    outline: none;
+}
+.input-login:hover, .input-login:focus{
+    border: 1px solid #f72fa4;
+}
 .register-link{
     display: flex;
     justify-content: center;
     align-items: center;
     margin-top: 15px;
-    
+    font-size: larger;
+    gap: 10px;
 }
+.register-link-text{
+    color: #004cffd1;
+    text-decoration: underline;
+}.register-link-text:hover{color: #4ba0f6d1;}
 .login-button{
-    color: #000;
-    background-color: #FFD0EC;
+    transform: translate(10.5%);
+    width: 80%;
+    margin: 25px 0 20px 0;
+    color: white;
+    font-size: larger;
+    font-weight: bold;
+    border-radius: 8px;
+    background-color: #ffa1da;
 
+}.login-button:hover{
+    background-color: #fdc0e4;
+    transition: 0.3s;
+}
+
+/*Media para teléfonos o iphones*/
+@media only screen and (max-width: 767px) {
+    .form-login{
+        max-width: 280px;
+        width: 90%;
+    }
+    .text-login{font-size: 120%;}
+    .label-login{font-size: 100%;}
+    .input-login{
+        font-size: 100%;
+        height: 32px;
+    }
+    .login-button{
+        font-size: 100%;
+        width: 50%;
+        transform: translateX(50%);
+        padding: 4px;
+    }
+    .register-link{font-size: 100%;}
+    .register-link-text{font-size: 85%;}
 }
