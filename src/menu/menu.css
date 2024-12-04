@@ -12,24 +12,24 @@
 	border: 1px solid rgba(200, 200, 200, 0.5);
 	box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
 	text-align: center;
-  }
+}
   
-  .card-item img.user-image {
+.card-item img.user-image {
 	width: 180px; /* Ajusta el tamaño de la imagen */
 	height: 180px;
 	border-radius: 50%;
 	margin-bottom: 10px;
 	object-fit: cover;
-	border: 8px solid #e6b0aa  ;
+	border: 8px solid #e6b0aa;
+	filter: contrast(140%);
 
-  }
+}
   
-  .card-item h2.user-name {
-	font-size: 1.2rem;
-	margin: 10px 0;
-	color: #333;
-  }
-  
+.card-item p.user-profession {
+	font-size: 0.9rem;
+	color: #666;
+	margin-bottom: -1px;
+}
   
   .card-item h2.user-name {
 	font-size: 1.2rem;
@@ -40,7 +40,7 @@
 	
   }
   
-  .card-item button.message-button {
+.card-item button.message-button {
 	font-size: 1rem;
 	padding: 8px 20px;
 	color: #fff;
@@ -50,22 +50,22 @@
 	cursor: pointer;
 	transition: background 0.2s ease;
 	margin-top: 5px;
-  }
+}
   
-  .card-item button.message-button:hover {
+.card-item button.message-button:hover {
 	background:#ec7063 ;
-  }
-  .swiper {
+}
+.swiper {
 	padding: 20px 0;
 	z-index: 0 !important;
-  }
+}
   
-  .swiper-slide {
+.swiper-slide {
 	display: flex;
 	justify-content: center;
 	align-items: center;
-  }
-  .modal-overlay {
+}
+.modal-overlay {
 	position: fixed;
 	top: 0;
 	left: 0;
@@ -76,14 +76,14 @@
 	align-items: center;
 	justify-content: center;
 	z-index: 1000;
-	overflow: hidden;
-  }
+}
+
   .modal-h2{
 	justify-content: center;
 	text-align: center;
 	font-size: 35px;
 	margin-top: 10px;
-  }
+}
   
   .modal-content {
 	position: relative;
@@ -94,10 +94,14 @@
 	max-width: 500px;
 	box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
 	text-align: center;
-  }
+}
   
-  .modal-image {
+.modal-image {
 	margin-top: 20px;
+	border-radius: 10px;
+	margin-bottom: 20px;
+	object-fit: cover;
+	filter: contrast(140%);
     width: 100%;
     height: 100%;
     border-radius: 10px;
@@ -107,7 +111,7 @@
     overflow: hidden;
   }
   
-  .close-button {
+.close-button {
 	position: absolute;
 	top: 10px;
 	right: 10px;
@@ -115,9 +119,9 @@
 	border: none;
 	font-size: 1.5rem;
 	cursor: pointer;
-  }
+}
   
-  .add-to-cart-modal {
+.add-to-cart-modal {
 	padding: 10px 20px;
 	background-color: #4caf50;
 	color: white;
@@ -125,28 +129,27 @@
 	border-radius: 5px;
 	cursor: pointer;
 	margin-top: 10px;
-  }
+}
   
-  .add-to-cart-modal:disabled {
+.add-to-cart-modal:disabled {
 	background-color: gray;
 	cursor: not-allowed;
-  }
-  .user-profession {
+}
+.user-profession {
 	white-space: nowrap; /* Evita que el texto se divida en varias líneas */
 	overflow: hidden;    /* Oculta cualquier contenido que exceda el ancho */
 	text-overflow: ellipsis; /* Muestra "..." si el texto es demasiado largo */
 	display: block;      /* Asegura que el elemento se comporte como un bloque */
 	max-width: 100%;     /* Opcional: define un ancho máximo */
-  }
-  /* Menú hamburguesa */
+}
 /* Menú hamburguesa */
 .hamburger-menu-container { 
-	position: relative;/* Cambiado a fixed */
-    top: 0%;/* Manténlo en la esquina superior derecha */
+	position: sticky;/* Cambiado a fixed */
+    top: 2%;/* Manténlo en la esquina superior derecha */
     z-index: 1;/* Asegúrate de que esté por encima de otros elementos */
-  }
+}
   
-  .hamburger-button {
+.hamburger-button {
 	right: 20px;
 	position: absolute;
 	background: #f5b7b1;
@@ -157,9 +160,9 @@
 	border-radius: 50%;
 	cursor: pointer;
 	box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-  }
+}
   
-  .dropdown-menu {
+.dropdown-menu {
 	position: absolute; /* Desplegable en relación al botón */
 	top: 50px; /* Aparece debajo del botón */
 	right: 30px;
@@ -167,23 +170,23 @@
 	border: 1px solid #ddd;
 	border-radius: 5px;
 	box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-	padding: 10px;
 	z-index: 1000;
-  }
+}
   
-  .dropdown-menu ul {
+.dropdown-menu ul {
 	flex-direction: column;
 	align-items: baseline;
 	list-style: none;
 	margin: 0;
 	padding: 0;
-  }
+	gap: 0;
+}
   
-  .dropdown-menu li {
-	margin: 10px 0;
-  }
+.dropdown-menu li {
+	margin: 5px 0;
+}
   
-  .dropdown-menu a {
+.dropdown-menu a {
 	text-decoration: none;
 	color: #333;
 	font-size: 1rem;
@@ -191,15 +194,14 @@
 	display: block;
 	border-radius: 5px;
 	transition: background 0.3s;
-  }
+}
   
-  .dropdown-menu a:hover {
+.dropdown-menu a:hover {
 	background: #f5f5f5;
-  }
-  .error-message {
+}
+.error-message {
 	color: red;
 	font-size: 14px;
 	margin-top: 10px;
 	text-align: center;
-  }
-  
+}  

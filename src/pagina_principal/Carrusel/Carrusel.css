@@ -22,6 +22,7 @@
 .carrusel-objeto img {
     width: 100%;
     height: 100%;
+    filter: contrast(130%);
 }
 /* Estilo de los controles (flecha izquierda/derecha) */
 .carrusel-control {

@@ -28,9 +28,10 @@ const CartPage: React.FC = () => {
   const dispatch = useDispatch<AppDispatch>();
   const navigate = useNavigate();
 
-  const [isModalOpen, setIsModalOpen] = useState(false); // Estado del modal
-  const [modalMessage, setModalMessage] = useState(''); // Mensaje del modal
-  const [isFinalizing, setIsFinalizing] = useState(false); // Modo de finalizar compra
+  const [isModalOpen, setIsModalOpen] = useState(false); // Estado del modal -> finalizar compra
+  const [modalMessage, setModalMessage] = useState(''); // Mensaje del modal de Finalización de compra
+  const [isFinalizing, setIsFinalizing] = useState(false); // Modo de finalizar compra + Modal de confirmar compra y Finalización de compra
+  const [isClosing, setIsClosing] = useState(false); // Animacion del cierre del modal confirmar compra 
   const [colonias, setColonias] = useState<string[]>([]); // Opciones de colonias
   const [clientData, setClientData] = useState({
     opcion_entrega: 'domicilio',
@@ -63,7 +64,6 @@ const CartPage: React.FC = () => {
     }
   }, [dispatch]);
   
-
   // Cargar datos del cliente al iniciar la finalización
   useEffect(() => {
     const userId = localStorage.getItem('userId');
@@ -131,10 +131,21 @@ const CartPage: React.FC = () => {
     setClientData((prevData) => ({ ...prevData, [name]: value }));
   };
 
-  // Finalizar compra
-   // Finalizar compra
-   const handleFinalizePurchase = async () => {
+  // Cierra el formulario si no hay productos en el carrito
+  useEffect(() => {
+    if (cartItems.length === 0 && isFinalizing) {
+      setIsFinalizing(false);
+    }
+  }, [cartItems, isFinalizing]);
+  
+  // Ejecuta el modal -> confirmar compra
+  const handleFinalizePurchase = async () => {
     try {
+      if (cartItems.length === 0) {
+        alert('El carrito está vacío. No puedes finalizar la compra.');
+        return;
+      }
+      setIsFinalizing(true);
       dispatch(clearError()); // Limpia errores previos
       const carritoId = localStorage.getItem('carritoId');
       if (!carritoId) {
@@ -169,6 +180,17 @@ const CartPage: React.FC = () => {
     }
   };
 
+  // Cierra el modal de confirmar compra + Animación para cerrar el modal
+  const closeModalConfirm = () =>{
+    //Se añade la animacion de cierre del modal
+    setIsClosing(true); //Activamos la animación de cierre
+    setTimeout(() => {
+      setIsFinalizing(false); //Cierra el modal después de la animación
+      setIsClosing(false); // Reiniciamos el estado de cerrar modal
+    }, 300); //Duracion de 0.3 segundos con relación a la transición del css
+  }
+
+  // Maneja el Cierra del Modal de finalizar compra y el mensaje de finalización de compra
   const closeModal = () => {
     setIsModalOpen(false);
     if (modalMessage.startsWith('Gracias por comprar')) {
@@ -204,16 +226,31 @@ const CartPage: React.FC = () => {
     }
   };
 
+  // Bloquea el scroll del body cuando el modal del formulario "Proceder Compra" se encuentre abierto
+  useEffect(() => {
+    if (isFinalizing) {
+      document.body.style.overflow = 'hidden';
+    } else {
+      document.body.style.overflow = 'visible'; // Reactiva scroll vertical pero oculta scroll horizontal
+      document.body.style.overflowX = 'hidden';
+    }
+    return () => {
+      document.body.style.overflow = 'visible'; // Reactiva scroll vertical pero oculta scroll horizontal
+      document.body.style.overflowX = 'hidden';
+    };
+  }, [isFinalizing]);
+
   return (
     <div className='shopping-container'>
       <div className='shopping-content'>
-        <h2>Tu Carrito de Compras</h2>
-        {cartError && <p style={{ color: 'red' }}>{cartError}</p>}
+        <h2 className='shopping-title'>Tu Carrito de Compras</h2>
+        {cartError && <p style={{ color: 'red', textAlign: 'center', margin:'0 0 15px 0'}}>{cartError}</p>}
         {cartItems.length === 0 ? (
-          <p>No tienes productos en el carrito.</p>
+          <center><p>No tienes productos en el carrito.</p>
+            <br /><p>Añade productos para comenzar a disfrutar de deliciosos postres que <b>Yamy Yamy</b> te ofrece</p></center>
         ) : (
           <>
-            <table>
+            <table className='list-object'>
               <thead>
                 <tr>
                   <th>Imagen</th>
@@ -236,25 +273,30 @@ const CartPage: React.FC = () => {
                               : `data:image/jpeg;base64,${item.url_imagen}`
                           }
                           alt={item.nombre_producto || 'Producto'}
-                          style={{ width: '50px', height: '50px', objectFit: 'cover' }}
+                          style={{ width: '100%', height: '100px ', objectFit: 'cover', filter: 'contrast(140%)' }}
                         />
                       ) : (
                         <span>Sin imagen</span>
                       )}
                     </td>
                     <td>{item.nombre_producto}</td>
-                    <td>{item.quantity}</td>
-                    <td>${(Number(item.precio) || 0).toFixed(2)}</td>
-                    <td>${((Number(item.precio) || 0) * item.quantity).toFixed(2)}</td>
+                    <td><span className='colorPurchase-stock'>{item.quantity}</span></td>
+                    <td><span className='colorPurchase-amount'>${(Number(item.precio) || 0).toFixed(2)}</span></td>
+                    <td><span className='colorPurchase-amount'>${((Number(item.precio) || 0) * item.quantity).toFixed(2)}</span></td>
                     <td>
                       <button
+                        className='btn-action-delete btn-actions'
                         onClick={() => handleDecrementQuantity(item.carrito_producto_id)}
                         disabled={item.quantity <= 1}
                       >
                         -
                       </button>
-                      <button onClick={() => handleIncrementQuantity(item.carrito_producto_id)}>+</button>
-                      <button onClick={() => handleRemoveItem(item.carrito_producto_id)}>🗑️</button>
+                      <button className='btn-action-add btn-actions' onClick={() => handleIncrementQuantity(item.carrito_producto_id)}>+</button>
+                      <button 
+                        className='btn-action-delete btn-actions' 
+                        onClick={() => handleRemoveItem(item.carrito_producto_id)}>
+                        <i className='icon-trash material-symbols-outlined'>delete</i>
+                      </button>
                     </td>
                   </tr>
                 ))}
@@ -263,122 +305,152 @@ const CartPage: React.FC = () => {
           </>
         )}
       </div>
-      <div className='finalizing-container'>
-        <div className='finalizing-content'>
-          <div className='Purchase-completion'>
-            <h3>Total de Artículos: <span className='colorPurchase-stock'>{totalItems}</span></h3>
-            <h3>Monto Total: <span className='colorPurchase-value'>${totalAmount.toFixed(2)}</span></h3>
-            {!isFinalizing ? (
-            <button onClick={() => setIsFinalizing(true)}>Proceder Compra</button>
-            ) : (
-              <form onSubmit={(e) => { e.preventDefault(); handleFinalizePurchase(); }}>
-                <h3>Opción de Entrega</h3>
-                <select name="opcion_entrega" value={clientData.opcion_entrega} onChange={handleInputChange} required>
-                  <option value="domicilio">Domicilio</option>
-                  <option value="recoger">Recoger en tienda</option>
-                </select>
-                {clientData.opcion_entrega === 'domicilio' && (
-                  <>
-                    <h3>Datos de Envío</h3>
-                    <input
-                      type="text"
-                      name="codigo_postal"
-                      placeholder="Código Postal"
-                      value={clientData.codigo_postal}
-                      onChange={handleInputChange}
-                      required
-                    />
-                    <input type="text" name="ciudad" placeholder="Ciudad" value={clientData.ciudad} readOnly />
-                    <select name="colonia" value={clientData.colonia} onChange={handleInputChange} required>
-                      {colonias.map((colonia, index) => (
-                        <option key={index} value={colonia}>
-                          {colonia}
-                        </option>
-                      ))}
-                    </select>
-                    <input
-                      type="text"
-                      name="calle"
-                      placeholder="Calle"
-                      value={clientData.calle}
-                      onChange={handleInputChange}
-                      required
-                    />
-                    <input
-                      type="text"
-                      name="numero_exterior"
-                      placeholder="Número Exterior"
-                      value={clientData.numero_exterior}
-                      onChange={handleInputChange}
-                      required
-                    />
-                    <input
-                      type="text"
-                      name="numero_interior"
-                      placeholder="Número Interior (Opcional)"
-                      value={clientData.numero_interior}
-                      onChange={handleInputChange}
-                    />
-                    <input
-                      type="text"
-                      name="descripcion_ubicacion"
-                      placeholder="Descripción de Ubicación"
-                      value={clientData.descripcion_ubicacion}
-                      onChange={handleInputChange}
-                      required
-                    />
-                    <input
-                      type="text"
-                      name="numero_telefono"
-                      placeholder="Número de Teléfono"
-                      value={clientData.numero_telefono}
-                      onChange={handleInputChange}
-                      required
-                    />
-                  </>
-                )}
-                <h3>Datos de la Tarjeta</h3>
-                <select
-                  name="tipo_tarjeta"
-                  value={clientData.tipo_tarjeta}
-                  onChange={handleInputChange}
-                  required
-                >
-                  <option value="">Seleccione el tipo de tarjeta</option>
-                  <option value="Visa">Visa</option>
-                  <option value="MasterCard">MasterCard</option>
-                  <option value="American Express">American Express</option>
-                </select>
-                <input
-                  type="text"
-                  name="numero_tarjeta"
-                  placeholder="Número de Tarjeta"
-                  value={clientData.numero_tarjeta}
-                  onChange={handleInputChange}
-                  required
-                />
-                <input
-                  type="text"
-                  name="fecha_tarjeta"
-                  placeholder="Fecha de Expiración (MM/AA)"
-                  value={clientData.fecha_tarjeta}
-                  onChange={handleInputChange}
-                  required
-                />
-                <input
-                  type="text"
-                  name="cvv"
-                  placeholder="CVV"
-                  value={clientData.cvv}
-                  onChange={handleInputChange}
-                  required
-                />
-                <button type="submit">Confirmar Compra</button>
-              </form>
-            )}
+      {/* Validamos si existen productos en el carrito, de lo contrario permanece oculto este contenedor */}
+      {cartItems.length > 0 && (
+        <div className='procedure-container'>
+          <div className='procedure-content'>
+            <div className='informationPurchase-procedure'>
+              <h3>Total de Artículos: <span className='colorPurchase-stock'>{totalItems}</span></h3>
+              <h3>Monto Total: <span className='colorPurchase-amount'>${totalAmount.toFixed(2)}</span></h3>
+              {!isFinalizing && (
+                <button onClick={() => setIsFinalizing(true)}>Proceder Compra</button>
+              )} 
+            </div>
           </div>
         </div>
-      </div>
+      )}
+
+      {/*Modal del Formulario para confirmar Compra*/}
+      {isFinalizing && (
+        <div className={`overModal ${isClosing ? 'closing':''}`}>
+          <form className={`modal-container ${isClosing ? 'modal-closing':''}'`} onSubmit={(e) => { e.preventDefault(); handleFinalizePurchase(); }}>
+            <div className='header-formModal'>
+              <div className='container-titleModal'>
+                <img 
+                  src="http://localhost:3000/assets/Yamy-Imagotipo.png"
+                  alt="Imagotipo"
+                />
+                <h1 className='titleModal'> Confirmar compra</h1>
+              </div>
+              <a onClick={closeModalConfirm} className='container-btn-closeModal btn-closeModal'>x</a>
+            </div>
+            <div className='body-formModal'>
+              <h3 className='body-titleModal'>Opción de Entrega</h3>
+              <select className="select-formModal" name="opcion_entrega" value={clientData.opcion_entrega} onChange={handleInputChange} required>
+                <option value="domicilio">Domicilio</option>
+                <option value="recoger">Recoger en tienda</option>
+              </select>
+              {clientData.opcion_entrega === 'domicilio' && (
+                <>
+                  <h3 className='body-titleModal'>Datos de Envío</h3>
+                  <input
+                    className='input-formModal'
+                    type="text"
+                    name="codigo_postal"
+                    placeholder="Código Postal"
+                    value={clientData.codigo_postal}
+                    onChange={handleInputChange}
+                    required
+                  />
+                  <input className='input-formModal' type="text" name="ciudad" placeholder="Ciudad" value={clientData.ciudad} readOnly />
+                  <select className="select-formModal" name="colonia" value={clientData.colonia} onChange={handleInputChange} required>
+                    {colonias.map((colonia, index) => (
+                      <option key={index} value={colonia}>
+                        {colonia}
+                      </option>
+                    ))}
+                  </select>
+                  <input
+                    className='input-formModal'
+                    type="text"
+                    name="calle"
+                    placeholder="Calle"
+                    value={clientData.calle}
+                    onChange={handleInputChange}
+                    required
+                  />
+                  <input
+                    className='input-formModal'
+                    type="text"
+                    name="numero_exterior"
+                    placeholder="Número Exterior"
+                    value={clientData.numero_exterior}
+                    onChange={handleInputChange}
+                    required
+                  />
+                  <input
+                    className='input-formModal'
+                    type="text"
+                    name="numero_interior"
+                    placeholder="Número Interior (Opcional)"
+                    value={clientData.numero_interior}
+                    onChange={handleInputChange}
+                  />
+                  <input
+                    className='input-formModal'
+                    type="text"
+                    name="descripcion_ubicacion"
+                    placeholder="Descripción de Ubicación"
+                    value={clientData.descripcion_ubicacion}
+                    onChange={handleInputChange}
+                    required
+                  />
+                  <input
+                    className='input-formModal'
+                    type="text"
+                    name="numero_telefono"
+                    placeholder="Número de Teléfono"
+                    value={clientData.numero_telefono}
+                    onChange={handleInputChange}
+                    required
+                  />
+                </>
+              )}
+              <h3 className='body-titleModal'>Datos de la Tarjeta</h3>
+              <select
+                className="select-formModal"
+                name="tipo_tarjeta"
+                value={clientData.tipo_tarjeta}
+                onChange={handleInputChange}
+                required
+              >
+                <option value="">Seleccione el tipo de tarjeta</option>
+                <option value="Visa">Visa</option>
+                <option value="MasterCard">MasterCard</option>
+                <option value="American Express">American Express</option>
+              </select>
+              <input
+                className='input-formModal'
+                type="text"
+                name="numero_tarjeta"
+                placeholder="Número de Tarjeta"
+                value={clientData.numero_tarjeta}
+                onChange={handleInputChange}
+                required
+              />
+              <input
+                className='input-formModal'
+                type="text"
+                name="fecha_tarjeta"
+                placeholder="Fecha de Expiración (MM/AA)"
+                value={clientData.fecha_tarjeta}
+                onChange={handleInputChange}
+                required
+              />
+              <input
+                className='input-formModal'
+                type="text"
+                name="cvv"
+                placeholder="CVV"
+                value={clientData.cvv}
+                onChange={handleInputChange}
+                required
+              />
+              <button className="btnValue-formModal" type="submit">Confirmar Compra</button>
+            </div>
+          </form>
+        </div>
+      )}
 
       {/* Modal de la finalización de compra */}
       {isModalOpen && (

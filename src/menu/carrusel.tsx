@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Navigation, Pagination } from "swiper/modules";
 import { useNavigate } from "react-router-dom";
@@ -33,6 +33,20 @@ const Carousel: React.FC<CarouselProps> = ({ productos, onAddToCart, isLoggedIn 
   const closeModal = () => {
     setSelectedProducto(null);
   };
+
+  //Bloquea el scroll del body cuando el Modal se encuentre abierto
+  useEffect(() => {
+    if (selectedProducto) {
+      document.body.style.overflow = 'hidden';
+    } else {
+      document.body.style.overflow = 'visible'; // Reactiva scroll vertical pero oculta scroll horizontal
+      document.body.style.overflowX = 'hidden';
+    }
+    return () => {
+      document.body.style.overflow = 'visible'; // Reactiva scroll vertical pero oculta scroll horizontal
+      document.body.style.overflowX = 'hidden';
+    };
+  }, [selectedProducto]);
 
   return (
     <>
@@ -69,8 +83,10 @@ const Carousel: React.FC<CarouselProps> = ({ productos, onAddToCart, isLoggedIn 
               <p>
                 Stock:{" "}
                 {producto.stock > 0
-                  ? `${producto.stock} disponibles`
-                  : "Agotado"}
+                  ?( <p style={{color: "green", fontWeight: 'bold'}}>{producto.stock} disponibles</p>
+                ): (
+                  <p style={{color: "red", fontWeight: 'bold'}}>Agotado</p>
+                )}
               </p>
               <button
                 className="message-button"
@@ -108,9 +124,13 @@ const Carousel: React.FC<CarouselProps> = ({ productos, onAddToCart, isLoggedIn 
             <p>Precio: ${selectedProducto.precio.toFixed(2)}</p>
             <p>
               Stock:{" "}
-              {selectedProducto.stock > 0
-                ? `${selectedProducto.stock} disponibles`
-                : "Agotado"}
+              {selectedProducto.stock > 0 ? (
+                <span style={{ color: "green", fontWeight: "bold" }}>
+                  {selectedProducto.stock} disponibles
+                </span>
+              ) : (
+                <span style={{ color: "red", fontWeight: "bold" }}>Agotado</span>
+              )}
             </p>
             <button
               className="add-to-cart-modal"

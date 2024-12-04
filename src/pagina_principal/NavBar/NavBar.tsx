@@ -38,6 +38,20 @@ const NavBar: React.FC<{ children?: ReactNode }> = ({ children }) => {
         };
     }, []);
 
+    // Bloquea el scroll del body cuando el sidebar se encuentre abierto
+    useEffect(() => {
+        if (sidebarOpen) {
+            document.body.style.overflow = 'hidden';
+        } else {
+            document.body.style.overflow = 'visible'; // Reactiva scroll vertical pero oculta scroll horizontal
+            document.body.style.overflowX = 'hidden';
+        }
+        return () => {
+            document.body.style.overflow = 'visible'; // Reactiva scroll vertical pero oculta scroll horizontal
+            document.body.style.overflowX = 'hidden';
+        };
+    }, [sidebarOpen]);
+
     // Función que obtiene el carrito pendiente de la sesión
     useEffect(() => {
         if (token) {
