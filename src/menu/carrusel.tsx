@@ -55,7 +55,6 @@ const Carousel: React.FC<CarouselProps> = ({ productos, onAddToCart, isLoggedIn 
         loop={true}
         grabCursor={true}
         spaceBetween={30}
-        pagination={{ clickable: true, dynamicBullets: true }}
         navigation={true}
         breakpoints={{
           0: { slidesPerView: 1 },
