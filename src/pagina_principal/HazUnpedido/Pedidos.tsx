@@ -51,6 +51,8 @@ const Pedido: React.FC = () => {
   const [imagenes, setImagenes] = useState<File[]>([]);
   const [opcionEntrega, setOpcionEntrega] = useState<string>('domicilio');
   const [modalOpen, setModalOpen] = useState(false); // Estado del modal
+  const [coloniaOrigenCliente, setColoniaOrigenCliente] = useState(true); // Indica si el valor inicial viene del cliente
+
 
   const codigoPostal = watch('codigo_postal');
   const categoria = watch('categoria');
@@ -70,22 +72,31 @@ const Pedido: React.FC = () => {
       Object.keys(cliente).forEach((key) => {
         setValue(key as keyof FormData, cliente[key]);
       });
+      setColoniaOrigenCliente(true); // Marca que la colonia viene del cliente
     }
-  }, [cliente, setValue]);
+  }, [cliente, setValue]);  
 
   // Llama a la API cuando cambia el código postal
   useEffect(() => {
     if (codigoPostal && codigoPostal.length === 5) {
       dispatch(fetchCityAndColonies(codigoPostal));
+      setColoniaOrigenCliente(false); // Indica que el valor ya no viene del cliente
     }
   }, [codigoPostal, dispatch]);
 
+  // UseEffect para las ciudades
   useEffect(() => {
     if (ciudad) {
       setValue('ciudad', ciudad); // Actualiza el valor del campo 'ciudad' en el formulario
     }
   }, [ciudad, setValue]);
   
+  // useEffect para las colonias
+  useEffect(() => {
+    if (colonias.length > 0 && !coloniaOrigenCliente) {
+      setValue('colonia', colonias[0]); // Establece la primera colonia como valor predeterminado
+    }
+  }, [colonias, coloniaOrigenCliente, setValue]);
   
   // Calcular el precio en función de la cantidad, categoría y ciudad
   useEffect(() => {
