@@ -213,7 +213,7 @@ const Pedido: React.FC = () => {
 
         {opcionEntrega === 'domicilio' && (
           <>
-            <h3>Dirección de Entrega</h3>
+            <h3>Editar dirección de Entrega</h3>
             <input {...register('calle')} placeholder="Calle" />
             <input {...register('numero_exterior')} placeholder="Número Exterior" />
             <input {...register('numero_interior')} placeholder="Número Interior" />
@@ -273,7 +273,7 @@ const Pedido: React.FC = () => {
           </>
         )}
 
-        <h3>Método de Pago</h3>
+        <h3>Editar tu método de Pago</h3>
         <select
           {...register('tipo_tarjeta', {
             validate: (value) =>
