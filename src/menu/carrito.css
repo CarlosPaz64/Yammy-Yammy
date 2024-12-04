@@ -5,6 +5,9 @@
   margin: 35px 0px 35px 25px;
   gap: 20px;
   width: 100%;
+  /* Asegura que este contenedor maneje el desplazamiento */
+  overflow-y: auto;
+  max-height: 80vh; /* Limita la altura al tamaño de la ventana */
 }
 .shopping-content{
   display: flex;
@@ -14,16 +17,25 @@
   border-radius: 10px;
   filter: drop-shadow(2px 2px 10px #7d797986);
   width: 65vw;
-  height: 100%;
+}
+.responsive-table{
+  overflow-x: auto; /* Esto generará una barra de desplazamiento horizontal cuando sea necesario */
 }
 .shopping-title{
   font-size: 200%;
   font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
   font-weight: 700;
-  margin: 10px 0 20px 0;
+  margin: 4% 0 4% 0;
   text-align: center;
   color: #524A4E;
-  text-shadow: 2px 2px 2px #9e8c8c2e
+  text-shadow: 2px 2px 2px #9e8c8c2e;
+}
+/*Estilos para convertirlo desplegable*/
+.title-sticky{
+  position: sticky;
+  top: 0;
+  z-index: 1;
+  background: #ffffff;
 }
 /*Diseño de la tabla(Lista) del carrito*/
 .list-object{
@@ -31,14 +43,22 @@
   border-spacing: 0; 
   border-collapse: collapse; 
   border: 1px solid;
+  margin-bottom: 15px;
 }
 /*Encabezado de la tabla*/
 .list-object thead{font-size: 1.35em; background: #f57fb4;}
-.list-object th{color: white;border: none;}
+.list-object th{
+  position: sticky;
+  top: 47px;
+  z-index: 1; /* Asegura que los encabezados estén por encima del contenido */
+  color: white; 
+  border: none;
+  background: #f57fb4;
+}
 /*Cuerpo de la tabla*/
-.list-object tbody td{ border: 1px solid;}
+.list-object tbody td{border: 1px solid;}
 .list-object tbody tr:nth-child(n+1):hover{
-  background-color: #FFDDD2;
+  background-color: #FFCFEF;
   transition: 0.6s ease;
 }
 /*Renderiza un color diferente, cada segundo articulo*/
@@ -53,10 +73,6 @@
 }
 /*Estilos para proceder compra*/
 .procedure-container{
-  /*Propiedades para el menú deslizante*/
-  position: sticky;
-  top: 10px;
-  /*otras propiedades para el menú*/
   display: flex;
   justify-content: center;
   text-align: center;
@@ -299,21 +315,119 @@
 
 /*Media para tabletas/laptops*/
 @media only screen and (min-width: 768px) and (max-width: 1024px) {
+  /*Contenedor para la tabla(Lista) del carrito*/
   .shopping-container{
     display: flex;
     flex-direction: column-reverse;
     align-items: center;
+    margin: 25px 0 25px 0;
+    max-height: 100vh; /* Limita la altura al tamaño de la ventana */
   }
   .shopping-content{
     margin-top: 20px;
+    overflow: hidden;
+    width: 85%;
+    height: 100vh;
   }
+  .shopping-title{font-size: 165%;}
+  /*Estilos para proceder compra*/
   .procedure-container{
     position: relative;
     margin-right: 0;
+    width: 55%;
+    height: 280px;
+  }
+  .informationPurchase-procedure{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+  }
+  .informationPurchase-procedure button{
+    margin: 5px 0 5px 0;
+    width: 65%;
+    padding: 6px;
+    font-size: 95%;
+  };
+  /*Estilos de la tabla*/
+  .list-object thead{font-size: 1.15em;}
+  .list-object th {top: 38px;}
+  .list-object th, td{
+    font-size: 90%;
+    padding: 3px;
+  }
+  .btn-actions{
+    font-size: 120%;
+    margin: 5%;
   }
 }
 
 /*Media para teléfonos/Smartphone*/
 @media only screen and (max-width: 767px) {
-  
+  /*Contenedor para la tabla(Lista) del carrito*/
+  .shopping-container{
+    display: flex;
+    flex-direction: column-reverse;
+    align-items: center;
+    margin: 25px 0 5px 0;
+    max-height: 100%;
+  }
+  .shopping-content{
+    margin-top: 20px;
+    width: 78%;
+  }
+  .shopping-title{font-size: 120%;}
+  /*Estilos para proceder compra*/
+  .procedure-container{
+    position: relative;
+    margin-right: 0;
+    width: 65%;
+    height: 280px;
+  }
+  .informationPurchase-procedure{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+  }
+  .informationPurchase-procedure button{
+    margin: 5px 0 5px 0;
+    width: 65%;
+    padding: 6px;
+    font-size: 90%;
+  };
+  /*Estilos de la tabla*/
+  .list-object thead{font-size: 1em;}
+  .list-object th, td{
+    font-size: 85%;
+    padding: 2px;
+  }
+  .btn-actions{
+    padding: 3% 10% 3% 10%;
+    font-size: 150%;
+    margin: 8%;
+  }
+
+  /*Modal para confirmar compra*/
+  /*Contenedor del modal*/
+  .modal-container{
+    width: 20em;
+    height: 30em;
+  }
+  /*Encabezado del modal*/
+  .header-formModal{gap: 20px;}
+  .container-titleModal{gap: 5px;}
+  .container-titleModal img{width: 75px;}
+  .titleModal{font-size: 110%;}
+  .container-btn-closeModal{height: 20px;}
+  /*Cuerpo del modal*/
+  .input-formModal{
+    width: 90%;
+    font-size: small;
+  }
+  .select-formModal{font-size: small;}
+  .btnValue-formModal{
+    font-size: small;
+    padding: 10px;
+  }
 }

@@ -1,4 +1,5 @@
-@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@200;300;400;500&display=swap");
+/*Biblioteca de fuentes personalizados para la página, tomados de Google Fonts*/
+@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@200;300;400;500&display=swap"); /* -> Fuente Poppins*/
 
 .about-us {
   display: flex;

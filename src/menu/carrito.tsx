@@ -332,67 +332,69 @@ const CartPage: React.FC = () => {
   return (
     <div className='shopping-container'>
       <div className='shopping-content'>
-        <h2 className='shopping-title'>Tu Carrito de Compras</h2>
-        {cartError && <p style={{ color: 'red', textAlign: 'center', margin:'0 0 15px 0'}}>{cartError}</p>}
-        {cartItems.length === 0 ? (
-          <center><p>No tienes productos en el carrito.</p>
-            <br /><p>Añade productos para comenzar a disfrutar de deliciosos postres que <b>Yamy Yamy</b> te ofrece</p></center>
-        ) : (
-          <>
-            <table className='list-object'>
-              <thead>
-                <tr>
-                  <th>Imagen</th>
-                  <th>Producto</th>
-                  <th>Cantidad</th>
-                  <th>Precio Unitario</th>
-                  <th>Total</th>
-                  <th>Acciones</th>
-                </tr>
-              </thead>
-              <tbody>
-                {cartItems.map((item) => (
-                  <tr key={item.carrito_producto_id}>
-                    <td>
-                      {item.url_imagen ? (
-                        <img
-                          src={
-                            item.url_imagen.startsWith('data:')
-                              ? item.url_imagen
-                              : `data:image/jpeg;base64,${item.url_imagen}`
-                          }
-                          alt={item.nombre_producto || 'Producto'}
-                          style={{ width: '100%', height: '100px ', objectFit: 'cover', filter: 'contrast(140%)' }}
-                        />
-                      ) : (
-                        <span>Sin imagen</span>
-                      )}
-                    </td>
-                    <td>{item.nombre_producto}</td>
-                    <td><span className='colorPurchase-stock'>{item.quantity}</span></td>
-                    <td><span className='colorPurchase-amount'>${(Number(item.precio) || 0).toFixed(2)}</span></td>
-                    <td><span className='colorPurchase-amount'>${((Number(item.precio) || 0) * item.quantity).toFixed(2)}</span></td>
-                    <td>
-                      <button
-                        className='btn-action-delete btn-actions'
-                        onClick={() => handleDecrementQuantity(item.carrito_producto_id)}
-                        disabled={item.quantity <= 1}
-                      >
-                        -
-                      </button>
-                      <button className='btn-action-add btn-actions' onClick={() => handleIncrementQuantity(item.carrito_producto_id)}>+</button>
-                      <button 
-                        className='btn-action-delete btn-actions' 
-                        onClick={() => handleRemoveItem(item.carrito_producto_id)}>
-                        <i className='icon-trash material-symbols-outlined'>delete</i>
-                      </button>
-                    </td>
+        <div className='responsive-table'>
+          <h2 className='shopping-title title-sticky'>Tu Carrito de Compras</h2>
+          {cartError && <p style={{ color: 'red', textAlign: 'center', margin:'0 0 15px 0'}}>{cartError}</p>}
+          {cartItems.length === 0 ? (
+            <center><p>No tienes productos en el carrito.</p>
+              <br /><p>Añade productos para comenzar a disfrutar de deliciosos postres que <b>Yamy Yamy</b> te ofrece</p></center>
+          ) : (
+            <>
+              <table className='list-object'>
+                <thead>
+                  <tr>
+                    <th>Imagen</th>
+                    <th>Producto</th>
+                    <th>Cantidad</th>
+                    <th>Precio Unitario</th>
+                    <th>Total</th>
+                    <th>Acciones</th>
                   </tr>
-                ))}
-              </tbody>
-            </table>
-          </>
-        )}
+                </thead>
+                <tbody>
+                  {cartItems.map((item) => (
+                    <tr key={item.carrito_producto_id}>
+                      <td>
+                        {item.url_imagen ? (
+                          <img
+                            src={
+                              item.url_imagen.startsWith('data:')
+                                ? item.url_imagen
+                                : `data:image/jpeg;base64,${item.url_imagen}`
+                            }
+                            alt={item.nombre_producto || 'Producto'}
+                            style={{ width: '100%', height: '100px ', objectFit: 'cover', filter: 'contrast(140%)' }}
+                          />
+                        ) : (
+                          <span>Sin imagen</span>
+                        )}
+                      </td>
+                      <td>{item.nombre_producto}</td>
+                      <td><span className='colorPurchase-stock'>{item.quantity}</span></td>
+                      <td><span className='colorPurchase-amount'>${(Number(item.precio) || 0).toFixed(2)}</span></td>
+                      <td><span className='colorPurchase-amount'>${((Number(item.precio) || 0) * item.quantity).toFixed(2)}</span></td>
+                      <td>
+                        <button
+                          className='btn-action-delete btn-actions'
+                          onClick={() => handleDecrementQuantity(item.carrito_producto_id)}
+                          disabled={item.quantity <= 1}
+                        >
+                          -
+                        </button>
+                        <button className='btn-action-add btn-actions' onClick={() => handleIncrementQuantity(item.carrito_producto_id)}>+</button>
+                        <button 
+                          className='btn-action-delete btn-actions' 
+                          onClick={() => handleRemoveItem(item.carrito_producto_id)}>
+                          <i className='icon-trash material-symbols-outlined'>delete</i>
+                        </button>
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </>
+          )}
+        </div>
       </div>
       {/* Validamos si existen productos en el carrito, de lo contrario permanece oculto este contenedor */}
       {cartItems.length > 0 && (
