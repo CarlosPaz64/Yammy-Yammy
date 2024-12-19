@@ -39,10 +39,6 @@ interface ClientData {
   codigo_postal: string;
   descripcion_ubicacion: string;
   numero_telefono: string;
-  tipo_tarjeta: string;
-  numero_tarjeta: string;
-  fecha_tarjeta: string;
-  cvv: string;
 }
 
 
