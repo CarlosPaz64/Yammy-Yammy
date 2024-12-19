@@ -273,7 +273,7 @@ const Pedido: React.FC = () => {
           </>
         )}
 
-        <h3>Editar tu método de Pago</h3>
+        <h3>Ingresa tu método de Pago</h3>
         <select
           {...register('tipo_tarjeta', {
             validate: (value) =>

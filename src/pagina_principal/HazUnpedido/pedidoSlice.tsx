@@ -22,12 +22,6 @@ const initialState: PedidoState = {
   error: null,
 };
 
-// Función para desencriptar datos
-const desencriptarDato = (dato: string) => {
-  const bytes = CryptoJS.AES.decrypt(dato, SECRET_KEY);
-  return bytes.toString(CryptoJS.enc.Utf8);
-};
-
 // AsyncThunk para obtener datos del cliente
 export const fetchClienteData = createAsyncThunk(
   'pedido/fetchClienteData',
@@ -35,12 +29,6 @@ export const fetchClienteData = createAsyncThunk(
     try {
       const response = await axiosInstance.get(`/cliente/${userId}`);
       const cliente = response.data;
-
-      // Desencripta los datos bancarios antes de almacenarlos en el estado
-      cliente.tipo_tarjeta = desencriptarDato(cliente.tipo_tarjeta);
-      cliente.numero_tarjeta = desencriptarDato(cliente.numero_tarjeta);
-      cliente.fecha_tarjeta = desencriptarDato(cliente.fecha_tarjeta);
-      cliente.cvv = desencriptarDato(cliente.cvv);
 
       return cliente;
     } catch (error: any) {

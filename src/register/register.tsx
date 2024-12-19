@@ -17,10 +17,6 @@ interface IFormInput {
   ciudad: string;
   codigo_postal: string;
   descripcion_ubicacion: string;
-  tipo_tarjeta: 'Visa' | 'MasterCard' | 'American Express';
-  numero_tarjeta: string;
-  fecha_tarjeta: string;
-  cvv: string;
 }
 
 const API_LINK = import.meta.env.VITE_API_LINK || 'http://localhost:3000';
@@ -130,7 +126,7 @@ const RegisterForm: React.FC = () => {
           {/*Encabezado del formulario, aqui va el número de pasos de la página*/}
           <header>Registro<br />de usuario</header>
           <div className="progress-bar">
-            {['Nombre', 'Usuario', 'Teléfono', 'Domicilio', 'Tarjeta'].map((step, index) => (
+            {['Nombre', 'Usuario', 'Teléfono', 'Domicilio'].map((step, index) => (
               <div
                 className={`step ${currentStep > index ? 'active' : ''} ${currentStep === index + 1 ? 'current' : ''}`}
                 key={index}
@@ -294,102 +290,6 @@ const RegisterForm: React.FC = () => {
                       </div>
                     </>
                   )}
-                  <div className='field btns'>
-                    <button type="button" className="prev-3 prev" onClick={prevStep}>Previous</button>
-                    <button type="button" className="next-3 next" onClick={nextStep}>Next</button>
-                  </div>
-                </div>
-              )}
-              {/* Paso 5: Tarjeta */}
-              {currentStep === 5 && (
-                <div className="page">
-                  <p className='worning-text'>Yamy Yamy no realizará ningún cobro sin tu autorización</p>
-                  <div className='title'>Datos de la Tarjeta</div>
-                  <div className='field'>
-                    <div className='label'>Tipo de Tarjeta: </div>
-                    <select
-                      id="cardTypeSelect"
-                      {...register('tipo_tarjeta', {
-                        validate: (value) =>
-                          value === 'Visa' || value === 'MasterCard' || value === 'American Express' || 'Debes seleccionar un tipo de tarjeta válido',
-                      })}
-                    >
-                      <option value="default">Selecciona un tipo de tarjeta</option>
-                      <option value="Visa">Visa</option>
-                      <option value="MasterCard">MasterCard</option>
-                      <option value="American Express">American Express</option>
-                    </select>
-                    {errors.tipo_tarjeta && <span className='span'>{errors.tipo_tarjeta.message}</span>}
-                  </div>
-                  <div className='field'>
-                    <div className='label'>Número de Tarjeta: </div>
-                    <input
-                      type="text"
-                      placeholder="1234 5678 9012 3456"
-                      maxLength={19} // Incluye espacios
-                      {...register('numero_tarjeta', {
-                        required: 'El número de tarjeta es obligatorio',
-                        pattern: {
-                          value: /^\d{4} \d{4} \d{4} \d{4}$/,
-                          message: 'El formato del número de tarjeta es inválido',
-                        },
-                      })}
-                      onInput={(e) => {
-                        const value = e.currentTarget.value.replace(/\D/g, ''); // Elimina caracteres no numéricos
-                        e.currentTarget.value = value.match(/.{1,4}/g)?.join(' ') || ''; // Agrega espacios cada 4 dígitos
-                      }}
-                    />
-                    {errors.numero_tarjeta && <span className='span'>{errors.numero_tarjeta.message}</span>}
-                  </div>
-                  <div className='field'>
-                    <div className='label'>Fecha de Expiración: </div>
-                    <input
-                      type="text"
-                      placeholder="MM/YY"
-                      maxLength={5}
-                      {...register('fecha_tarjeta', {
-                        required: 'La fecha de expiración es obligatoria',
-                        pattern: {
-                          value: /^(0[1-9]|1[0-2])\/?([0-9]{2})$/,
-                          message: 'Formato inválido. Usa MM/YY',
-                        },
-                      })}
-                      onInput={(e) => {
-                        let value = e.currentTarget.value.replace(/\D/g, ''); // Elimina caracteres no numéricos
-                        if (value.length > 2) {
-                          value = value.substring(0, 2) + '/' + value.substring(2, 4); // Agrega '/'
-                        }
-                        e.currentTarget.value = value.substring(0, 5); // Limita el largo
-                      }}
-                    />
-                    {errors.fecha_tarjeta && <span className='span'>{errors.fecha_tarjeta.message}</span>}
-                  </div>
-                  <div className="field">
-                    <div className="label">CVV:</div>
-                    <div style={{ display: 'flex', alignItems: 'center' }}>
-                      <input
-                        type="password"
-                        maxLength={4}
-                        {...register('cvv', {
-                          required: 'El CVV es obligatorio',
-                          minLength: { value: 3, message: 'El CVV debe tener al menos 3 dígitos' },
-                          maxLength: { value: 4, message: 'El CVV no debe exceder 4 dígitos' },
-                        })}
-                        style={{ marginRight: '10px' }}
-                      />
-                      <button
-                        type="button"
-                        onClick={(e) => {
-                          const input = e.currentTarget.previousSibling as HTMLInputElement;
-                          input.type = input.type === 'password' ? 'text' : 'password';
-                          e.currentTarget.textContent = input.type === 'password' ? 'Mostrar' : 'Ocultar';
-                        }}
-                      >
-                        Mostrar
-                      </button>
-                    </div>
-                    {errors.cvv && <span className='span'>{errors.cvv.message}</span>}
-                  </div>
                   <div className='field btns'>
                     <button type="button" className="prev-4 prev" onClick={prevStep}>Previous</button>
                     <button type="submit" className="next-4 next" disabled={isLoading}>{isLoading ? 'Registrando...' : 'Registrar'}</button>

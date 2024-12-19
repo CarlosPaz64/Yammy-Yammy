@@ -86,10 +86,6 @@ const CartPage: React.FC = () => {
             codigo_postal: data.codigo_postal || '',
             descripcion_ubicacion: data.descripcion_ubicacion || '',
             numero_telefono: data.numero_telefono || '',
-            tipo_tarjeta: data.tipo_tarjeta || '',
-            numero_tarjeta: data.numero_tarjeta || '',
-            fecha_tarjeta: data.fecha_tarjeta || '',
-            cvv: data.cvv || '',
           }));
         })
         .catch((error) => {
