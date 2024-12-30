@@ -80,7 +80,7 @@ const NavBar: React.FC<{ children?: ReactNode }> = ({ children }) => {
                         <li>
                             <Link to="/">
                                 <img
-                                    src="http://localhost:3000/assets/Yamy-Imagotipo.png"
+                                    src="https://yamy-yamy-api.vercel.app/assets/Yamy-Imagotipo.png"
                                     alt="Imagotipo"
                                     className="img-nav"
                                 />
@@ -171,7 +171,7 @@ const NavBar: React.FC<{ children?: ReactNode }> = ({ children }) => {
                             <li>
                                 <Link to="/">
                                     <img
-                                        src="http://localhost:3000/assets/Yamy-Imagotipo.png"
+                                        src="https://yamy-yamy-api.vercel.app/assets/Yamy-Imagotipo.png"
                                         alt="Imagotipo"
                                         className="img-nav"
                                     />

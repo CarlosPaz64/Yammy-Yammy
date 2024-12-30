@@ -19,7 +19,7 @@ interface IFormInput {
   descripcion_ubicacion: string;
 }
 
-const API_LINK = import.meta.env.VITE_API_LINK || 'http://localhost:3000';
+const API_LINK = import.meta.env.VITE_API_LINK || 'https://yamy-yamy-api.vercel.app';
 const SECRET_KEY = 'tu_clave_secreta';
 
 const RegisterForm: React.FC = () => {

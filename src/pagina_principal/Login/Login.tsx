@@ -9,7 +9,7 @@ import { useAppDispatch } from '../../hooks/reduxHooks';
 import { login } from '../../slices/autentiSlice';
 import { setUser } from '../../slices/userSlice';
 
-const API_LINK = import.meta.env.VITE_API_LINK || 'http://localhost:3000';
+const API_LINK = import.meta.env.VITE_API_LINK || 'https://yamy-yamy-api.vercel.app';
 const SECRET_KEY = 'tu_clave_secreta';
 
 const loginSchema = z.object({

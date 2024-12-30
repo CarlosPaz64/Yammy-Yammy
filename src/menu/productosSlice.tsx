@@ -29,7 +29,7 @@ const initialState: ProductosState = {
 // Thunk para obtener los productos desde la API
 export const fetchProductos = createAsyncThunk('productos/fetchProductos', async (_, { rejectWithValue }) => {
   try {
-    const response = await fetch('http://localhost:3000/api/productos/por-categoria');
+    const response = await fetch('https://yamy-yamy-api.vercel.app/api/productos/por-categoria');
     if (!response.ok) {
       throw new Error(`Error ${response.status}: ${response.statusText}`);
     }

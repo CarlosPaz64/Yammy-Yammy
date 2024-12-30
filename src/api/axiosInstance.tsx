@@ -1,6 +1,6 @@
 import axios, { AxiosHeaders } from 'axios';
 
-const API_LINK = import.meta.env.VITE_API_LINK || 'http://localhost:3000/api';
+const API_LINK = import.meta.env.VITE_API_LINK || 'https://yamy-yamy-api.vercel.app/api';
 
 // Crear una instancia de Axios
 const axiosInstance = axios.create({

@@ -6,7 +6,7 @@ const Conocenos: React.FC = () => {
     <section className="about-us">
       {/* Primera sección */}
       <div className="about reverse">
-        <img src="http://localhost:3000/assets/Yammy.jpeg" className="pic animate" alt="Deliciosos postres de Yammy-Yammy" />
+        <img src="https://yamy-yamy-api.vercel.app/assets/Yammy.jpeg" className="pic animate" alt="Deliciosos postres de Yammy-Yammy" />
         <div className="text animate">
           <h2>Conócenos</h2>
           <h5>Pastelería Online <span className='conocenos'>Yammy-Yammy</span></h5>
@@ -21,7 +21,7 @@ const Conocenos: React.FC = () => {
 
       {/* Segunda sección */}
       <div className="about">
-        <img src="http://localhost:3000/assets/conocenos2.jpg" className="pic animate" alt="Nuestra misión en Yammy-Yammy" />
+        <img src="https://yamy-yamy-api.vercel.app/assets/conocenos2.jpg" className="pic animate" alt="Nuestra misión en Yammy-Yammy" />
         <div className="text animate">
           <h2>Misión</h2>
           <h5>Pastelería Online <span className='conocenos'>Yammy-Yammy</span></h5>
@@ -36,7 +36,7 @@ const Conocenos: React.FC = () => {
 
       {/* Tercera sección */}
       <div className="about reverse">
-        <img src="http://localhost:3000/assets/vision.jpg" className="pic animate" alt="Nuestra visión en Yammy-Yammy" />
+        <img src="https://yamy-yamy-api.vercel.app/assets/vision.jpg" className="pic animate" alt="Nuestra visión en Yammy-Yammy" />
         <div className="text animate">
           <h2>Visión</h2>
           <h5>Pastelería Online <span className='conocenos'>Yammy-Yammy</span></h5>

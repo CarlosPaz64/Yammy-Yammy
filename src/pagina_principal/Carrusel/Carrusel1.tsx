@@ -51,19 +51,19 @@ const Carrusel1: React.FC<{ children?: ReactNode }> = ({ children }) => {
                     {/*Diapositivas del carrusel*/}
                     <div className="carrusel-interno" style={{ transform: `translateX(-${currentIndex * 100}%)` }}>
                         <div className={`carrusel-objeto ${currentIndex === 0 ? '' : ''}`}>
-                            <img src='http://localhost:3000/assets/img-carrusel/PrimerBanner.png' alt="imagen de publicidad 1"></img>
+                            <img src='https://yamy-yamy-api.vercel.app/assets/img-carrusel/PrimerBanner.png' alt="imagen de publicidad 1"></img>
                         </div>
                         <div className={`carrusel-objeto ${currentIndex === 1 ? '' : ''}`}>
-                            <img src='http://localhost:3000/assets/img-carrusel/SegundoBanner.png' alt="imagen de publicidad 2"></img>
+                            <img src='https://yamy-yamy-api.vercel.app/assets/img-carrusel/SegundoBanner.png' alt="imagen de publicidad 2"></img>
                         </div>
                         <div className={`carrusel-objeto ${currentIndex === 2 ? '' : ''}`}>
-                            <img src='http://localhost:3000/assets/img-carrusel/TercerBanner.png' alt="imagen de publicidad 3"></img>
+                            <img src='https://yamy-yamy-api.vercel.app/assets/img-carrusel/TercerBanner.png' alt="imagen de publicidad 3"></img>
                         </div>
                         <div className={`carrusel-objeto ${currentIndex === 3 ? '' : ''}`}>
-                            <img src='http://localhost:3000/assets/img-carrusel/CuartoBanner.png' alt="imagen de publicidad 4"></img>
+                            <img src='https://yamy-yamy-api.vercel.app/assets/img-carrusel/CuartoBanner.png' alt="imagen de publicidad 4"></img>
                         </div>
                         <div className={`carrusel-objeto ${currentIndex === 4 ? '' : ''}`}>
-                            <img src='http://localhost:3000/assets/img-carrusel/QuintoBanner.png' alt="imagen de publicidad 5"></img>
+                            <img src='https://yamy-yamy-api.vercel.app/assets/img-carrusel/QuintoBanner.png' alt="imagen de publicidad 5"></img>
                         </div>
                     </div>
 

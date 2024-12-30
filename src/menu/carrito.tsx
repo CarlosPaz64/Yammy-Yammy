@@ -98,7 +98,7 @@ const CartPage: React.FC = () => {
   const fetchZipCodeData = async (codigoPostal: string) => {
     try {
       setErrorFetch(null); // Resetea errores previos
-      const response = await axios.get(`http://localhost:3000/api/codigo-postal/${codigoPostal}`);
+      const response = await axios.get(`https://yamy-yamy-api.vercel.app/api/codigo-postal/${codigoPostal}`);
       const { ciudad, colonias } = response.data;
   
       // Actualiza los datos del cliente con ciudad y primera colonia
@@ -414,7 +414,7 @@ const CartPage: React.FC = () => {
             <div className='header-formModal'>
               <div className='container-titleModal'>
                 <img 
-                  src="http://localhost:3000/assets/Yamy-Imagotipo-white.png"
+                  src="https://yamy-yamy-api.vercel.app/assets/Yamy-Imagotipo-white.png"
                   alt="Imagotipo"
                 />
                 <h1 className='titleModal'> Confirmar compra</h1>
