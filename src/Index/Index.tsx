@@ -97,7 +97,7 @@ const Index: React.FC<{ children?: ReactNode }> = ({ children }) => {
                 <div className="container-clip">
                     <div className="video-overlay"></div>
                         <div className="over-video">
-                            <img src='http://localhost:3000/assets/Yamy-Imagotipo-white.png' alt="Imagotipo" width="60%" />
+                            <img src='http://localhost:3000/assets/Yamy-Imagotipo-white.png' alt="Imagotipo" width="50%" />
                             <p>Tu dulce destino a un clic de distancia</p>
                         </div>
                     <video src="http://localhost:3000/assets/clips/yamy.mp4" className="index-clip" autoPlay muted loop disablePictureInPicture></video>

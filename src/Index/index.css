@@ -71,7 +71,7 @@
 .img-sliderMenu img{
     width: 25vw;
     height: 45vh;
-    object-fit: cover;
+    object-fit: contain;
     border-radius: 12px;
     user-select: none;
     filter: contrast(140%);
@@ -127,7 +127,7 @@
 .over-video p {
     /*Fuente tomada de "Google Fonts*/
     font-family: "Dosis";
-    font-size: 300%;
+    font-size: 260%;
     font-weight: 500;
     font-style: normal;
     /*Estilos personalizados*/
@@ -233,7 +233,7 @@
         font-size: 145%;
     }
     /*Marca de la empresa con frase*/
-    .over-video p {font-size: 250%;} .over-video img {width: 50%;}
+    .over-video p {font-size: 220%;} .over-video img {width: 40%;}
     /*Estilo para la red social whatsapp*/
     .container-whatsapp{
         width: 60px;

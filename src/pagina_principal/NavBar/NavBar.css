@@ -8,13 +8,13 @@
 /* Muestra el conteo de los productos en el carrito */
 .cart-count {
   position: absolute;
-  top: 10px;
-  right: 10px;
+  top: 8px;
+  right: 8px;
   background-color: red;
   color: white;
-  padding: 0 5px;
+  padding: 0 .3em;
   border-radius: 50%;
-  font-size: 0.8em;
+  font-size: .9em;
 }
 /*Estilo del navbar*/
 nav{
@@ -39,27 +39,26 @@ nav ul li a{
   position: relative;/*linea agregada para la animación del subrayado, necesaria*/
   border: 0;
   text-transform: uppercase;
-  font-size: 1.25em;
+  font-size: 1.11em;
   font-weight: 700;
   margin: 15px;
   text-decoration: none;
   color: #111D5E;
 }nav ul li a .textNav:hover{color: #F4538A;} .textNav{color: #111D5E;}
 .img-nav{
-  width: 145px;
-  height: 145px;
+  width: 100px;
+  height: 100px;
   vertical-align: middle;
 }.img-nav:hover{opacity: 0.55;}
 .nav-right{
   display: flex;
   justify-content: right;
-  justify-content:right;
   flex: 1;
   gap: 5px;
   margin-right: 20px;
 }
 .icon-nav{
-  font-size: 2.4em !important;
+  font-size: 2em !important;
   vertical-align: middle;
 }.icon-nav:hover{color: #F4538A;}
  
@@ -114,10 +113,10 @@ nav ul li a .textNav::after{
     flex: 1; /* Toma el espacio restante para centrarse */
   }
   .img-nav{
-    width: 127px;
-    height: 127px;
+    width: 80px;
+    height: 80px;
   }.img-nav:hover{opacity: 0.55;}
-  .icon-nav{font-size: 2.5em !important;} .navBar-rwd .navBar-list .icon-nav:hover{color: #F4538A;} .iconNav-left{margin-left: 30px;} .iconNav-right{margin-right: 30px;}
+  .icon-nav{font-size: 1.8em !important;} .navBar-rwd .navBar-list .icon-nav:hover{color: #F4538A;} .iconNav-left{margin-left: 30px;} .iconNav-right{margin-right: 30px;}
 
   /*Estilo para el sidebar responsivo*/
   .sideBar{
@@ -234,10 +233,10 @@ nav ul li a .textNav::after{
     flex: 1; /* Toma el espacio restante para centrarse */
   }
   .img-nav{
-    width: 101.5px;
-    height: 101.5px;
+    width: 65px;
+    height: 65px;
   }.img-nav:hover{opacity: 0.55;}
-  .icon-nav{font-size: 1.5em !important;} .navBar-rwd .navBar-list .icon-nav:hover{color: #F4538A;} .iconNav-left{margin-left: 30px;} .iconNav-right{margin-right: 30px;}
+  .icon-nav{font-size: 1.6em !important;} .navBar-rwd .navBar-list .icon-nav:hover{color: #F4538A;} .iconNav-left{margin-left: 30px;} .iconNav-right{margin-right: 30px;}
 
   /*Estilo para el sidebar responsivo*/
   .sideBar{

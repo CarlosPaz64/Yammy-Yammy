@@ -414,7 +414,7 @@ const CartPage: React.FC = () => {
             <div className='header-formModal'>
               <div className='container-titleModal'>
                 <img 
-                  src="http://localhost:3000/assets/Yamy-Imagotipo.png"
+                  src="http://localhost:3000/assets/Yamy-Imagotipo-white.png"
                   alt="Imagotipo"
                 />
                 <h1 className='titleModal'> Confirmar compra</h1>
@@ -578,9 +578,9 @@ const CartPage: React.FC = () => {
       {/* Modal de la finalización de compra */}
       {isModalOpen && (
           <div className="modal">
-            <div className="modal-content">
+            <div className="modal-contentPurchase">
               <p>{modalMessage}</p>
-              <button onClick={closeModal}>Cerrar</button>
+              <button className='btn-Finish' onClick={closeModal}>Cerrar</button>
             </div>
           </div>
         )}

@@ -99,7 +99,7 @@ const MenuPage: React.FC = () => {
               id={categoria.toLowerCase().replace(/\s+/g, "-")}
               key={categoria}
             >
-              <h2 className="modal-h2">{categoria}</h2>
+              <h2 className="categoryTitle">{categoria}</h2>
               <Carousel
                 productos={productosPorCategoria(categoria)}
                 onAddToCart={handleAddToCart}

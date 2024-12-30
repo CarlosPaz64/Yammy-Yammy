@@ -13,19 +13,19 @@ footer{
 .bread-zone{
     position: relative;
     width: 100%;
-    padding-top: 120px;
+    padding-top: 60px;
     background-color: #5E2826;
-    border-top-left-radius: 32px;
-    border-top-right-radius: 32px;
+    border-top-left-radius: 20px;
+    border-top-right-radius: 20px;
 }
 /*Parte del merengue derretido*/
 .main-meringue{display: block;} .secondary-meringue{display: none;} .tertiary-meringue{display: none;}
 .container-meringue {
     position: relative;
     margin-top: -1rem;
-    height: 82px;
+    height: 50px;
     width: 100%;
-    margin-bottom: -65px;
+    margin-bottom: -80px;
     display: flex;
     justify-content: space-between;
     align-items: flex-end;
@@ -33,10 +33,11 @@ footer{
 }
 .melted-meringue1, .melted-meringue2, .melted-meringue3,
 .melted-meringue4, .melted-meringue5, .melted-meringue6,
-.melted-meringue7, .melted-meringue8, .melted-meringue9 {
+.melted-meringue7, .melted-meringue8, .melted-meringue9, 
+.melted-meringue10, .melted-meringue11, .melted-meringue12 {
     position: relative;
     top: 0;
-    height: 170px; /* altura del efecto del merengue */
+    height: 85px; /* altura del efecto del merengue */
     width: 12%; /* Ancho en porcentaje para que se ajuste */
     border-bottom-left-radius: 80%;
     border-bottom-right-radius: 80%;
@@ -48,8 +49,8 @@ footer{
     width: 100%;
     display: flex;
     justify-content: center;
-    margin-top: -30px; /* Ajuste de margen si es necesario */
-    top: -192px;
+    margin-top: -30px;
+    top: -85px;
 }
 /* Vela en forma de letras */
 .word-candle {
@@ -131,15 +132,13 @@ footer{
 /*sección de las redes sociales*/
 .section-social{
     display: flex;
-    margin-top: 40px;
-    margin-bottom: 5px;
     justify-content: center;
     align-items: center;
 } 
 .title-social{
     position:absolute;
     font-family: 'anton', sans-serif;
-    font-size: 2rem;
+    font-size: 1.7rem;
     color: #AD49E1;
     text-transform: uppercase;
     background-image: linear-gradient(-250deg, #12c2e9 0%, #c471ed 50%, #f64f59 100%);
@@ -150,7 +149,7 @@ footer{
     -webkit-background-clip: text;
     animation: bgText 2.5s linear infinite;
     width: 100%;
-    margin-top: -85px;
+    margin-top: -90px;
     display: flex;
     justify-content: center;
     user-select: none;
@@ -166,7 +165,7 @@ footer{
     justify-content: center;
     align-items: center;
     gap: 45px;
-    margin-top: 30px;
+    margin-top: 8px;
 }
 .social-icons{
     width: 32px;
@@ -179,11 +178,10 @@ footer{
     display: flex;
     justify-content: center;
     align-items: center;
-    margin-top: 25px;
 }
 .title-slogan{
     font-family: 'anton', sans-serif;
-    font-size: 1.5rem;
+    font-size: 1.3rem;
     color: #AD49E1;
     text-transform: uppercase;
     background-image: linear-gradient(-250deg, #12c2e9 0%, #c471ed 50%, #f64f59 100%);
@@ -194,7 +192,7 @@ footer{
     -webkit-background-clip: text;
     animation: bgText 2.5s linear infinite;
     width: 100%;
-    margin-bottom: 20px;
+    margin-top: 8px;
     user-select: none;
 }
 /*Derechos reservados*/
@@ -209,47 +207,67 @@ footer{
 /*Media para tabletas*/
 @media only screen and (min-width: 768px) and (max-width: 1024px) {
     /*Zona del pan*/
-    .bread-zone{padding-top: 80px;}
+    .bread-zone{padding-top: 30px;}
     /*Parte del merengue secundario derretido*/
     .main-meringue{display: none;} .secondary-meringue{display: block;} .tertiary-meringue{display: none;} 
-    .container-meringue {margin-bottom: 40px;}
+    .container-meringue {margin-bottom: -45px;}
     .melted-meringue1, .melted-meringue2, .melted-meringue3,
-    .melted-meringue4, .melted-meringue5 {
-        height: 146px; /* altura del efecto del merengue */
-        width: 20%; /* Ancho en porcentaje para que se ajuste */
+    .melted-meringue4, .melted-meringue5, .melted-meringue6, .melted-meringue7 {
+        height: 64px; /* altura del efecto del merengue */
+        width: 17%; /* Ancho en porcentaje para que se ajuste */
     }
+    /*Contenedor de la vela en forma de palabras*/
+    .container-candle{top: -62px;}
+
     /*Vela en forma de letras */
-    .word-candle {font-size: 32.5px;}
+    .word-candle {font-size: 40px;}
     /*Contenedor para la mecha de la vela*/
     .container-wick{
-        top: 0;
+        top: 3px;
         height: 10px;
         width: 3px;
     }
-    .container-wick.wick1{left:3px;} .wick2{left: 20px;} .wick3{left: 52px;} .wick4{left: 93px;} .wick5{left: 115px;} .wick6{left: 147px;} .wick7{left: 164px;}
-    .wick8{left: 232.5px;} .wick9{left: 249px;} .wick10{left: 281px;} .wick11{left: 322px;} .wick12{left: 344px;} .wick13{left: 376px;} .wick14{left: 393px;}
+    .container-wick.wick1{left:3px;} .wick2{left: 23px;} .wick3{left: 60px;} .wick4{left: 106px;} .wick5{left: 133px;} .wick6{left: 168px;} .wick7{left: 186px;}
+    .wick8{left: 263.5px;} .wick9{left: 280px;} .wick10{left: 316px;} .wick11{left: 363px;} .wick12{left: 390px;} .wick13{left: 426px;} .wick14{left: 443px;}
     /*Flama de la vela*/
     .candle-flame {
-        top: -20px;
+        top: -16px;
         font-size: 18px !important;
     }
-    .flame1{left: -4px;} .flame2{left: 13px;} .flame3{left: 44.5px;} .flame4{left: 86px;} .flame5{left: 107.5px;} .flame6{left: 140px;} .flame7{left: 157px;}
-    .flame8{left: 226px;} .flame9{left: 242px;} .flame10{left: 273.5px;} .flame11{left: 315px;} .flame12{left: 337px;} .flame13{left: 369px;} .flame14{left: 386px;}
+    .flame1{left: -4px;} .flame2{left: 15px;} .flame3{left: 53.1px;} .flame4{left: 99px;} .flame5{left: 126.5px;} .flame6{left: 161px;} .flame7{left: 178px;}
+    .flame8{left: 255px;} .flame9{left: 273px;} .flame10{left: 309.5px;} .flame11{left: 356px;} .flame12{left: 383px;} .flame13{left: 419px;} .flame14{left: 436px;}
+
+    /*Capa / división del pastel*/
+    .cake-layer{height: 40px;}
+
+    /*sección de las redes sociales*/
+    .title-social{font-size: 1.2rem; margin-top: -83px;}
+    .container-social{margin-top: 8px;}
+    .container-social img{width: 1.3em;}
+
+    /*Sección del slogan con Derechos reservados*/
+    .title-slogan{font-size: 1rem; margin-top: 4px;}
+
+    /*Derechos reservados*/
+    .content-rightsReserved{
+        font-size: 12px;
+    }
 }
 
 /*Media para teléfonos*/
 @media only screen and (max-width: 767px) {
     /*Zona del pan*/
-    .bread-zone{padding-top: 40px;}
+    .bread-zone{padding-top: 20px;}
     /*Parte del merengue terciario derretido*/
     .main-meringue{display: none;} .secondary-meringue{display: none;} .tertiary-meringue{display: block;}
-    .container-meringue {margin-bottom: 32px;}
-    .melted-meringue1, .melted-meringue2, .melted-meringue3 {
-        height: 106px; /* altura del efecto del merengue */
-        width: 40%; /* Ancho en porcentaje para que se ajuste */
+    .container-meringue {margin-bottom: 5px;}
+    .melted-meringue1, .melted-meringue2, .melted-meringue3, 
+    .melted-meringue4, .melted-meringue5, .melted-meringue6 {
+        height: 35px; /* altura del efecto del merengue */
+        width: 20%; /* Ancho en porcentaje para que se ajuste */
     }
     /*Contenedor de la vela en forma de palabras*/
-    .container-candle {top: -133.5px;}
+    .container-candle {top: -54.5px;}
     /*Vela en forma de letras */
     .word-candle {
         font-size: 1.5rem;
@@ -273,27 +291,29 @@ footer{
     .flame1{left: -1px;} .flame2{left: 10px;} .flame3{left: 30px;} .flame4{left: 56px;} .flame5{left: 72px;} .flame6{left: 92px;} .flame7{left: 102px;}
     .flame8{left: 146px;} .flame9{left: 156px;} .flame10{left: 176px;} .flame11{left: 202px;} .flame12{left: 217px;} .flame13{left: 238px;} .flame14{left: 248px;}
     /*Capa / división del pastel*/
-    .cake-layer{height: 28px;}
+    .cake-layer{height: 20px;}
     /*sección de las redes sociales*/
     .section-social{
-        margin-top: 15px;
+        margin-top: -30px;
         margin-bottom: 0;
     }
     .title-social{
-        font-size: 100%;
-        margin-top: -55px;
+        font-size: 75%;
+        margin-top: -12px;
     }
     .container-social{
         gap: 35px;
         margin-top: 30px;
+        margin-bottom: -5px;
     }
+    .container-social img{width: .9em;}
     .social-icons{
         width: 22px;
         height: 22px;
     }.social-icons:hover{margin-top: -10px;}
     /*Sección del slogan con Derechos reservados*/
-    .section-slogan{margin-top: 25px;}
-    .title-slogan{font-size: 100%;}
+    .section-slogan{margin-top: -5px;}
+    .title-slogan{font-size: 70%;}
     /*Derechos reservados*/
-    .content-rightsReserved{font-size: 65%;}
+    .content-rightsReserved{font-size: 50%;}
 }

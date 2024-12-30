@@ -82,13 +82,13 @@ const Carousel: React.FC<CarouselProps> = ({ productos, onAddToCart, isLoggedIn 
               <p>
                 Stock:{" "}
                 {producto.stock > 0
-                  ?( <p style={{color: "green", fontWeight: 'bold'}}>{producto.stock} disponibles</p>
+                  ?( <p>{producto.stock} disponibles</p>
                 ): (
-                  <p style={{color: "red", fontWeight: 'bold'}}>Agotado</p>
+                  <p style={{fontWeight: 'bold'}}>Agotado</p>
                 )}
               </p>
               <button
-                className="message-button"
+                className={producto.stock > 0 ? "message-button" : "add-to-cart-modal"}
                 onClick={() => handleAddToCart(producto)} // Usa handleAddToCart aquí
                 disabled={producto.stock === 0}
               >
@@ -99,16 +99,18 @@ const Carousel: React.FC<CarouselProps> = ({ productos, onAddToCart, isLoggedIn 
         ))}
       </Swiper>
 
-      {/* Modal */}
+      {/* Modal, estilos declarados en menu.css*/}
       {selectedProducto && (
         <div className="modal-overlay" onClick={closeModal}>
           <div
             className="modal-content"
             onClick={(e) => e.stopPropagation()} // Evita que el clic dentro del modal cierre el modal
           >
-            <button className="close-button" onClick={closeModal}>
-              ×
-            </button>
+            <div className="header-modal-content">
+              <button className="close-button" onClick={closeModal}>
+                ×
+              </button>
+            </div>
             <img
               src={
                 selectedProducto.url_imagen.startsWith("data:")
@@ -118,17 +120,17 @@ const Carousel: React.FC<CarouselProps> = ({ productos, onAddToCart, isLoggedIn 
               alt={selectedProducto.nombre_producto}
               className="modal-image"
             />
-            <h2>{selectedProducto.nombre_producto}</h2>
-            <p>{selectedProducto.descripcion_producto}</p>
-            <p>Precio: ${selectedProducto.precio.toFixed(2)}</p>
-            <p>
+            <h2 className="modal-contenSpace title-content">{selectedProducto.nombre_producto}</h2>
+            <p className="modal-contenSpace">{selectedProducto.descripcion_producto}</p>
+            <p className="modal-contenSpace">Precio: ${selectedProducto.precio.toFixed(2)}</p>
+            <p className="modal-contenSpace">
               Stock:{" "}
               {selectedProducto.stock > 0 ? (
-                <span style={{ color: "green", fontWeight: "bold" }}>
+                <span>
                   {selectedProducto.stock} disponibles
                 </span>
               ) : (
-                <span style={{ color: "red", fontWeight: "bold" }}>Agotado</span>
+                <span style={{  fontWeight: "bold" }}>Agotado</span>
               )}
             </p>
             <button

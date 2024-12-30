@@ -124,58 +124,73 @@ const Pedido: React.FC = () => {
     }
   }; 
 
-    // Eliminar una imagen
-    const handleRemoveImage = (index: number) => {
-      setImagenes((prev) => prev.filter((_, i) => i !== index));
-    };
+  // Eliminar una imagen
+  const handleRemoveImage = (index: number) => {
+    setImagenes((prev) => {
+      const updatedImages = prev.filter((_, i) => i !== index);
+      //Actualiza el input type="file" de pedidos personalizados
+      if(fileInputRef.current){
+        const dataTransfer = new DataTransfer();
+        updatedImages.forEach((file) => dataTransfer.items.add(file));
+        fileInputRef.current.files = dataTransfer.files;
+      }
+      return updatedImages;
+    })
+  };
 
-    const onSubmit = async (data: FormData) => {
-      // Verifica errores globales de Redux antes de enviar
-      if (error) {
-        alert('Por favor, corrige los errores antes de enviar el formulario.');
-        return;
-      }
+  //Validacion en el envio de los datos en el submit
+  const onSubmit = async (data: FormData) => {
+    if (imagenes.length === 0) {
+      alert('Debes subir al menos una imagen.');
+      return;
+    }
     
-      const userId = localStorage.getItem('userId');
-      const token = localStorage.getItem('authToken');
+    // Verifica errores globales de Redux antes de enviar
+    if (error) {
+      alert('Por favor, corrige los errores antes de enviar el formulario.');
+      return;
+    }
     
-      if (!userId || !token) {
-        alert('Por favor, inicie sesión para continuar.');
-        return;
-      }
+    const userId = localStorage.getItem('userId');
+    const token = localStorage.getItem('authToken');
+  
+    if (!userId || !token) {
+      alert('Por favor, inicie sesión para continuar.');
+      return;
+    }
     
-      const pedidoData = {
-        client_id: userId,
-        token,
-        ...data,
-        cantidad,
-        precio,
-        imagenes,
-      };
+    const pedidoData = {
+      client_id: userId,
+      token,
+      ...data,
+      cantidad,
+      precio,
+      imagenes,
+    };
     
-      // Eliminar campos de domicilio si la opción de entrega es "recoger"
-      if (data.opcion_entrega === 'recoger') {
-        delete pedidoData.calle;
-        delete pedidoData.numero_exterior;
-        delete pedidoData.numero_interior;
-        delete pedidoData.colonia;
-        delete pedidoData.ciudad;
-        delete pedidoData.codigo_postal;
-        delete pedidoData.descripcion_ubicacion;
-      }
+    // Eliminar campos de domicilio si la opción de entrega es "recoger"
+    if (data.opcion_entrega === 'recoger') {
+      delete pedidoData.calle;
+      delete pedidoData.numero_exterior;
+      delete pedidoData.numero_interior;
+      delete pedidoData.colonia;
+      delete pedidoData.ciudad;
+      delete pedidoData.codigo_postal;
+      delete pedidoData.descripcion_ubicacion;
+    }
     
-      // Enviar pedido
-      const result = await dispatch(enviarPedido(pedidoData));
-      if (enviarPedido.fulfilled.match(result)) {
-        setModalOpen(true);
-        setTimeout(() => {
-          setModalOpen(false);
-          navigate('/');
-        }, 3000);
-      } else {
-        alert('Hubo un error al procesar el pedido. Inténtalo de nuevo más tarde.');
-      }
-    };      
+    // Enviar pedido
+    const result = await dispatch(enviarPedido(pedidoData));
+    if (enviarPedido.fulfilled.match(result)) {
+      setModalOpen(true);
+      setTimeout(() => {
+        setModalOpen(false);
+        navigate('/');
+      }, 3000);
+    } else {
+      alert('Hubo un error al procesar el pedido. Inténtalo de nuevo más tarde.');
+    }
+  };      
 
   return isLoading ? (
     <center><p>Cargando...</p></center>
@@ -386,7 +401,7 @@ const Pedido: React.FC = () => {
       {/* Modal de Éxito */}
       {modalOpen && (
         <div className="modal">
-          <div className="modal-content">
+          <div className="modal-contentSuccess">
             <h2>¡Pedido realizado con éxito!</h2>
             <p>Redirigiendo a la página principal...</p>
           </div>

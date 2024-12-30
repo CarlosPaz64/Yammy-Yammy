@@ -21,6 +21,9 @@ const Footer: React.FC<{ children?: ReactNode }> = ({ children }) => {
                         <div className="melted-meringue7"></div>
                         <div className="melted-meringue8"></div>
                         <div className="melted-meringue9"></div>
+                        <div className="melted-meringue10"></div>
+                        <div className="melted-meringue11"></div>
+                        <div className="melted-meringue12"></div>
                     </div>
                 </div>
                 {/*Vista para tabletas -> merengue derretido*/}
@@ -31,6 +34,8 @@ const Footer: React.FC<{ children?: ReactNode }> = ({ children }) => {
                         <div className="melted-meringue3"></div>
                         <div className="melted-meringue4"></div>
                         <div className="melted-meringue5"></div>
+                        <div className="melted-meringue6"></div>
+                        <div className="melted-meringue7"></div>
                     </div>
                 </div>
                 {/*Vista para celulares -> merengue derretido*/}
@@ -39,6 +44,9 @@ const Footer: React.FC<{ children?: ReactNode }> = ({ children }) => {
                         <div className="melted-meringue1"></div>
                         <div className="melted-meringue2"></div>
                         <div className="melted-meringue3"></div>
+                        <div className="melted-meringue4"></div>
+                        <div className="melted-meringue5"></div>
+                        <div className="melted-meringue6"></div>
                     </div>
                 </div>
                 <div className="container-candle">
