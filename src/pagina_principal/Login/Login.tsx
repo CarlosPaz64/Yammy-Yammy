@@ -8,6 +8,7 @@ import './login.css';
 import { useAppDispatch } from '../../hooks/reduxHooks'; 
 import { login } from '../../slices/autentiSlice';
 import { setUser } from '../../slices/userSlice';
+import { toast } from 'react-toastify';
 
 const API_LINK = import.meta.env.VITE_API_LINK || 'https://yamy-yamy-api.vercel.app';
 const SECRET_KEY = 'tu_clave_secreta';
@@ -46,7 +47,7 @@ const LoginForm: React.FC = () => {
         mode: CryptoJS.mode.CBC,
         padding: CryptoJS.pad.Pkcs7,
       }).toString();
-
+    
       const response = await fetch(`${API_LINK}/api/users/login`, {
         method: 'POST',
         headers: {
@@ -54,28 +55,57 @@ const LoginForm: React.FC = () => {
         },
         body: JSON.stringify({ encryptedData }),
       });
-
+    
       const result = await response.json();
-
+    
       if (response.ok) {
         const { token, userId, nombre, apellido, email } = result;
-
+    
         // Guarda el token y userId en localStorage
         localStorage.setItem('authToken', token);
         localStorage.setItem('userId', userId);
-
+    
         // Actualiza Redux con el token y la información del usuario
         handleLogin(token, { nombre_cliente: nombre, apellido_cliente: apellido, email });
-
+    
         // Redirige al usuario a la página principal
         navigate('/');
+    
+        // Notificación de éxito
+        toast.success('¡Inicio de sesión exitoso!', {
+          position: "top-right",
+          autoClose: 3000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          theme: "light",
+        });
       } else {
         console.error('Error al iniciar sesión:', result);
-        alert(result.message || 'Error al iniciar sesión');
+    
+        toast.error(result.message || 'Error al iniciar sesión', {
+          position: "top-right",
+          autoClose: 3000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          theme: "light",
+        });
       }
     } catch (error) {
       console.error('Error al conectar con la API:', error);
-      alert('Error al iniciar sesión');
+    
+      toast.error('Error al conectar con la API. Inténtalo de nuevo más tarde.', {
+        position: "top-right",
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        theme: "light",
+      });
     }
   };
 
