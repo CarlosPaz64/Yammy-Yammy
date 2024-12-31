@@ -15,6 +15,7 @@ import {
 } from './cartSlice';
 import axios from 'axios'; // Para consumir la API de códigos postales
 import './carrito.css';
+import { toast } from 'react-toastify';
 
 const CartPage: React.FC = () => {
   const cartItems = useSelector((state: RootState) => state.cart.items);
@@ -227,7 +228,16 @@ const CartPage: React.FC = () => {
   const handleFinalizePurchase = async () => {
     try {
       if (cartItems.length === 0) {
-        alert('El carrito está vacío. No puedes finalizar la compra.');
+        toast.error('El carrito está vacío. No puedes finalizar la compra.', {
+          position: "top-right", // Posición de la notificación
+          autoClose: 3000,       // Tiempo en ms para que se cierre automáticamente
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "light",
+        });
         return;
       }
       setIsFinalizing(true);

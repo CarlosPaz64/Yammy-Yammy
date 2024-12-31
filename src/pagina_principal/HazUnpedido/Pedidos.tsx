@@ -6,6 +6,7 @@ import { useAppDispatch, useAppSelector } from '../../hooks/reduxHooks';
 import { fetchClienteData, fetchCityAndColonies, enviarPedido, calcularPrecio } from './pedidoSlice';
 import { useNavigate } from 'react-router-dom';
 import './Pedidos.css';
+import { toast } from 'react-toastify';
 
 const schema = z.object({
   categoria: z.string().nonempty({ message: "Selecciona una categoría" }),
@@ -112,13 +113,22 @@ const Pedido: React.FC = () => {
       const selectedFiles = Array.from(e.target.files);
   
       if (selectedFiles.length > 2) {
-        alert('Solo puedes subir un máximo de 2 imágenes.');
+        toast.warn('Solo puedes subir un máximo de 2 imágenes.', {
+          position: "top-right",
+          autoClose: 3000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          theme: "light",
+        });
+      
         // Resetea el valor del input file
         if (fileInputRef.current) {
           fileInputRef.current.value = '';
         }
         return;
-      }
+      }      
   
       setImagenes(selectedFiles);
     }
@@ -141,23 +151,48 @@ const Pedido: React.FC = () => {
   //Validacion en el envio de los datos en el submit
   const onSubmit = async (data: FormData) => {
     if (imagenes.length === 0) {
-      alert('Debes subir al menos una imagen.');
+      toast.error('Debes subir al menos una imagen.', {
+        position: "top-right",
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        theme: "light",
+      });
       return;
-    }
+    }    
     
     // Verifica errores globales de Redux antes de enviar
     if (error) {
-      alert('Por favor, corrige los errores antes de enviar el formulario.');
+      toast.error('Por favor, corrige los errores antes de enviar el formulario.', {
+        position: "top-right",
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        theme: "light",
+      });
       return;
     }
     
     const userId = localStorage.getItem('userId');
     const token = localStorage.getItem('authToken');
-  
+
     if (!userId || !token) {
-      alert('Por favor, inicie sesión para continuar.');
+      toast.error('Por favor, inicie sesión para continuar.', {
+        position: "top-right",
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        theme: "light",
+      });
       return;
     }
+
     
     const pedidoData = {
       client_id: userId,
@@ -187,9 +222,27 @@ const Pedido: React.FC = () => {
         setModalOpen(false);
         navigate('/');
       }, 3000);
+    
+      toast.success('Pedido procesado exitosamente.', {
+        position: "top-right",
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        theme: "light",
+      });
     } else {
-      alert('Hubo un error al procesar el pedido. Inténtalo de nuevo más tarde.');
-    }
+      toast.error('Hubo un error al procesar el pedido. Inténtalo de nuevo más tarde.', {
+        position: "top-right",
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        theme: "light",
+      });
+    }    
   };      
 
   return isLoading ? (

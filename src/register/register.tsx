@@ -3,6 +3,7 @@ import { useForm } from 'react-hook-form';
 import CryptoJS from 'crypto-js';
 import { useNavigate } from 'react-router-dom';
 import './register.css';
+import { toast } from 'react-toastify';
 
 interface IFormInput {
   nombre_cliente: string;
@@ -77,13 +78,13 @@ const RegisterForm: React.FC = () => {
 
   const onSubmit = async (data: IFormInput) => {
     setIsLoading(true);
-
+  
     try {
       const encryptedData = CryptoJS.AES.encrypt(JSON.stringify(data), SECRET_KEY, {
         mode: CryptoJS.mode.CBC,
         padding: CryptoJS.pad.Pkcs7,
       }).toString();
-
+  
       const response = await fetch(`${API_LINK}/api/users/register`, {
         method: 'POST',
         headers: {
@@ -91,18 +92,43 @@ const RegisterForm: React.FC = () => {
         },
         body: JSON.stringify({ encryptedData }),
       });
-
+  
       if (response.ok) {
-        navigate('/login'); // Mandal usuairo al login
+        toast.success('Usuario registrado exitosamente. Redirigiendo al login...', {
+          position: "top-right",
+          autoClose: 3000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          theme: "light",
+        });
+        navigate('/login'); // Manda al usuario al login
       } else {
-        alert('Error al registrar el usuario');
+        toast.error('Error al registrar el usuario.', {
+          position: "top-right",
+          autoClose: 3000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          theme: "light",
+        });
       }
     } catch (error) {
-      alert('Error en el registro de usuario');
+      toast.error('Error en el registro de usuario.', {
+        position: "top-right",
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        theme: "light",
+      });
     } finally {
       setIsLoading(false);
     }
-  };
+  };  
 
   const nextStep = async () => {
     let fieldsToValidate: (keyof IFormInput)[] = [];

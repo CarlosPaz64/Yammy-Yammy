@@ -14,6 +14,8 @@ import ProtectedRoute from './ProtectRoute';
 import { store } from './menu/store'; // Ajusta la ruta según tu estructura
 import { fetchPendingCartWithProductsAsync, clearCart } from './menu/cartSlice';
 import { useAppDispatch } from './hooks/reduxHooks'; // Ajusta la ruta según tu estructura
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 function App() {
   const dispatch = useAppDispatch();
@@ -61,6 +63,7 @@ function App() {
           <Route path="/carrito" element={<CartPage />} />
         </Route>
       </Routes>
+      <ToastContainer />
     </>
   );
 }
