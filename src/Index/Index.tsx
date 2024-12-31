@@ -100,7 +100,7 @@ const Index: React.FC<{ children?: ReactNode }> = ({ children }) => {
                             <img src='https://yamy-yamy-api.vercel.app/assets/Yamy-Imagotipo-white.png' alt="Imagotipo" width="50%" />
                             <p>Tu dulce destino a un clic de distancia</p>
                         </div>
-                    <video src="https://yamy-yamy-api.vercel.app/clips/yamy.mp4" className="index-clip" autoPlay muted loop disablePictureInPicture></video>
+                    <video src="https://yamy-yamy-api.vercel.app/assets/clips/yamy.mp4" className="index-clip" autoPlay muted loop disablePictureInPicture></video>
                 </div>                
                 {/*Enlace relacionado al whatsapp */}
                 <div className="container-whatsapp">
