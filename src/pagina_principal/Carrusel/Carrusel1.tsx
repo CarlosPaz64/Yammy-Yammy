@@ -5,7 +5,7 @@ import './Carrusel.css';
 const Carrusel1: React.FC<{ children?: ReactNode }> = ({ children }) => {
     const [currentIndex, setCurrentIndex] = useState(0);
     const totalSlides = 5; // Total de imágenes en el carrusel
-    const slideInterval = useRef<number | null>(null); // Mantener la referencia del intervalo
+    const slideInterval = useRef<number | null>(null); //Mantiene la referencia del intervalo para el proceso automatico entre imagenes
 
     // Función para iniciar el carrusel automáticamente
     const startAutoSlide = () => {
@@ -28,7 +28,7 @@ const Carrusel1: React.FC<{ children?: ReactNode }> = ({ children }) => {
         return () => stopAutoSlide(); // Limpiar el intervalo cuando el componente se desmonta
     }, []);
 
-    // Función para reiniciar el contador
+    // Función para reiniciar el contador cuando hacemos uso del nextSlide y prevSlide
     const resetAndGoToSlide = (index: number) => {
         stopAutoSlide(); // Detenemos el intervalo
         setCurrentIndex(index); // Cambiamos al índice seleccionado
