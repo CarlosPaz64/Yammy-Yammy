@@ -25,7 +25,7 @@ const SECRET_KEY = 'tu_clave_secreta';
 
 const RegisterForm: React.FC = () => {
   const { register, handleSubmit, formState: { errors }, setValue, trigger } = useForm<IFormInput>();
-  const [currentStep, setCurrentStep] = useState(1);
+  const [currentStep, setCurrentStep] = useState(0);
   const [isLoading, setIsLoading] = useState(false);
   const [colonias, setColonias] = useState<string[]>([]);
   const [codigoPostal, setCodigoPostal] = useState('');
