@@ -132,10 +132,10 @@ const RegisterForm: React.FC = () => {
 
   const nextStep = async () => {
     let fieldsToValidate: (keyof IFormInput)[] = [];
-    if (currentStep === 1) fieldsToValidate = ['nombre_cliente', 'apellido_cliente'];
-    if (currentStep === 2) fieldsToValidate = ['email', 'password_cliente'];
-    if (currentStep === 3) fieldsToValidate = ['numero_telefono'];
-    if (currentStep === 4) fieldsToValidate = ['calle', 'numero_exterior', 'codigo_postal', 'colonia'];
+    if (currentStep === 0) fieldsToValidate = ['nombre_cliente', 'apellido_cliente'];
+    if (currentStep === 1) fieldsToValidate = ['email', 'password_cliente'];
+    if (currentStep === 2) fieldsToValidate = ['numero_telefono'];
+    if (currentStep === 3) fieldsToValidate = ['calle', 'numero_exterior', 'codigo_postal', 'colonia'];
   
     const isValid = await trigger(fieldsToValidate);
   
@@ -173,7 +173,7 @@ const RegisterForm: React.FC = () => {
           <div className='form-outer'>
             <form className='form-register' onSubmit={handleSubmit(onSubmit)}>
               {/* Paso 1: Nombre */}
-              {currentStep === 1 && (
+              {currentStep === 0 && (
                 <div className='page slide-page'>
                   <div className='title'>Nombre Completo</div>
                   <div className='field'>
@@ -192,7 +192,7 @@ const RegisterForm: React.FC = () => {
                 </div>
               )}
               {/* Paso 2: Usuario */}
-              {currentStep === 2 && (
+              {currentStep === 1 && (
                 <div className="page">
                   <div className='title'>Usuario</div>
                   <div className='field'>
@@ -218,7 +218,7 @@ const RegisterForm: React.FC = () => {
                 </div>
               )}
               {/* Paso 3: Teléfono */}
-                {currentStep === 3 && (
+                {currentStep === 2 && (
                   <div className="page">
                     <div className="title">Teléfono</div>
                     <div className="field">
@@ -255,7 +255,7 @@ const RegisterForm: React.FC = () => {
                   </div>
                 )}
               {/* Paso 4: Domicilio */}
-              {currentStep === 4 && (
+              {currentStep === 3 && (
                 <div className="page">
                   <div className='title'>Domicilio</div>
                   <div className='field'>
