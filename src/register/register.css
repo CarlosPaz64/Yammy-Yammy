@@ -132,6 +132,17 @@
 .form-register .page .btns button.next {
     margin-left: 3px;
 }
+.check-symbol{ /*Esta estilo es para el icono "check-symbol" cuando se acompleta con éxito el paso o sección del formulario*/
+    background-color: var(--primary);
+    color: var(--inputBorderColor);
+    height: 25px;
+    width: 25px;
+    border: 2px solid #330867;
+    border-radius: 50%;
+    font-weight: 500;
+    font-size: 17px;
+    line-height: 25px;
+}
 .container .progress-bar {
     display: flex;
     margin: 40px 0;
