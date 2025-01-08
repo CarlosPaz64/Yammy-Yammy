@@ -11,7 +11,8 @@ import {
   fetchCartClientDataAsync,
   fetchCartProductsAsync,
   clearError,
-  fetchPendingCartWithProductsAsync
+  fetchPendingCartWithProductsAsync,
+  clearCart
 } from './cartSlice';
 import axios from 'axios'; // Para consumir la API de códigos postales
 import './carrito.css';
@@ -59,6 +60,7 @@ const CartPage: React.FC = () => {
 
   // Cargar productos del carrito
   useEffect(() => {
+    dispatch(clearCart()); // Acción que limpia el estado del carrito
     const carritoId = localStorage.getItem('carritoId');
     if (carritoId) {
       dispatch(fetchCartProductsAsync(Number(carritoId))); // Cargar productos del carrito
